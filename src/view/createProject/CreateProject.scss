@@ -1,0 +1,49 @@
+@import '../../variables.scss';
+
+.create-project-page {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .top-content {
+    .breadcrumb-content {
+      margin-bottom: 15px;
+    }
+    .step-container {
+      display: flex;
+      padding: 8px 20px;
+      align-items: center;
+      .step-content {
+        flex: 1;
+        .ant-steps {
+          .ant-steps-item-title {
+            color: $defautl-font-color;
+          }
+        }
+      }
+      .btn-change-step {
+        margin-left: 35px;
+        .btn-step {
+          margin-right: 10px;
+          &:last-child {
+            margin-right: 0;
+          }
+          &:disabled {
+            .anticon {
+              color: #d9d9d9;
+            }
+          }
+        }
+      }
+    }
+  }
+  .page-content {
+    flex: 1;
+    .item-content {
+      display: none;
+      height: 100%;
+      &.is-show {
+        display: block;
+      }
+    }
+  }
+}

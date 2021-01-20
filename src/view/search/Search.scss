@@ -1,0 +1,36 @@
+@import '../../variables.scss';
+
+.search-page {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .top-content {
+    margin-bottom: 20px;
+    .search-box {
+      .ant-input-group {
+        display: flex;
+        .ant-select-selector {
+          height: 40px;
+          .ant-select-selection-search-input {
+            height: 40px;
+          }
+          .ant-select-selection-item {
+            line-height: 40px;
+          }
+        }
+      }
+    }
+  }
+
+  .page-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    .table-content {
+      flex: 1;
+      background: $app-bg-box;
+      border-radius: $border-box-radius;
+      overflow-y: auto;
+    }
+  }
+}

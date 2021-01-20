@@ -1,0 +1,53 @@
+.job-build-docker-image: &build-docker-image
+  image: docker:stable
+  services:
+    - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+  before_script:
+    - apk add python3 py-pip
+    - pip install awscli
+    - aws ecr get-login-password --region ap-southeast-1 | docker login --username ${DOCKER_REGISTRY_USER} --password-stdin ${DOCKER_REGISTRY}
+
+image: node:lts
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+
+before_script:
+  - ls -la .
+  - yarn install
+
+stages:
+  # - test
+  - build-docker-image
+
+# unit-test:
+#   stage: test
+#   except:
+#     - tags
+#   script:
+#     - yarn test
+
+build-docker-image:latest:
+  <<: *build-docker-image
+  stage: build-docker-image
+  only:
+    #  - master
+    #  - develop
+  script:
+    - docker build -t ${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME} .
+    - docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}
+
+build-docker-image:tags:
+  <<: *build-docker-image
+  stage: build-docker-image
+  only:
+    - tags
+  script:
+    - docker build -t ${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${CI_COMMIT_REF_NAME} .
+    - docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}:${CI_COMMIT_REF_NAME}
