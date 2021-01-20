@@ -10,9 +10,8 @@ import { actionLogout, requestLogin } from '../../../view/system/systemAction';
 import './Header.scss';
 
 const Header = (props) => {
-  const { currentProject = {}, location = {}, account } = props;
-  const { pathname = '' } = location;
-  const isShowProjectName = pathname.indexOf(routes.STUDY_LIST) !== -1;
+  const { location = {}, account } = props;
+  // const { pathname = '' } = location;
 
   const handleClickAvatar = async (item) => {
     if (item.key === routes.LOGIN) {
@@ -54,14 +53,12 @@ const Header = (props) => {
             <span className="logo-sub-text">AI Platform</span>
           </span>
         </div>
-        {isShowProjectName && currentProject?.name && (
-          <div className="project-name">{currentProject?.name}</div>
-        )}
+
         <div className="header-right-content">
           <Dropdown overlay={menu}>
             <div className="user-info">
-              <span className="user-name">{account?.preferred_username}</span>
               <Avatar size={30} icon={<UserOutlined />} />
+              <span className="user-name">{account?.preferred_username}</span>
             </div>
           </Dropdown>
         </div>
@@ -72,8 +69,7 @@ const Header = (props) => {
 
 export default connect(
   (state) => ({
-    account: state.system.profile,
-    currentProject: state.project.currentProject,
+    account: { preferred_username: 'Admin' },
   }),
   {}
 )(withRouter(Header));
