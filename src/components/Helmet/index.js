@@ -20,7 +20,7 @@ function AppHelmet(props) {
   return (
     <Helmet>
       <meta charSet="utf-8" />
-      <title>{t(pageName)}</title>
+      <title>{t('IDS_APP_NAME')} - {t(pageName)}</title>
       <link rel="canonical" href="https://vindr.ai" />
     </Helmet>
   );

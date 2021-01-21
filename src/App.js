@@ -24,9 +24,7 @@ const App = (props) => {
           <LeftMenu />
 
           <Layout.Content className="content-container">
-            <div className="breadcrumb-content">
-              <BreadCrumb />
-            </div>
+            <BreadCrumb />
             <Routes />
           </Layout.Content>
         </Layout>
