@@ -1,0 +1,15 @@
+@import '../../../variables.scss';
+
+.graphs-list {
+    .graph-column {
+        background: #fff;
+        padding: 15px;
+        color: $font-page-color;
+
+        .graph-name {
+            color: $app-primary-color;
+            font-weight: 600;
+            font-size: 16px;
+        }
+    }
+}
