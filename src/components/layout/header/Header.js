@@ -33,7 +33,7 @@ const Header = (props) => {
   };
 
   const goHomePage = () => {
-    props.history.push(routes.PROJECTS);
+    props.history.push(routes.HOME);
   };
 
   const menu = (

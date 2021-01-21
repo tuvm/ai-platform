@@ -44,7 +44,7 @@ const LeftMenu = (props) => {
     {
       icon: <HomeOutlined />,
       text: <FormattedMessage id="IDS_HOME" />,
-      route: routes.PROJECTS,
+      route: routes.HOME,
       isShow: true,
     },
     {
@@ -84,13 +84,17 @@ const LeftMenu = (props) => {
       <div className="sider-container">
         <div className="left-menu-wrapper">
           <div className="user-infor">
-            <div>
+            <div className="user-avatar">
               <Avatar size={40} icon={<UserOutlined />} />
             </div>
-            <div className="user-account">
-              <span><strong>Mi Nguyen</strong></span>
-              <span>minnguyen@gmail.com</span>
-            </div>
+            {!collapsed && (
+              <div className="user-account">
+                <span>
+                  <strong>Mi Nguyen</strong>
+                </span>
+                <span>minnguyen@gmail.com</span>
+              </div>
+            )}
           </div>
           <Menu
             onClick={handleMenuClick}

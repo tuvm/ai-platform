@@ -31,19 +31,19 @@
   }
 
   .ant-layout-sider-trigger {
+    height: 66px;
     width: 10px !important;
     position: absolute;
-    right: 0;
+    right: -10px;
     top: 50%;
     z-index: 1;
-    background: rgba(194, 207, 224, 0.6);
-    border-top-left-radius: 8px;
-    border-bottom-left-radius: 8px;
-    height: 27px;
-    line-height: 27px;
+    background:#fff;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    line-height: 63px;
     text-align: left;
     svg {
-      margin-left: 3px;
+      margin-left: 2px;
       path {
         fill: $app-primary-color;
       }
@@ -123,6 +123,9 @@
         padding: 0 15px;
         display: flex;
         margin: 30px 0 15px 0;
+        .user-avatar {
+          margin: auto;
+        }
         .user-account {
           display: flex;
           flex-direction: column;

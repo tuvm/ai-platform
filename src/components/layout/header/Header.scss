@@ -19,6 +19,8 @@
         cursor: pointer;
         display: flex;
         flex-direction: column;
+        font-family: 'SFProDisplay';
+        letter-spacing: 0.08em;
       }
       .logo-text {
         font-style: normal;
@@ -27,7 +29,6 @@
         line-height: 26px;
         letter-spacing: 0.08em;
         color: $app-secondary-color;
-        font-family: 'SFProDisplay';
       }
       .logo-sub-text {
         color: #ffffff;
