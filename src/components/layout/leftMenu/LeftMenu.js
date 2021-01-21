@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Menu, Layout } from 'antd';
+import { Menu, Layout, Avatar } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
 import { FormattedMessage } from 'react-intl';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -7,7 +8,7 @@ import { routes, ROLES } from '../../../utils/constants/config';
 import {
   IconCollapse,
 } from '../../../assets';
-import { checkRole } from '../../../view/system/systemAction';
+// import { checkRole } from '../../../view/system/systemAction';
 import './LeftMenu.scss';
 import {
   HomeOutlined,
@@ -82,6 +83,15 @@ const LeftMenu = (props) => {
     >
       <div className="sider-container">
         <div className="left-menu-wrapper">
+          <div className="user-infor">
+            <div>
+              <Avatar size={40} icon={<UserOutlined />} />
+            </div>
+            <div className="user-account">
+              <span><strong>Mi Nguyen</strong></span>
+              <span>minnguyen@gmail.com</span>
+            </div>
+          </div>
           <Menu
             onClick={handleMenuClick}
             selectedKeys={[selectedKeys]}

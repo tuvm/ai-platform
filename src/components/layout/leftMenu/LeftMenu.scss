@@ -118,6 +118,17 @@
           border: none;
         }
       }
+
+      .user-infor {
+        padding: 0 15px;
+        display: flex;
+        margin: 30px 0 15px 0;
+        .user-account {
+          display: flex;
+          flex-direction: column;
+          padding-left: 10px;
+        }
+      }
     }
 
     &.ant-layout-sider-collapsed {
