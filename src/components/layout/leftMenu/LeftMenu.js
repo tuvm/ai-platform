@@ -85,7 +85,7 @@ const LeftMenu = (props) => {
       <div className="sider-container">
         <div className="left-menu-wrapper">
           <div className="user-infor">
-            <div className="user-avatar">
+            <div className="user-avatar" style={{ margin: collapsed ? 'auto' : ''}}>
               <Avatar size={40} icon={<UserOutlined />} />
             </div>
             {!collapsed && (
