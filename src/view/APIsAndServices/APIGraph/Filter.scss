@@ -1,0 +1,24 @@
+@import '../../../variables.scss';
+
+.graph-container {
+    .filter-bar {
+        display: flex;
+        .left-filter {
+            display: flex;
+            .filter-name {
+                font-size: 16px;
+                font-weight: bold;
+                color: $app-primary-color;
+            }
+            .ant-select {
+                margin-left: 15px;
+            }
+        }
+        .right-filter {
+
+        }
+    }
+    .graph-list {
+
+    }
+}

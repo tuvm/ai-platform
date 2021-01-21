@@ -43,8 +43,8 @@ module.exports = {
         lessLoaderOptions: {
           lessOptions: {
             modifyVars: {
-              '@primary-color': '#17B978',
-              '@text-selection-bg': '#1890ff',
+              '@primary-color': '#39C2D7',
+              '@text-selection-bg': '#39c2d71a',
             },
             javascriptEnabled: true,
           },

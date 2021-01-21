@@ -104,5 +104,12 @@
   "IDS_PLEASE_ENTER_NAME": "Please enter name",
   "IDS_NEW_LABEL": "New Label",
   "IDS_FINDING": "Finding",
-  "IDS_IMPRESSION": "Impression"
+  "IDS_IMPRESSION": "Impression",
+  "IDS_API_TABLE_NAME": "Name",
+  "IDS_API_TABLE_TYPE": "Type",
+  "IDS_API_TABLE_REQUEST": "Request",
+  "IDS_API_TABLE_SIZE": "Size",
+  "IDS_API_TABLE_TIME": "Time",
+  "IDS_API_SELECT_NAME": "Type of API",
+  "IDS_DAY": "Days"
 }

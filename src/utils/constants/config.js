@@ -212,3 +212,5 @@ export const USER_ROLES = {
   REVIEWER: 'REVIEWER',
   PROJECT_OWNER: 'PROJECT_OWNER',
 };
+
+export const FILTER_DAYS = [7, 14, 30];

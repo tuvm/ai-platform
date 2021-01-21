@@ -25,7 +25,7 @@ const App = (props) => {
 
           <Layout.Content className="content-container">
             <BreadCrumb />
-            <Routes />
+            <div className="content-inner"><Routes /></div>
           </Layout.Content>
         </Layout>
       </Layout>

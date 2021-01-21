@@ -1,9 +1,14 @@
 import React from 'react';
+import APITable from './APITable';
+import Devider from '../../components/devider';
+import APIGraph from './APIGraph';
 
 export default function APIsAndServices() {
     return (
-      <div>
-
-      </div>
+      <>
+        <APITable />
+        <Devider />
+        <APIGraph />
+      </>
     );
 }

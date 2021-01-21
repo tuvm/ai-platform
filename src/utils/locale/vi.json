@@ -104,5 +104,12 @@
   "IDS_PLEASE_ENTER_NAME": "Please enter name",
   "IDS_NEW_LABEL": "Nhãn mới",
   "IDS_FINDING": "Finding",
-  "IDS_IMPRESSION": "Impression"
+  "IDS_IMPRESSION": "Impression",
+  "IDS_API_TABLE_NAME": "Tên",
+  "IDS_API_TABLE_TYPE": "Loại",
+  "IDS_API_TABLE_REQUEST": "Yêu cầu",
+  "IDS_API_TABLE_SIZE": "Kích cỡ",
+  "IDS_API_TABLE_TIME": "Thời gian",
+  "IDS_API_SELECT_NAME": "Loại API",
+  "IDS_DAY": "Ngày"
 }

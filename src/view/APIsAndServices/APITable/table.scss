@@ -1,0 +1,19 @@
+@import '../../../variables.scss';
+
+.app-table {
+    width: 100%;
+    background: #fff;
+    thead {
+        background: $app-light-blue;
+        th {
+            color: $app-primary-color;
+            padding: 12px 24px;
+        }
+    }
+    tbody {
+        td {
+            color: $font-page-color;
+            padding: 19px 24px;
+        }
+    }
+}
