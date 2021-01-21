@@ -1,19 +1,17 @@
 @font-face {
-  font-family: 'SFProText';
+  font-family: SFProText;
   src: local('SFProText'), url('./assets/fonts/FontsFree-Net-SFProText-Regular.ttf') format('woff');
 }
 
 @font-face {
-  font-family: 'SFProDisplay';
+  font-family: SFProDisplay;
   src: local('SFProDisplay'), url('./assets/fonts/FontsFree-Net-SFProDisplay-Regular.ttf') format('woff');
 }
 
 
 body {
   margin: 0;
-  font-family: 'SFProText', 'Roboto', 'Segoe UI', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif !important;
+  font-family: SFProText !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
