@@ -3,6 +3,12 @@
   src: local('SFProText'), url('./assets/fonts/FontsFree-Net-SFProText-Regular.ttf') format('woff');
 }
 
+@font-face {
+  font-family: 'SFProDisplay';
+  src: local('SFProDisplay'), url('./assets/fonts/FontsFree-Net-SFProDisplay-Regular.ttf') format('woff');
+}
+
+
 body {
   margin: 0;
   font-family: 'SFProText', 'Roboto', 'Segoe UI', 'Oxygen',
