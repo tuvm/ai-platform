@@ -3,7 +3,6 @@
 .app-container {
   height: 100vh;
   .content-container {
-    height: calc(100vh - #{$header-height});
     overflow: auto;
     background: $app-bg-page-content;
     color: $defautl-font-color;
