@@ -2,7 +2,7 @@ import React from 'react';
 import { Menu, Dropdown, Layout, Modal, Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
+import { useTranslation } from "react-i18next";
 import cookie from 'js-cookie';
 import { withRouter } from 'react-router-dom';
 import { routes, TOKEN, REFRESH_TOKEN } from '../../../utils/constants/config';
@@ -11,6 +11,7 @@ import './Header.scss';
 
 const Header = (props) => {
   const { location = {}, account } = props;
+  const { t } = useTranslation();
   // const { pathname = '' } = location;
 
   const handleClickAvatar = async (item) => {
@@ -38,9 +39,7 @@ const Header = (props) => {
 
   const menu = (
     <Menu onClick={handleClickAvatar}>
-      <Menu.Item key={routes.LOGIN}>
-        <FormattedMessage id="IDS_COMMON_LOGOUT" />
-      </Menu.Item>
+      <Menu.Item key={routes.LOGIN}>{t('IDS_COMMON_LOGOUT')}</Menu.Item>
     </Menu>
   );
 

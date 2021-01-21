@@ -9,6 +9,8 @@ import {
   actionShowLoading,
   actionShowUploadModal,
 } from './view/system/systemAction';
+import BreadCrumb from './components/breadcrumb/BreadCrumb';
+
 import './App.scss';
 
 const App = (props) => {
@@ -19,7 +21,11 @@ const App = (props) => {
         <Header />
         <Layout>
           <LeftMenu />
+
           <Layout.Content className="content-container">
+            <div className="breadcrumb-content">
+              <BreadCrumb />
+            </div>
             <Routes />
           </Layout.Content>
         </Layout>

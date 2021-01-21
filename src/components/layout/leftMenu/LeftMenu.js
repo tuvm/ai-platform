@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Menu, Layout, Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
-import { FormattedMessage } from 'react-intl';
 import { withRouter } from 'react-router-dom';
+import { useTranslation } from "react-i18next";
 import { connect } from 'react-redux';
 import { routes, ROLES } from '../../../utils/constants/config';
 import {
@@ -18,9 +18,10 @@ import {
   SettingOutlined,
 } from '@ant-design/icons';
 const LeftMenu = (props) => {
-  const { location, userInfo } = props;
+  const { location } = props;
   const [collapsed, setCollapsed] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const { pathname } = location;
@@ -43,31 +44,31 @@ const LeftMenu = (props) => {
   const menuList = [
     {
       icon: <HomeOutlined />,
-      text: <FormattedMessage id="IDS_HOME" />,
+      text: t("IDS_HOME"),
       route: routes.HOME,
       isShow: true,
     },
     {
       icon: <ApiOutlined />,
-      text: <FormattedMessage id="IDS_API_AND_SERVICE" />,
+      text: t("IDS_API_AND_SERVICE"),
       route: routes.API_AND_SERVICES,
       isShow: true,
     },
     {
       icon: <KeyOutlined />,
-      text: <FormattedMessage id="IDS_TOKEN_GENERATOR" />,
+      text: t("IDS_TOKEN_GENERATOR"),
       route: routes.TOKEN_GENERATOR,
       isShow: true,
     },
     {
       icon: <FileTextOutlined />,
-      text: <FormattedMessage id="IDS_BILLING" />,
+      text: t("IDS_BILLING"),
       route: routes.BILLING,
       isShow: true,
     },
     {
       icon: <SettingOutlined />,
-      text: <FormattedMessage id="IDS_SETTING" />,
+      text: t("IDS_SETTING"),
       route: routes.SETTING,
       isShow: true,
     },

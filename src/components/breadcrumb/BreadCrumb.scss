@@ -1,12 +1,22 @@
 @import '../../variables.scss';
 
-.breadcrumb-list {
-  font-weight: 400;
-  font-size: 16px;
-  .ant-breadcrumb-separator {
-    color: $defautl-font-color;
+.breadcrumb-container {
+  background: #fff;
+  padding: 24px 15px;
+  color: $app-primary-color;
+  .breadcrumb-list {
+    font-weight: 400;
+    font-size: 16px;
+    .ant-breadcrumb-separator {
+      font-size: 14px;
+    }
+    .breadcrumb-item {
+      font-size: 14px;
+      color: $app-primary-color;
+    }
   }
-  .breadcrumb-item {
-    color: $defautl-font-color;
+  .page-name {
+    font-weight: 600;
+    font-size: 20px;
   }
 }

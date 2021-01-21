@@ -1,3 +1,11 @@
+import {
+  HomeOutlined,
+  ApiOutlined,
+  KeyOutlined,
+  FileTextOutlined,
+  SettingOutlined,
+} from '@ant-design/icons';
+
 // common
 export const TOKEN = 'token';
 export const REFRESH_TOKEN = 'refresh_token';
@@ -65,6 +73,40 @@ export const routes = {
   BILLING: '/billing',
   SETTING: '/setting',
 };
+
+
+export const APP_ROUTES = [
+  {
+    icon: <HomeOutlined />,
+    name: "IDS_HOME",
+    pathname: routes.HOME,
+    isShow: true,
+  },
+  {
+    icon: <ApiOutlined />,
+    name: "IDS_API_AND_SERVICE",
+    pathname: routes.API_AND_SERVICES,
+    isShow: true,
+  },
+  {
+    icon: <KeyOutlined />,
+    name: "IDS_TOKEN_GENERATOR",
+    pathname: routes.TOKEN_GENERATOR,
+    isShow: true,
+  },
+  {
+    icon: <FileTextOutlined />,
+    name: "IDS_BILLING",
+    pathname: routes.BILLING,
+    isShow: true,
+  },
+  {
+    icon: <SettingOutlined />,
+    name: "IDS_SETTING",
+    pathname: routes.SETTING,
+    isShow: true,
+  },
+];
 
 export const STUDY_STATUS = {
   ALL: 'count',
