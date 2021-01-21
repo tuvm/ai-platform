@@ -10,13 +10,14 @@ import {
   actionShowUploadModal,
 } from './view/system/systemAction';
 import BreadCrumb from './components/breadcrumb/BreadCrumb';
-
+import AppHelmet from './components/Helmet';
 import './App.scss';
 
 const App = (props) => {
   return (
     <div className="app-container">
       <Loading dark />
+      <AppHelmet />
       <Layout>
         <Header />
         <Layout>
