@@ -7,11 +7,14 @@ import {
 } from '@ant-design/icons';
 
 // common
-export const TOKEN = 'token';
 export const REFRESH_TOKEN = 'refresh_token';
 export const FIRST_REFRESH_TOKEN = 'first_refresh_token';
 export const EXPIRED_REFRESH_TOKEN = 60 * 60 * 1000;
 export const VINLAB_LOCALE = 'vinlab-locale';
+
+export const TOKEN = 'token';
+export const POLLING_TOKEN_TIMER = 4 * 60000;
+export const REALM_ID = 'realm_id';
 
 const {
   OIDC_ACCESS_TOKEN_URI,
@@ -25,6 +28,8 @@ const {
   SERVER_BASE_URL,
   MEDICAL_VIEWER_URL,
   OIDC_AUDIENCE,
+  REACT_APP_BACKEND_URL,
+  REACT_APP_AUTH_URL,
 } = process.env || {};
 // console.log('VANHT-Config.env', process.env);
 
@@ -38,11 +43,14 @@ export const URL_VIEWER =
 const REDIRECT_URI = OIDC_REDIRECT_URI || window.origin;
 const CLIENT_ID = OIDC_CLIENT_ID || 'vinlab-frontend';
 const BASE_URL = SERVER_BASE_URL || 'http://dev-67.vinlab.ai';
-const AUTH_URL = BASE_URL;
+
+
+console.log({ REACT_APP_BACKEND_URL, REACT_APP_AUTH_URL });
 
 export let CONFIG_SERVER = {
   BASE_URL: BASE_URL,
-  AUTH_URL: AUTH_URL,
+  REACT_APP_BACKEND_URL: REACT_APP_BACKEND_URL,
+  REACT_APP_AUTH_URL: REACT_APP_AUTH_URL,
   REDIRECT_URI: REDIRECT_URI,
   CLIENT_ID: CLIENT_ID,
   RESPONSE_TYPE: 'code',

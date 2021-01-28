@@ -1,126 +1,117 @@
 import axios from 'axios';
-import cookie from 'js-cookie';
 import Qs from 'qs';
-import { message } from 'antd';
-import { TOKEN, REFRESH_TOKEN, CONFIG_SERVER } from '../constants/config';
+import get from 'lodash/get';
 import {
+  CONFIG_SERVER,
+  TOKEN,
+  REFRESH_TOKEN,
+  REALM_ID,
+} from '../constants/config';
+import {
+  actionGetPermissionToken,
+  actionGetTenantSetting,
+  actionGetToken,
+  actionLogout,
   actionRefreshToken,
-  actionLogout
+  requestLogin,
 } from '../../view/system/systemAction';
+import cookie from 'js-cookie';
 
 const request = axios.create();
 
-let isAlreadyFetchingAccessToken = false;
-let subscribers = [];
-const tokenUrl = '/token';
-
-function onAccessTokenFetched(access_token) {
-  subscribers = subscribers.map((callback) => callback(access_token));
-  subscribers = [];
-}
-
-function addSubscriber(callback) {
-  subscribers.push(callback);
-}
-
-request.interceptors.request.use(
-  (config) => {
-    // if (config.url.indexOf(tokenUrl) !== -1) {
-    //   delete config.headers.Authorization;
-    // }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error.response || { data: {} });
+const getToken = async (code, sessionState) => {
+  try {
+    const res = await actionGetToken(code, sessionState);
+    if (res && res.data && res.data.access_token) {
+      actionGetPermissionToken(res.data.access_token);
+    }
+  } catch (error) {
+    console.log(error);
   }
-);
+};
 
-request.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error) => {
-    console.log('VANHT-debug-401', error);
-    const originalRequest = error.config;
-    if (
-      (error.response && error.response.status === 401) ||
-      !cookie.get(TOKEN)
-    ) {
-      const refreshToken = cookie.get(REFRESH_TOKEN);
-      if (
-        refreshToken &&
-        !originalRequest._retry &&
-        error.config.url.indexOf(tokenUrl) === -1
-      ) {
-        originalRequest._retry = true;
-        if (!isAlreadyFetchingAccessToken) {
-          isAlreadyFetchingAccessToken = true;
-          actionRefreshToken(refreshToken)
-            .then((res) => {
-              isAlreadyFetchingAccessToken = false;
-              cookie.set(TOKEN, res.data.access_token, {
-                expires: new Date(
-                  (res.data.expires_in || 1800) * 1000 + Date.now()
-                ),
-              });
-              cookie.set(REFRESH_TOKEN, res.data.refresh_token, {
-                expires: new Date(
-                  (res.data.refresh_expires_in || 1800) * 1000 + Date.now()
-                ),
-              });
-              onAccessTokenFetched(res.data.access_token);
-            })
-            .catch(() => {
-              subscribers = [];
-              cookie.remove(TOKEN);
-              cookie.remove(REFRESH_TOKEN);
-              actionLogout();
-            });
-        }
-        const retryOriginalRequest = new Promise((resolve) => {
-          addSubscriber((access_token) => {
-            originalRequest.headers.Authorization = 'Bearer ' + access_token;
-            resolve(axios(originalRequest));
-          });
-        });
-        return retryOriginalRequest;
-      } else {
-        if (error.config.url.indexOf(tokenUrl) !== -1) {
-          if (error.response.status === 403) {
-            message.error('Your account is not allowed to access the system!');
-            setTimeout(() => {
-              actionLogout();
-            }, 1000);
-          } else if (error.response.status === 400) {
-            message.error('Sysstem error!');
-          }
-        } else {
-          actionLogout();
-        }
-        subscribers = [];
-        cookie.remove(TOKEN);
-        cookie.remove(REFRESH_TOKEN);
-      }
-    } else {
-      return Promise.reject(error?.response || { data: {} });
+async function callRefreshToken(refreshToken) {
+  try {
+    const res = await actionRefreshToken(refreshToken);
+
+    if (res && res.data && res.data.access_token) {
+      const accessToken = res.data.access_token;
+      cookie.remove(TOKEN);
+      actionGetPermissionToken(accessToken);
+    }
+  } catch (error) {
+    actionLogout();
+  }
+}
+
+const checkAuthorizationFlow = async () => {
+  let reamId = localStorage.getItem(REALM_ID);
+
+  if (!reamId) {
+    const res = await actionGetTenantSetting();
+    if (res && res.data && res.data.realm_id) {
+      reamId = res.data.realm_id;
     }
   }
-);
 
-const api = (options) => {
+  if (reamId) {
+    authorization();
+  }
+};
+
+const authorization = () => {
+  const refreshToken = cookie.get(REFRESH_TOKEN);
+
+  // no refresh token
+  if (!refreshToken) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    const sessionState = urlParams.get('session_state');
+    if (code) {
+      getToken(code, sessionState);
+    } else {
+      requestLogin(true);
+    }
+  } else {
+    callRefreshToken(refreshToken);
+  }
+};
+
+const api = (options = {}, authAPI) => {
   let config = {
-    baseURL: CONFIG_SERVER.BASE_URL,
+    baseURL: authAPI ? CONFIG_SERVER.REACT_APP_AUTH_URL : CONFIG_SERVER.REACT_APP_BACKEND_URL,
     ...options,
-    paramsSerializer: (params) =>
-      Qs.stringify(params, { arrayFormat: 'repeat' }),
+    paramsSerializer: params => Qs.stringify(params, { arrayFormat: 'repeat' }),
     headers: {
+      Accept: '*/*',
       ...options.headers,
     },
   };
-  if (cookie.get(TOKEN)) {
+  if (cookie.get(TOKEN) && cookie.get(REFRESH_TOKEN)) {
     config.headers.Authorization = `Bearer ${cookie.get(TOKEN)}`;
   }
   return request(config);
 };
+
+request.interceptors.request.use(
+  config => {
+    return config;
+  },
+  error => Promise.reject(error)
+);
+
+request.interceptors.response.use(
+  response => {
+    return response;
+  },
+  error => {
+    const errorCode = get(error, 'response.status');
+    if (errorCode === 401 || errorCode === 403) {
+      checkAuthorizationFlow();
+    } else {
+      return Promise.reject(error);
+    }
+  }
+);
 
 export default api;

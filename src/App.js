@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from "react";
 import { Layout } from 'antd';
 import { connect } from 'react-redux';
 import Routes from './Routes';
@@ -7,13 +7,16 @@ import Loading from './components/loading/Loading';
 import {
   getAccountInfo,
   actionShowLoading,
-  actionShowUploadModal,
 } from './view/system/systemAction';
 import BreadCrumb from './components/breadcrumb/BreadCrumb';
 import AppHelmet from './components/Helmet';
 import './App.scss';
 
 const App = (props) => {
+  useEffect(() => {
+    getAccountInfo();
+  }, []);
+
   return (
     <div className="app-container">
       <Loading dark />
@@ -37,5 +40,5 @@ export default connect(
   (state) => ({
     uploadInfoModal: state.system.uploadInfoModal,
   }),
-  { getAccountInfo, actionShowLoading, actionShowUploadModal }
+  { getAccountInfo, actionShowLoading }
 )(App);
