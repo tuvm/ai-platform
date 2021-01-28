@@ -1,0 +1,14 @@
+@import '../../variables.scss';
+
+.home-page {
+    color: $app-primary-color;
+    .column {
+        padding: 24px;
+        background: #fff;
+        border-radius: 4px;
+        .title {
+            font-weight: 600;
+            font-size: 20px;
+        }
+    }
+}

@@ -111,5 +111,11 @@
   "IDS_API_TABLE_SIZE": "Kích cỡ",
   "IDS_API_TABLE_TIME": "Thời gian",
   "IDS_API_SELECT_NAME": "Loại API",
-  "IDS_DAY": "Ngày"
+  "IDS_DAY": "Ngày",
+  "IDS_API_TABLE_STATUS": "Trạng thái",
+  "IDS_RECENT_PAYMENT_TABLE_BILL": "Mã hóa đơn - Tháng",
+  "IDS_RECENT_PAYMENT_TABLE_AMOUNT": "Số tiền",
+  "IDS_RECENT_PAYMENT_TABLE_DATE": "Ngày thanh toán",
+  "IDS_TOP_API_TABLE_NAME": "Tên",
+  "IDS_TOP_API_TABLE_CALL": "Số lần gọi"
 }

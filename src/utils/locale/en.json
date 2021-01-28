@@ -111,5 +111,11 @@
   "IDS_API_TABLE_SIZE": "Size",
   "IDS_API_TABLE_TIME": "Time",
   "IDS_API_SELECT_NAME": "Type of API",
-  "IDS_DAY": "Days"
+  "IDS_DAY": "Days",
+  "IDS_API_TABLE_STATUS": "Status",
+  "IDS_RECENT_PAYMENT_TABLE_BILL": "Bill ID - Month",
+  "IDS_RECENT_PAYMENT_TABLE_AMOUNT": "Amount",
+  "IDS_RECENT_PAYMENT_TABLE_DATE": "Payment date",
+  "IDS_TOP_API_TABLE_NAME": "Name",
+  "IDS_TOP_API_TABLE_CALL": "Call"
 }
