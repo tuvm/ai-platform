@@ -7,14 +7,22 @@ import Loading from './components/loading/Loading';
 import {
   getAccountInfo,
   actionShowLoading,
+  actionGetTenantSetting,
 } from './view/system/systemAction';
 import BreadCrumb from './components/breadcrumb/BreadCrumb';
 import AppHelmet from './components/Helmet';
 import './App.scss';
 
+const initialRequest = async () => {
+  const res = await actionGetTenantSetting();
+  if (res && res.data) {
+    getAccountInfo(res.data.oidc_userinfo_endpoint);
+  }
+}
+
 const App = (props) => {
   useEffect(() => {
-    getAccountInfo();
+    initialRequest();
   }, []);
 
   return (
@@ -40,5 +48,5 @@ export default connect(
   (state) => ({
     uploadInfoModal: state.system.uploadInfoModal,
   }),
-  { getAccountInfo, actionShowLoading }
+  { actionShowLoading }
 )(App);

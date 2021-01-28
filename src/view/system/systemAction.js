@@ -9,6 +9,7 @@ import {
   REFRESH_TOKEN,
   REALM_ID,
   VINLAB_LOCALE,
+  // OIDC_SETTINGS,
 } from "../../utils/constants/config";
 import cookie from "js-cookie";
 
@@ -80,7 +81,7 @@ export const actionGetPermissionToken = async (token) => {
       "urn:ietf:params:oauth:grant-type:uma-ticket"
     );
     requestBody.append("audience", AUDIENCE);
-    requestBody.append("permission", "api#all");
+    requestBody.append("permission", ['api_key#all', 'usage#all']);
 
     const res = await api(
       {
@@ -135,23 +136,27 @@ export const actionGetToken = (code = "", sessionState = "") => {
 export const actionGetTenantSetting = async () => {
   const res = await axios({
     method: "GET",
-    url: REACT_APP_BACKEND_URL + "/backend/tenant/setting",
-    // headers: {
-    //   'X-TENANT-ID': 'local',
-    // },
+    url: REACT_APP_BACKEND_URL + "/settings",
   });
 
-  if (res && res.data && res.data.realm_id) {
-    localStorage.setItem(REALM_ID, res.data.realm_id);
-  }
+  // if (res && res.data && res.data.realm_id) {
+  //   localStorage.setItem(REALM_ID, res.data.realm_id);
+  // }
+  localStorage.setItem(REALM_ID, CONFIG_SERVER.REALM_ID);
+
   return res;
 };
 
 export const getAccountInfo = () => {
+  const realmId = localStorage.getItem(REALM_ID);
+  const url = REACT_APP_AUTH_URL +
+  `/auth/realms/${realmId}/protocol/openid-connect/userinfo`;
   return api({
-    url: "/workspace/userinfo/current",
+    url: url,
     method: "GET",
-  }).then((result) => {});
+  }).then((result) => {
+    console.log(result);
+  });
 };
 
 export const actionLogout = async () => {

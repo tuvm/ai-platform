@@ -25,7 +25,6 @@ const {
   OIDC_USERINFO_ENDPOINT,
   OIDC_SCOPE,
   DASHBOARD_URL_PREFIX,
-  SERVER_BASE_URL,
   MEDICAL_VIEWER_URL,
   OIDC_AUDIENCE,
   REACT_APP_BACKEND_URL,
@@ -41,29 +40,27 @@ export const URL_VIEWER =
   MEDICAL_VIEWER_URL || window.origin + '/medical-view/viewer';
 
 const REDIRECT_URI = OIDC_REDIRECT_URI || window.origin;
-const CLIENT_ID = OIDC_CLIENT_ID || 'vinlab-frontend';
-const BASE_URL = SERVER_BASE_URL || 'http://dev-67.vinlab.ai';
-
-
-console.log({ REACT_APP_BACKEND_URL, REACT_APP_AUTH_URL });
+const CLIENT_ID = OIDC_CLIENT_ID || 'console-ui';
 
 export let CONFIG_SERVER = {
-  BASE_URL: BASE_URL,
-  REACT_APP_BACKEND_URL: REACT_APP_BACKEND_URL,
-  REACT_APP_AUTH_URL: REACT_APP_AUTH_URL,
+  REACT_APP_BACKEND_URL: REACT_APP_BACKEND_URL || "https://platform.vindr.ai",
+  REACT_APP_AUTH_URL: REACT_APP_AUTH_URL || "https://auth.vindr.ai",
   REDIRECT_URI: REDIRECT_URI,
   CLIENT_ID: CLIENT_ID,
-  RESPONSE_TYPE: 'code',
-  AUDIENCE: OIDC_AUDIENCE || 'vinlab-backend',
-  SCOPE: OIDC_SCOPE || 'profile',
+  RESPONSE_TYPE: "code",
+  AUDIENCE: OIDC_AUDIENCE || "console-api",
+  SCOPE: OIDC_SCOPE || "",
+  REALM_ID: "ai-platform",
   STATE: Math.random().toString(36).substring(2),
   OIDC_ACCESS_TOKEN_URI,
   OIDC_AUTHORIZATION_URI,
   OIDC_LOGOUT_URI,
   OIDC_USERINFO_ENDPOINT,
-  TOKEN_PERMISSION: ['api#all']
+  TOKEN_PERMISSION: ["api#all"],
 };
 
+
+export const OIDC_SETTINGS = 'OIDC_SETTINGS';
 // routes
 export const routes = {
   HOME: '/',
