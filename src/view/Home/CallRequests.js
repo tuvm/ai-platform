@@ -47,7 +47,7 @@ const data = {
 
 export default function RequestGraph() {
   return (
-    <div style={{ height: 320 }}>
+    <div style={{ height: 270 }}>
       <Bar
         data={data}
         width={50}
