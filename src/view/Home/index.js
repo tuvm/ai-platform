@@ -10,7 +10,7 @@ import './Home.scss';
 export default function Home() {
   return (
     <div className="home-page">
-      <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+      <Row gutter={{ xs: 8, sm: 16, md: 24 }}>
         <Col className="gutter-row" md={{ span: 24 }} lg={{ span: 10 }}>
           <div className="column">
             <h3 className="title">Call Requests</h3>
@@ -27,7 +27,7 @@ export default function Home() {
 
       <div style={{ margin: "24px" }}></div>
 
-      <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+      <Row gutter={{ xs: 8, sm: 16, md: 24 }}>
         <Col className="gutter-row" md={{ span: 24 }} lg={{ span: 10 }}>
           <div className="column">
             <h3 className="title">Top API</h3> 
