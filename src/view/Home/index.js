@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Divider  } from "antd";
+import { Row, Col } from "antd";
 import RecentRequests from './RecentRequests';
 import RecentPayment from './RecentPayment';
 import TopAPI from './TopAPI';
