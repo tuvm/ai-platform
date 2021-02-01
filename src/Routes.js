@@ -4,6 +4,7 @@ import { routes } from './utils/constants/config';
 import APIsAndServices from './view/APIsAndServices';
 import Home from './view/Home';
 import TokenGenerator from './view/TokenGenerator';
+import Billing from './view/Billing';
 
 const Routes = (props) => {
   return (
@@ -11,7 +12,7 @@ const Routes = (props) => {
       <Route exact from="/" component={Home} />
       <Route exact path={routes.API_AND_SERVICES} component={APIsAndServices} />
       <Route exact path={routes.TOKEN_GENERATOR} component={TokenGenerator} />
-      <Route exact path={routes.BILLING} component={Home} />
+      <Route exact path={routes.BILLING} component={Billing} />
       <Route exact path={routes.SETTING} component={Home} />
     </Switch>
   );
