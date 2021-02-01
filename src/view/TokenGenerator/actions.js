@@ -1,4 +1,6 @@
+import get from 'lodash/get';
 import api from '../../utils/service/api';
+import * as actions from '../../utils/constants/actions';
 
 export const actionGenerateToken = ({ params, payload }) => {
     const url = '/api-key/generate';
@@ -13,14 +15,19 @@ export const actionGenerateToken = ({ params, payload }) => {
     }
 }
 
-export const actionGetTokenList = async () => {
+export const actionGetAPIKeys = async () => {
     const url = '/api-key/list';
     try {
-        return api({
+        const { data } = await api({
             url,
             method: 'GET',
         });
 
+        console.log({ data })
+
+        const payload = get(data, 'data') || [];
+        window.store.dispatch({ type: actions.FETCH_API_KEY_LIST, payload });
+        return data;
     } catch (error) {
         console.log(error);
     }

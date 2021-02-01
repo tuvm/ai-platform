@@ -8,6 +8,7 @@ const initialState = {
   profile: {},
   users: {},
   isFetchingUser: false,
+  apikeys: [],
 };
 
 const system = (state = initialState, action) => {
@@ -24,6 +25,8 @@ const system = (state = initialState, action) => {
       return { ...state, users: action.payload, isFetchingUser: false };
     case actions.FETCHING_USERS:
       return { ...state, isFetchingUser: action.payload };
+    case actions.FETCH_API_KEY_LIST:
+      return { ...state, apikeys: action.payload };
     default:
       return state;
   }

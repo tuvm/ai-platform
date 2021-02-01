@@ -6,7 +6,7 @@ import { CopyOutlined, PlusOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import get from 'lodash/get';
 import { SCOPES } from '../../utils/constants/config';
-import { actionGenerateToken } from './actions';
+import { actionGenerateToken, actionGetAPIKeys } from './actions';
 
 import "./GenerateToken.scss";
 
@@ -42,6 +42,7 @@ export default function GenerateToken() {
         description:
         t('IDS_API_KEY_CREATE_SUCCESS'),
       });
+      actionGetAPIKeys()
     } else {
       setLoading(false);
       notification.error({ description: t('IDS_ERROR_MESSAGE') });
