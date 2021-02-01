@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "antd";
 import { Row, Col } from "antd";
-import { Table, Space, Modal } from 'antd';
+import { Table, Space, Modal, notification } from 'antd';
 import get from 'lodash/get';
 import moment from 'moment';
-import { actionGetTokenList } from './actions';
+import { actionGetTokenList, actionRevokeAPIKey } from './actions';
+import { actionShowLoading, actionHideLoading } from '../system/systemAction';
 import { KEY_LIST } from '../../utils/constants/config';
 import "./GenerateToken.scss";
 
@@ -30,7 +31,20 @@ export default function GenerateToken() {
   }
 
   const handleOk = () => {
-    console.log(itemRevoked)
+    const params = { api_key: itemRevoked.key_id }
+    actionShowLoading();
+
+    actionRevokeAPIKey({ params }).then(res => {
+      actionHideLoading();
+      setShowConfirm(false);
+      notification.success({
+        description: t('IDS_API_KEY_REVOKE_SUCCESS')
+      });
+    }).catch(error => {
+      actionHideLoading();
+      setShowConfirm(false);
+      notification.error({ description: t('IDS_ERROR_MESSAGE') });
+    });
   }
 
   const handleCancel = () => {
@@ -58,7 +72,7 @@ export default function GenerateToken() {
           <Table dataSource={APIKeyList}>
             <Column title="Name" dataIndex="name" key="name" />
             <Column title="Created" dataIndex="creation_time" key="creation_time" render={text => moment(text).format('YYYY-MM-DD')} />
-            <Column title="Scopes" dataIndex="scope" key="scope"  render={array => renderKeyList(array).join(', ')} />
+            <Column title="Scopes" dataIndex="scope" key="scope" render={array => renderKeyList(array).join(', ')} />
             <Column
               title="Action"
               dataIndex="action"

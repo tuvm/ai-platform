@@ -25,3 +25,17 @@ export const actionGetTokenList = async () => {
         console.log(error);
     }
 }
+
+export const actionRevokeAPIKey = async ({ params }) => {
+    const url = '/api-key/revoke';
+    try {
+        return api({
+            url,
+            method: 'GET',
+            params
+        });
+
+    } catch (error) {
+        console.log(error);
+    }
+}

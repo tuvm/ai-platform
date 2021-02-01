@@ -123,5 +123,6 @@
   "IDS_MAMMO_SCOPE_DESCRIPTION": "Grants complete read/write access to the API, including all projects, the container registry, and the package registry",
   "IDS_CHEST_SCOPE_DESCRIPTION": "Grants complete read/write access to the API, including all projects, the container registry, and the package registry",
   "IDS_LIVER_SCOPE_DESCRIPTION": "Grants complete read/write access to the API, including all projects, the container registry, and the package registry",
-  "IDS_API_KEY_CREATE_SUCCESS": "Tạo mới API key thành công"
+  "IDS_API_KEY_CREATE_SUCCESS": "Tạo mới API key thành công",
+  "IDS_API_KEY_REVOKE_SUCCESS": "Thu hồi API thành công"
 }

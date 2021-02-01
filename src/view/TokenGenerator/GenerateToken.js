@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Form, Input, Button } from "antd";
 import { Checkbox, message } from 'antd';
-import { Row, Col } from "antd";
+import { Row, Col, notification } from "antd";
 import { CopyOutlined, PlusOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import get from 'lodash/get';
@@ -17,7 +17,6 @@ export default function GenerateToken() {
   const { t } = useTranslation();
 
   const onFinish = async () => {
-    console.log(form.getFieldsValue());
     const name = form.getFieldValue('key_name');
     const scopes = []
     SCOPES.forEach(item => {
@@ -40,10 +39,13 @@ export default function GenerateToken() {
       const apiKey = get(res, 'data.data.api_key');
       setToken(apiKey);
       actionHideLoading();
-      message.success(t('IDS_API_KEY_CREATE_SUCCESS'))
+      notification.success({
+        description:
+        t('IDS_API_KEY_CREATE_SUCCESS'),
+      });
     } else {
       actionHideLoading()
-      message.error(t('IDS_ERROR_MESSAGE'))
+      notification.error({ description: t('IDS_ERROR_MESSAGE') });
     }
   }
 
