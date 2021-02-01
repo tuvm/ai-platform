@@ -4,6 +4,7 @@ import { Row, Col } from "antd";
 import { Table, Space, Modal, notification } from 'antd';
 import get from 'lodash/get';
 import moment from 'moment';
+import { useTranslation } from 'react-i18next';
 import { actionGetTokenList, actionRevokeAPIKey } from './actions';
 import { actionShowLoading, actionHideLoading } from '../system/systemAction';
 import { KEY_LIST } from '../../utils/constants/config';
@@ -16,6 +17,7 @@ export default function GenerateToken() {
   const [APIKeyList, setAPIKeyList] = useState([]);
   const [itemRevoked, setItemRevoked] = useState();
   const [showConfirm, setShowConfirm] = useState(false);
+  const { t } = useTranslation();
 
   const callGetTokenList = async () => {
     const res = await actionGetTokenList();
@@ -31,7 +33,7 @@ export default function GenerateToken() {
   }
 
   const handleOk = () => {
-    const params = { api_key: itemRevoked.key_id }
+    const params = { key_id: itemRevoked.key_id }
     actionShowLoading();
 
     actionRevokeAPIKey({ params }).then(res => {
