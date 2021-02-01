@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import { routes } from './utils/constants/config';
 import APIsAndServices from './view/APIsAndServices';
 import Home from './view/Home';
-import TokenGenerator from './view/TokenGenerator';
+import APIKeys from './view/APIKeys';
 import Billing from './view/Billing';
 
 const Routes = (props) => {
@@ -11,7 +11,7 @@ const Routes = (props) => {
     <Switch>
       <Route exact from="/" component={Home} />
       <Route exact path={routes.API_AND_SERVICES} component={APIsAndServices} />
-      <Route exact path={routes.TOKEN_GENERATOR} component={TokenGenerator} />
+      <Route exact path={routes.API_KEYS} component={APIKeys} />
       <Route exact path={routes.BILLING} component={Billing} />
       <Route exact path={routes.SETTING} component={Home} />
     </Switch>

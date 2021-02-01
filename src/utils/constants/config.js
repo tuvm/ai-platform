@@ -74,7 +74,7 @@ export const routes = {
   LABEL_MANAGEMENT: '/label-management',
   SEARCH: '/search',
   API_AND_SERVICES: '/api-and-services',
-  TOKEN_GENERATOR: '/token-generator',
+  API_KEYS: '/api-keys',
   BILLING: '/billing',
   SETTING: '/setting',
 };
@@ -96,7 +96,7 @@ export const APP_ROUTES = [
   {
     icon: <KeyOutlined />,
     name: "IDS_API_KEY",
-    pathname: routes.TOKEN_GENERATOR,
+    pathname: routes.API_KEYS,
     isShow: true,
   },
   {
