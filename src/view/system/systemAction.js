@@ -1,5 +1,5 @@
 import api from "../../utils/service/api";
-// import get from "lodash/get";
+import get from "lodash/get";
 import axios from "axios";
 import * as actionType from "../../utils/constants/actions";
 
@@ -148,11 +148,16 @@ export const actionGetTenantSetting = async () => {
 };
 
 export const getAccountInfo = () => {
+  window.store.dispatch(actionShowLoading());
+
   const url = REACT_APP_BACKEND_URL + '/user/userinfo'
   return api({
     url: url,
     method: "GET",
   }).then((result) => {
+    window.store.dispatch(actionHideLoading());
+    const data = get(result, 'data.data');
+    window.store.dispatch({ type: actionType.FETCHING_PROFILE, payload: data });
   });
 };
 

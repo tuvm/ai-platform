@@ -7,13 +7,13 @@ import { useTranslation } from 'react-i18next';
 import get from 'lodash/get';
 import { SCOPES } from '../../utils/constants/config';
 import { actionGenerateToken } from './actions';
-import { actionShowLoading, actionHideLoading } from '../system/systemAction';
 
 import "./GenerateToken.scss";
 
 export default function GenerateToken() {
   const [form] = Form.useForm();
   const [token, setToken] = useState('');
+  const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
 
   const onFinish = async () => {
@@ -31,20 +31,19 @@ export default function GenerateToken() {
       name
     }
 
-    actionShowLoading();
+    setLoading(true);
 
     const res = await actionGenerateToken({ payload });
-    console.log(res)
     if (res && res.data) {
       const apiKey = get(res, 'data.data.api_key');
       setToken(apiKey);
-      actionHideLoading();
+      setLoading(false);
       notification.success({
         description:
         t('IDS_API_KEY_CREATE_SUCCESS'),
       });
     } else {
-      actionHideLoading()
+      setLoading(false);
       notification.error({ description: t('IDS_ERROR_MESSAGE') });
     }
   }
@@ -100,8 +99,8 @@ export default function GenerateToken() {
             ))}
 
             <div className="generate-form">
-              <Button type="primary" htmlType="submit">
-                <PlusOutlined /> Create access token
+              <Button type="primary" htmlType="submit" icon={ <PlusOutlined />} loading={loading}>
+                Create access token
             </Button>
               <div className="generate-input">
                 <Input value={token} />

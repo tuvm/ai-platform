@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import { Layout } from 'antd';
 import { connect } from 'react-redux';
+import isEmpty from 'lodash/isEmpty';
 import Routes from './Routes';
 import { LeftMenu, Header } from './components/layout';
 import Loading from './components/loading/Loading';
 import {
   getAccountInfo,
-  actionShowLoading,
   actionGetTenantSetting,
 } from './view/system/systemAction';
 import BreadCrumb from './components/breadcrumb/BreadCrumb';
@@ -16,7 +16,7 @@ import './App.scss';
 const initialRequest = async () => {
   const res = await actionGetTenantSetting();
   if (res && res.data) {
-    getAccountInfo(res.data.oidc_userinfo_endpoint);
+   getAccountInfo();
   }
 }
 
@@ -25,9 +25,13 @@ const App = (props) => {
     initialRequest();
   }, []);
 
+  if (isEmpty(props.profile)) {
+    return <Loading />;
+  }
+
   return (
     <div className="app-container">
-      <Loading dark />
+      <Loading />
       <AppHelmet />
       <Layout>
         <Header />
@@ -46,7 +50,7 @@ const App = (props) => {
 
 export default connect(
   (state) => ({
-    uploadInfoModal: state.system.uploadInfoModal,
+    profile: state.system.profile,
   }),
-  { actionShowLoading }
+  {}
 )(App);
