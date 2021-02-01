@@ -56,7 +56,7 @@ const LeftMenu = (props) => {
     },
     {
       icon: <KeyOutlined />,
-      text: t("IDS_TOKEN_GENERATOR"),
+      text: t("IDS_API_KEY"),
       route: routes.TOKEN_GENERATOR,
       isShow: true,
     },

@@ -148,14 +148,11 @@ export const actionGetTenantSetting = async () => {
 };
 
 export const getAccountInfo = () => {
-  const realmId = localStorage.getItem(REALM_ID);
-  const url = REACT_APP_AUTH_URL +
-  `/auth/realms/${realmId}/protocol/openid-connect/userinfo`;
+  const url = REACT_APP_BACKEND_URL + '/user/userinfo'
   return api({
     url: url,
     method: "GET",
   }).then((result) => {
-    console.log(result);
   });
 };
 

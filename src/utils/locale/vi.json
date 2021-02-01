@@ -6,7 +6,7 @@
   "IDS_MY_PROJECTS": "Dự án",
   "IDS_APP_NAME": "Vindr AI Platform",
   "IDS_API_AND_SERVICE": "APIs & Services",
-  "IDS_TOKEN_GENERATOR": "Tạo mã",
+  "IDS_API_KEY": "Tạo mã",
   "IDS_BILLING": "Thanh toán",
   "IDS_SETTING": "Cài đặt",
   "IDS_HOME": "Trang chủ",
@@ -112,10 +112,16 @@
   "IDS_API_TABLE_TIME": "Thời gian",
   "IDS_API_SELECT_NAME": "Loại API",
   "IDS_DAY": "Ngày",
+  "IDS_ERROR_MESSAGE": "Đã xảy ra lỗi, vui lòng thử lại sau",
   "IDS_API_TABLE_STATUS": "Trạng thái",
   "IDS_RECENT_PAYMENT_TABLE_BILL": "Mã hóa đơn - Tháng",
   "IDS_RECENT_PAYMENT_TABLE_AMOUNT": "Số tiền",
   "IDS_RECENT_PAYMENT_TABLE_DATE": "Ngày thanh toán",
   "IDS_TOP_API_TABLE_NAME": "Tên",
-  "IDS_TOP_API_TABLE_CALL": "Số lần gọi"
+  "IDS_TOP_API_TABLE_CALL": "Số lần gọi",
+  "IDS_LUNGCT_SCOPE_DESCRIPTION": "Grants complete read/write access to the API, including all projects, the container registry, and the package registry",
+  "IDS_MAMMO_SCOPE_DESCRIPTION": "Grants complete read/write access to the API, including all projects, the container registry, and the package registry",
+  "IDS_CHEST_SCOPE_DESCRIPTION": "Grants complete read/write access to the API, including all projects, the container registry, and the package registry",
+  "IDS_LIVER_SCOPE_DESCRIPTION": "Grants complete read/write access to the API, including all projects, the container registry, and the package registry",
+  "IDS_API_KEY_CREATE_SUCCESS": "Tạo mới API key thành công"
 }

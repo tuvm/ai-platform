@@ -6,7 +6,7 @@
   "IDS_MY_PROJECTS": "My Projects",
   "IDS_APP_NAME": "Vindr AI Platform",
   "IDS_API_AND_SERVICE": "APIs & Services",
-  "IDS_TOKEN_GENERATOR": "Token Generator",
+  "IDS_API_KEY": "API Key",
   "IDS_BILLING": "Billing",
   "IDS_SETTING": "Setting",
   "IDS_HOME": "Home",
@@ -112,10 +112,16 @@
   "IDS_API_TABLE_TIME": "Time",
   "IDS_API_SELECT_NAME": "Type of API",
   "IDS_DAY": "Days",
+  "IDS_ERROR_MESSAGE": "Something went wrong, please try again later",
   "IDS_API_TABLE_STATUS": "Status",
   "IDS_RECENT_PAYMENT_TABLE_BILL": "Bill ID - Month",
   "IDS_RECENT_PAYMENT_TABLE_AMOUNT": "Amount",
   "IDS_RECENT_PAYMENT_TABLE_DATE": "Payment date",
   "IDS_TOP_API_TABLE_NAME": "Name",
-  "IDS_TOP_API_TABLE_CALL": "Call"
+  "IDS_TOP_API_TABLE_CALL": "Call",
+  "IDS_LUNGCT_SCOPE_DESCRIPTION": "Grants complete read/write access to the API, including all projects, the container registry, and the package registry",
+  "IDS_MAMMO_SCOPE_DESCRIPTION": "Grants complete read/write access to the API, including all projects, the container registry, and the package registry",
+  "IDS_CHEST_SCOPE_DESCRIPTION": "Grants complete read/write access to the API, including all projects, the container registry, and the package registry",
+  "IDS_LIVER_SCOPE_DESCRIPTION": "Grants complete read/write access to the API, including all projects, the container registry, and the package registry",
+  "IDS_API_KEY_CREATE_SUCCESS": "Create API key successfully"
 }

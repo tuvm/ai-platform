@@ -4,26 +4,24 @@ export const actionGenerateToken = ({ params, payload }) => {
     const url = '/api-key/generate';
     try {
         return api({
-          url,
-          data: payload,
-          method: "POST",
+            url,
+            data: payload,
+            method: "POST",
         });
-    } catch(error) {
+    } catch (error) {
         console.log(error);
     }
 }
 
-export const actionGetToken = async () => {
-    const url = '/api-key/generate';
+export const actionGetTokenList = async () => {
+    const url = '/api-key/list';
     try {
-        const { data } = await api({
+        return api({
             url,
             method: 'GET',
-          });
-      
-          return data;
-    } catch(error) {
+        });
+
+    } catch (error) {
         console.log(error);
     }
-
 }

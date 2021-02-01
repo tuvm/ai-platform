@@ -95,7 +95,7 @@ export const APP_ROUTES = [
   },
   {
     icon: <KeyOutlined />,
-    name: "IDS_TOKEN_GENERATOR",
+    name: "IDS_API_KEY",
     pathname: routes.TOKEN_GENERATOR,
     isShow: true,
   },
@@ -219,3 +219,33 @@ export const USER_ROLES = {
 };
 
 export const FILTER_DAYS = [7, 14, 30];
+
+export const KEY_LIST = {
+  lungct: "Lung CT",
+  mammogram: "Mammography",
+  chestxray: "Chest Xray",
+  liverct: "Liver CT"
+}
+
+export const SCOPES = [
+  {
+    key: 'lungct',
+    name: KEY_LIST.lungct,
+    description: 'IDS_LUNGCT_SCOPE_DESCRIPTION',
+  },
+  {
+    key: 'mammogram',
+    name: KEY_LIST.mammogram,
+    description: 'IDS_MAMMO_SCOPE_DESCRIPTION',
+  },
+  {
+    key: 'chestxray',
+    name: KEY_LIST.chestxray,
+    description: 'IDS_CHEST_SCOPE_DESCRIPTION',
+  },
+  {
+    key: 'liverct',
+    name: KEY_LIST.liverct,
+    description: 'IDS_LIVER_SCOPE_DESCRIPTION',
+  },
+]

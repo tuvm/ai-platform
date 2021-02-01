@@ -20,13 +20,7 @@ const Header = (props) => {
         title: 'Are you sure?',
         content: null,
         onOk: () => {
-          if (cookie.get(REFRESH_TOKEN)) {
-            actionLogout();
-          } else {
-            cookie.remove(TOKEN);
-            cookie.remove(REFRESH_TOKEN);
-            requestLogin();
-          }
+          actionLogout();
         },
         onCancel: () => {},
       });

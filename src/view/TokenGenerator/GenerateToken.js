@@ -1,21 +1,58 @@
 import React, { useState } from "react";
 import { Form, Input, Button } from "antd";
-import { Checkbox } from 'antd';
+import { Checkbox, message } from 'antd';
 import { Row, Col } from "antd";
 import { CopyOutlined, PlusOutlined } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
+import get from 'lodash/get';
+import { SCOPES } from '../../utils/constants/config';
+import { actionGenerateToken } from './actions';
+import { actionShowLoading, actionHideLoading } from '../system/systemAction';
 
 import "./GenerateToken.scss";
 
 export default function GenerateToken() {
   const [form] = Form.useForm();
-  const [requiredMark, setRequiredMarkType] = useState("optional");
+  const [token, setToken] = useState('');
+  const { t } = useTranslation();
 
-  const onRequiredTypeChange = ({ requiredMark }) => {
-    setRequiredMarkType(requiredMark);
-  };
+  const onFinish = async () => {
+    console.log(form.getFieldsValue());
+    const name = form.getFieldValue('key_name');
+    const scopes = []
+    SCOPES.forEach(item => {
+      if (form.getFieldValue(item.key)) {
+        scopes.push(item.key)
+      }
+    })
+    const payload = {
+      scope: scopes,
+      expiry_time: 0,
+      description: "",
+      name
+    }
 
-  function onChange(e) {
-    console.log(`checked = ${e.target.checked}`);
+    actionShowLoading();
+
+    const res = await actionGenerateToken({ payload });
+    console.log(res)
+    if (res && res.data) {
+      const apiKey = get(res, 'data.data.api_key');
+      setToken(apiKey);
+      actionHideLoading();
+      message.success(t('IDS_API_KEY_CREATE_SUCCESS'))
+    } else {
+      actionHideLoading()
+      message.error(t('IDS_ERROR_MESSAGE'))
+    }
+  }
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(token).then(function() {
+      message.success('Copied API key');
+    }, function(err) {
+      message.error('Could not copy API Key: ');
+    });
   }
 
   return (
@@ -34,51 +71,42 @@ export default function GenerateToken() {
           <Form
             form={form}
             layout="vertical"
-            initialValues={{ requiredMark }}
-            onValuesChange={onRequiredTypeChange}
-            requiredMark={requiredMark}
+            onFinish={onFinish}
           >
             <Form.Item
-              label="Name of your application"
+              label="Name of API key"
               required
               tooltip="This is a required field"
               className="title"
+              name="key_name"
             >
               <Input />
             </Form.Item>
-          </Form>
 
-          <div>
             <div className="title">Scopes</div>
-            <div>
-              <Checkbox onChange={onChange}>
-                <span>Lung CT</span>
 
-                <p className="sub-checkbox">
-                  Grants complete read/write access to the API, including all
-                  projects, the container registry, and the package registry.
-                </p>
-              </Checkbox>
-            </div>
-            <div>
-              <Checkbox onChange={onChange}>
-                <span>Mammography</span>
+            {SCOPES && SCOPES.map(item => (
+              <Form.Item name={item.key} key={item.key} valuePropName="checked">
+                <Checkbox>
+                  <span>{item.name}</span>
 
-                <p className="sub-checkbox">
-                  Grants complete read/write access to the API, including all
-                  projects, the container registry, and the package registry.
-                </p>
-              </Checkbox>
-            </div>
-          </div>
+                  <p className="sub-checkbox">
+                    {t(item.description)}
+                  </p>
+                </Checkbox>
+              </Form.Item>
+            ))}
 
-          <div className="generate-form">
-            <Button type="primary"><PlusOutlined /> Create access token</Button>
-            <div className="generate-input">
-              <Input value="y4c8ZnT8_wo-f2qxUWZj" />
-              <Button><CopyOutlined /></Button>
+            <div className="generate-form">
+              <Button type="primary" htmlType="submit">
+                <PlusOutlined /> Create access token
+            </Button>
+              <div className="generate-input">
+                <Input value={token} />
+                <Button onClick={handleCopy}><CopyOutlined /></Button>
+              </div>
             </div>
-          </div>
+          </Form>
         </div>
       </Col>
     </Row>

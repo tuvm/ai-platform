@@ -33,6 +33,9 @@ $text-color: #8C8C8C;
             width: 60%;
         }
     }
+    .ant-form-item {
+        margin-bottom: 0;
+    }
 }
 
 @media all and (max-width: 768px) {

@@ -8,11 +8,6 @@ const initialState = {
   profile: {},
   users: {},
   isFetchingUser: false,
-  uploadInfoModal: {
-    isShow: false,
-    projectId: '',
-    studyParams: {},
-  },
 };
 
 const system = (state = initialState, action) => {
@@ -29,11 +24,6 @@ const system = (state = initialState, action) => {
       return { ...state, users: action.payload, isFetchingUser: false };
     case actions.FETCHING_USERS:
       return { ...state, isFetchingUser: action.payload };
-    case actions.SHOW_UPLOAD_MODAL:
-      return {
-        ...state,
-        uploadInfoModal: { ...state.uploadInfoModal, ...action.payload },
-      };
     default:
       return state;
   }
