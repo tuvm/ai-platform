@@ -227,11 +227,11 @@ export const KEY_LIST = {
   liverct: "Liver CT"
 }
 
-export const SCOPES = [
+export const API_SCOPES = [
   {
-    key: 'lungct',
-    name: KEY_LIST.lungct,
-    description: 'IDS_LUNGCT_SCOPE_DESCRIPTION',
+    key: 'chestxray',
+    name: KEY_LIST.chestxray,
+    description: 'IDS_CHEST_SCOPE_DESCRIPTION',
   },
   {
     key: 'mammogram',
@@ -239,9 +239,9 @@ export const SCOPES = [
     description: 'IDS_MAMMO_SCOPE_DESCRIPTION',
   },
   {
-    key: 'chestxray',
-    name: KEY_LIST.chestxray,
-    description: 'IDS_CHEST_SCOPE_DESCRIPTION',
+    key: 'lungct',
+    name: KEY_LIST.lungct,
+    description: 'IDS_LUNGCT_SCOPE_DESCRIPTION',
   },
   {
     key: 'liverct',

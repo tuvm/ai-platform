@@ -5,7 +5,7 @@ import { Row, Col, notification } from "antd";
 import { CopyOutlined, PlusOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import get from 'lodash/get';
-import { SCOPES } from '../../utils/constants/config';
+import { API_SCOPES } from '../../utils/constants/config';
 import { actionGenerateToken, actionGetAPIKeys } from './actions';
 
 import "./GenerateToken.scss";
@@ -19,7 +19,7 @@ export default function GenerateToken() {
   const onFinish = async () => {
     const name = form.getFieldValue('key_name');
     const scopes = []
-    SCOPES.forEach(item => {
+    API_SCOPES.forEach(item => {
       if (form.getFieldValue(item.key)) {
         scopes.push(item.key)
       }
@@ -89,7 +89,7 @@ export default function GenerateToken() {
             <div className="checkbox-list">
               <div className="title">Scopes</div>
 
-              {SCOPES && SCOPES.map(item => (
+              {API_SCOPES && API_SCOPES.map(item => (
                 <Form.Item name={item.key} key={item.key} valuePropName="checked">
                   <Checkbox>
                     <span>{item.name}</span>
