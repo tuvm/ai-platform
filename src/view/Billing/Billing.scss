@@ -1,0 +1,95 @@
+@import '../../variables.scss';
+
+.billing-page {
+  color: $app-primary-color;
+
+  .bill-info-box {
+    background: #fff;
+    padding: 16px;
+    height: 100%;
+
+    .header-box {
+      margin-bottom: 16px;
+      .box-title {
+        font-size: 16px;
+        font-weight: bold;
+        margin-right: auto;
+        line-height: 32px;
+      }
+      .box-description {
+        color: $app-primary-color;
+        margin-top: 8px;
+      }
+      &.summary-cost {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+
+    .box-content {
+      .lb-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: $app-primary-color;
+        margin-bottom: 6px;
+      }
+      .lb-value {
+        color: $font-page-color;
+        margin-bottom: 16px;
+      }
+    }
+  }
+}
+
+.billing-summary {
+  color: $app-primary-color;
+  .filter-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+    .filter-name {
+      margin-right: 16px;
+      font-weight: 600;
+    }
+    .select-month {
+      min-width: 270px;
+    }
+  }
+  .summary-header {
+    background: #fff;
+    padding: 0 16px;
+    height: 60px;
+    display: flex;
+    background: rgba(57, 194, 215, 0.1);
+    align-items: center;
+    justify-content: space-between;
+
+    font-weight: 600;
+    font-size: 16px;
+    border-bottom: 1px solid $app-bg-page-content;
+  }
+  .billing-summary-table {
+    background: #fff;
+    .ant-table-thead {
+      th {
+        background: rgba(57, 194, 215, 0.05);
+        border: none;
+      }
+    }
+    .ant-table-tbody {
+      td {
+        border: none;
+        color: $font-page-color;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .col-item {
+    margin-bottom: 24px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
