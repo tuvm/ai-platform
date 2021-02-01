@@ -80,32 +80,37 @@ export default function GenerateToken() {
               tooltip="This is a required field"
               className="title"
               name="key_name"
+              rules={[{ required: true, message: 'Please input your API Key name' }]}
             >
               <Input />
             </Form.Item>
 
-            <div className="title">Scopes</div>
+            <div className="checkbox-list">
+              <div className="title">Scopes</div>
 
-            {SCOPES && SCOPES.map(item => (
-              <Form.Item name={item.key} key={item.key} valuePropName="checked">
-                <Checkbox>
-                  <span>{item.name}</span>
+              {SCOPES && SCOPES.map(item => (
+                <Form.Item name={item.key} key={item.key} valuePropName="checked">
+                  <Checkbox>
+                    <span>{item.name}</span>
 
-                  <p className="sub-checkbox">
-                    {t(item.description)}
-                  </p>
-                </Checkbox>
-              </Form.Item>
-            ))}
+                    <p className="sub-checkbox">
+                      {t(item.description)}
+                    </p>
+                  </Checkbox>
+                </Form.Item>
+              ))}
+            </div>
 
             <div className="generate-form">
-              <Button type="primary" htmlType="submit" icon={ <PlusOutlined />} loading={loading}>
-                Create access token
-            </Button>
-              <div className="generate-input">
-                <Input value={token} />
-                <Button onClick={handleCopy}><CopyOutlined /></Button>
-              </div>
+              <Form.Item>
+                <Button type="primary" htmlType="submit" icon={ <PlusOutlined />} loading={loading}>
+                  Create access token
+                </Button>
+              </Form.Item>
+                <div className="generate-input">
+                  <Input value={token} />
+                  <Button onClick={handleCopy}><CopyOutlined /></Button>
+                </div>
             </div>
           </Form>
         </div>
