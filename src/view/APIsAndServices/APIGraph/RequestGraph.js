@@ -33,6 +33,9 @@ const RequestGraph = (props) => {
           animation: {
             duration: 1000,
           },
+          legend: {
+            display: false
+          },
           scales: {
             xAxes: [
               {

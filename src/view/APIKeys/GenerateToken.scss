@@ -18,6 +18,7 @@ $text-color: #8C8C8C;
     max-width: 800px;
     .title {
         color: $app-primary-color;
+        margin-bottom: 8px;
     }
     .sub-checkbox {
         padding-left: 24px;
@@ -36,8 +37,11 @@ $text-color: #8C8C8C;
     .ant-form-item {
         margin-bottom: 0;
     }
-    .checkbox-list {
-        margin-top: 15px
+    .section {
+        margin-top: 15px;
+        .ant-checkbox-wrapper + .ant-checkbox-wrapper {
+            margin-left: 0;
+        }
     }
 }
 

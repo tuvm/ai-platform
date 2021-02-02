@@ -25,9 +25,9 @@ export default function Graphs() {
         query_string: `ai_model=${filterType.join(',')}`,
         start_date: filterDate.startDate || undefined,
         end_date: filterDate.endDate || undefined,
-
         interval: '1d',
       };
+
       const { data: rqData } = await actionQueryAPIUsage({
         ...params,
         metric: 'requests',
@@ -49,6 +49,7 @@ export default function Graphs() {
         <Col className="gutter-row" md={{ span: 24 }} lg={{ span: 12 }}>
           <div className="graph-column">
             <div className="graph-name">Requests</div>
+            <div className="graph-sublabel">Requets (request/call)</div>
             <div>
               <RequestGraph
                 data={{
@@ -63,11 +64,14 @@ export default function Graphs() {
         <Col className="gutter-row" md={{ span: 24 }} lg={{ span: 12 }}>
           <div className="graph-column">
             <div className="graph-name">Size</div>
+            <div className="graph-sublabel">Requets (request/MB)</div>
             <div>
               <RequestGraph
                 data={{
                   labels: volumeData.labels,
-                  values: (volumeData.values || []).map((vol) => vol / 1024),
+                  values: (volumeData.values || []).map(
+                    (vol) => vol / 1024 / 1024
+                  ),
                 }}
                 label="Size"
               />

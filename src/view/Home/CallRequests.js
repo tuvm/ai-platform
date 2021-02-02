@@ -5,7 +5,7 @@ const data = {
   labels: ["May", "June", "July"],
   datasets: [
     {
-      label: "requests",
+      label: "Request",
       backgroundColor: "#DFD9F8",
       borderColor: "#DFD9F8",
       borderWidth: 1,
@@ -18,7 +18,7 @@ const data = {
     },
 
     {
-      label: "requests2",
+      label: "Request/MB",
       backgroundColor: "#39c2d761",
       borderColor: "#39c2d761",
       borderWidth: 1,
@@ -31,7 +31,7 @@ const data = {
     },
 
     {
-      label: "requests3",
+      label: "Request/ms",
       backgroundColor: "#D9F8E2",
       borderColor: "#D9F8E2",
       borderWidth: 1,
@@ -57,6 +57,13 @@ export default function RequestGraph() {
           maintainAspectRatio: false,
           animation: {
             duration: 1000,
+          },
+          legend: {
+            align: 'center',
+            labels: {
+              boxWidth: 11,
+              padding: 20,
+            }
           },
           scales: {
             xAxes: [

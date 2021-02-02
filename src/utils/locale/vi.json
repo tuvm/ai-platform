@@ -126,5 +126,6 @@
   "IDS_API_KEY_CREATE_SUCCESS": "Tạo mới API key thành công",
   "IDS_API_KEY_REVOKE_SUCCESS": "Thu hồi API thành công",
   "IDS_MONTH": "Tháng",
-  "IDS_SUMMARY": "Tóm tắt"
+  "IDS_SUMMARY": "Tóm tắt",
+  "IDS_CREATE_API_KEY": "Tạo API key"
 }
