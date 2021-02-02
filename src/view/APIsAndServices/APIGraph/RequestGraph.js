@@ -1,25 +1,26 @@
-import React from "react";
-import { Bar } from "react-chartjs-2";
+import React from 'react';
+import { Bar } from 'react-chartjs-2';
+import { isDiff } from '../../../utils/helpers';
 
-const data = {
-  labels: ["January", "February", "March", "April", "May", "June", "July"],
-  datasets: [
-    {
-      label: "requests",
-      backgroundColor: "#39c2d761",
-      borderColor: "#39c2d761",
-      borderWidth: 1,
-      hoverBackgroundColor: "#39C2D7",
-      hoverBorderColor: "#39C2D7",
-      data: [65, 59, 80, 81, 56, 55, 40],
-      pointRadius: 1,
-      pointHoverRadius: 1,
-      maxBarThickness: 50,
-    },
-  ],
-};
+const RequestGraph = (props) => {
+  const data = {
+    labels: props.data.labels || [],
+    datasets: [
+      {
+        label: props.label || '',
+        backgroundColor: '#39c2d761',
+        borderColor: '#39c2d761',
+        borderWidth: 1,
+        hoverBackgroundColor: '#39C2D7',
+        hoverBorderColor: '#39C2D7',
+        data: props.data.values || [],
+        pointRadius: 1,
+        pointHoverRadius: 1,
+        maxBarThickness: 50,
+      },
+    ],
+  };
 
-export default function RequestGraph() {
   return (
     <div style={{ height: 320 }}>
       <Bar
@@ -43,7 +44,7 @@ export default function RequestGraph() {
             ],
             yAxes: [
               {
-                position: "right",
+                position: 'right',
               },
             ],
           },
@@ -51,4 +52,8 @@ export default function RequestGraph() {
       />
     </div>
   );
-}
+};
+
+export default React.memo(RequestGraph, (prevProps, nextProps) => {
+  return !isDiff(prevProps.data, nextProps.data);
+});
