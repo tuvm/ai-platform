@@ -1,7 +1,7 @@
-import api from "../../utils/service/api";
-import get from "lodash/get";
-import axios from "axios";
-import * as actionType from "../../utils/constants/actions";
+import api from '../../utils/service/api';
+import get from 'lodash/get';
+import axios from 'axios';
+import * as actionType from '../../utils/constants/actions';
 
 import {
   CONFIG_SERVER,
@@ -10,8 +10,8 @@ import {
   REALM_ID,
   VINLAB_LOCALE,
   // OIDC_SETTINGS,
-} from "../../utils/constants/config";
-import cookie from "js-cookie";
+} from '../../utils/constants/config';
+import cookie from 'js-cookie';
 
 const {
   CLIENT_ID,
@@ -38,32 +38,32 @@ export const requestLogin = (isRedirect) => {
 
   let loginUrl =
     pathAuth +
-    "?client_id=" +
+    '?client_id=' +
     CLIENT_ID +
-    "&response_type=" +
+    '&response_type=' +
     RESPONSE_TYPE +
-    "&state=" +
+    '&state=' +
     STATE;
 
   if (isRedirect) {
-    loginUrl += "&redirect_uri=" + window.location.origin;
-    sessionStorage.setItem("redirect_uri", window.location.href);
+    loginUrl += '&redirect_uri=' + window.location.origin;
+    sessionStorage.setItem('redirect_uri', window.location.href);
   }
 
   window.location.href = encodeURI(loginUrl);
 };
 
-export const actionRefreshToken = (refreshToken = "") => {
+export const actionRefreshToken = (refreshToken = '') => {
   let requestBody = new URLSearchParams();
-  requestBody.append("grant_type", "refresh_token");
-  requestBody.append("client_id", CLIENT_ID);
-  requestBody.append("refresh_token", refreshToken);
-  requestBody.append("redirect_uri", window.location.origin);
+  requestBody.append('grant_type', 'refresh_token');
+  requestBody.append('client_id', CLIENT_ID);
+  requestBody.append('refresh_token', refreshToken);
+  requestBody.append('redirect_uri', window.location.origin);
   const realmId = localStorage.getItem(REALM_ID);
 
   return api(
     {
-      method: "post",
+      method: 'post',
       url:
         REACT_APP_AUTH_URL +
         `/auth/realms/${realmId}/protocol/openid-connect/token`,
@@ -77,16 +77,17 @@ export const actionGetPermissionToken = async (token) => {
   try {
     let requestBody = new URLSearchParams();
     requestBody.append(
-      "grant_type",
-      "urn:ietf:params:oauth:grant-type:uma-ticket"
+      'grant_type',
+      'urn:ietf:params:oauth:grant-type:uma-ticket'
     );
     requestBody.append("audience", AUDIENCE);
-    requestBody.append("permission", ['api_key#all', 'usage#all']);
+    requestBody.append('permission', 'api_key#all');
+    requestBody.append('permission', 'usage#all');
 
     const res = await api(
       {
         url: getAuthUrl(),
-        method: "post",
+        method: 'post',
         data: requestBody,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -98,7 +99,7 @@ export const actionGetPermissionToken = async (token) => {
     if (res && res.data && res.data.access_token) {
       const { data } = res;
       window.location.href =
-        sessionStorage.getItem("redirect_uri") || window.location.hostname;
+        sessionStorage.getItem('redirect_uri') || window.location.hostname;
       cookie.set(TOKEN, data.access_token, {
         expires: new Date((res.data.expires_in || 1800) * 1000 + Date.now()),
       });
@@ -115,17 +116,17 @@ export const actionGetPermissionToken = async (token) => {
   }
 };
 
-export const actionGetToken = (code = "", sessionState = "") => {
+export const actionGetToken = (code = '', sessionState = '') => {
   let requestBody = new URLSearchParams();
-  requestBody.append("grant_type", "authorization_code");
-  requestBody.append("client_id", CLIENT_ID);
-  requestBody.append("code", code);
-  requestBody.append("session_state", sessionState);
-  requestBody.append("redirect_uri", window.location.origin);
+  requestBody.append('grant_type', 'authorization_code');
+  requestBody.append('client_id', CLIENT_ID);
+  requestBody.append('code', code);
+  requestBody.append('session_state', sessionState);
+  requestBody.append('redirect_uri', window.location.origin);
 
   return api(
     {
-      method: "post",
+      method: 'post',
       url: getAuthUrl(),
       data: requestBody,
     },
@@ -135,8 +136,8 @@ export const actionGetToken = (code = "", sessionState = "") => {
 
 export const actionGetTenantSetting = async () => {
   const res = await axios({
-    method: "GET",
-    url: REACT_APP_BACKEND_URL + "/settings",
+    method: 'GET',
+    url: REACT_APP_BACKEND_URL + '/settings',
   });
 
   // if (res && res.data && res.data.realm_id) {
@@ -150,10 +151,10 @@ export const actionGetTenantSetting = async () => {
 export const getAccountInfo = () => {
   window.store.dispatch(actionShowLoading());
 
-  const url = REACT_APP_BACKEND_URL + '/user/userinfo'
+  const url = REACT_APP_BACKEND_URL + '/user/userinfo';
   return api({
     url: url,
-    method: "GET",
+    method: 'GET',
   }).then((result) => {
     window.store.dispatch(actionHideLoading());
     const data = get(result, 'data.data');
