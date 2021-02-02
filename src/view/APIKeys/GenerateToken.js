@@ -106,7 +106,7 @@ export default function GenerateToken() {
             <div className="generate-form">
               <Form.Item>
                 <Button type="primary" htmlType="submit" icon={ <PlusOutlined />} loading={loading}>
-                  Create access token
+                  {t('IDS_CREATE_API_KEY')}
                 </Button>
               </Form.Item>
                 <div className="generate-input">

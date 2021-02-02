@@ -13,13 +13,13 @@ export default function Home() {
       <Row gutter={{ xs: 8, sm: 16, md: 24 }}>
         <Col className="gutter-row" md={{ span: 24 }} lg={{ span: 10 }}>
           <div className="column">
-            <h3 className="title">Call Requests</h3>
+            <h3 className="title">Call requests</h3>
             <CallRequest />
           </div>
         </Col>
         <Col className="gutter-row" md={{ span: 24 }} lg={{ span: 14 }}>
           <div className="column">
-            <h3 className="title">Recent Requests</h3>
+            <h3 className="title">Recent requests</h3>
             <RecentRequests />
           </div>
         </Col>
@@ -36,7 +36,7 @@ export default function Home() {
         </Col>
         <Col className="gutter-row" md={{ span: 24 }} lg={{ span: 14 }}>
           <div className="column">
-            <h3 className="title">Recent payment</h3>
+            <h3 className="title">Recent payments</h3>
             <RecentPayment />
           </div>
         </Col>
