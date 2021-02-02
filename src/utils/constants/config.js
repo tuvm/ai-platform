@@ -230,22 +230,31 @@ export const KEY_LIST = {
 export const API_SCOPES = [
   {
     key: 'chestxray',
-    name: KEY_LIST.chestxray,
+    name: 'API ' + KEY_LIST.chestxray,
     description: 'IDS_CHEST_SCOPE_DESCRIPTION',
   },
   {
     key: 'mammogram',
-    name: KEY_LIST.mammogram,
+    name: 'API ' + KEY_LIST.mammogram,
     description: 'IDS_MAMMO_SCOPE_DESCRIPTION',
   },
   {
     key: 'lungct',
-    name: KEY_LIST.lungct,
+    name:'API ' + KEY_LIST.lungct,
     description: 'IDS_LUNGCT_SCOPE_DESCRIPTION',
   },
   {
     key: 'liverct',
-    name: KEY_LIST.liverct,
+    name: 'API ' + KEY_LIST.liverct,
     description: 'IDS_LIVER_SCOPE_DESCRIPTION',
+  },
+]
+
+export const API_SELECT = [
+  ...API_SCOPES,
+  {
+    key: 'all',
+    name: 'All API',
+    description: 'All API',
   },
 ]
