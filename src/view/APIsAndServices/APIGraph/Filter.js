@@ -16,6 +16,7 @@ export default function Filter() {
 
   useEffect(() => {
     setFilterType([API_SCOPES[0].key]);
+    handleChangeDate(7)
   }, [])
 
   function handleChange(value) {
@@ -24,8 +25,8 @@ export default function Filter() {
 
   const handleChangeDate = value => {
     const endDate = moment(new Date()).format('YYYYMMDD');
-    const startdate = moment().subtract(value, "days").format("YYYYMMDD")
-    setFilterDate({ startdate, endDate });
+    const startDate = moment().subtract(value, "days").format("YYYYMMDD")
+    setFilterDate({ startDate, endDate });
   }
 
   return (

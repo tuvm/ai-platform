@@ -42,7 +42,8 @@ export default function GenerateToken() {
         description:
         t('IDS_API_KEY_CREATE_SUCCESS'),
       });
-      actionGetAPIKeys()
+      actionGetAPIKeys();
+      form.resetFields();
     } else {
       setLoading(false);
       notification.error({ description: t('IDS_ERROR_MESSAGE') });
