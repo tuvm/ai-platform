@@ -35,4 +35,6 @@ COPY ./ /app/
 COPY ./nginx.conf /etc/nginx/sites-enabled/default
 RUN chmod +x run.sh
 
+EXPOSE 80
+EXPOSE 443
 CMD ["./run.sh"]
