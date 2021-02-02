@@ -37,7 +37,12 @@ $text-color: #8C8C8C;
         margin-bottom: 0;
     }
     .checkbox-list {
-        margin-top: 15px
+        .ant-checkbox-wrapper + .ant-checkbox-wrapper {
+            margin-left: 0;
+        }
+    }
+    .ant-form-item-explain {
+        margin-bottom: 15px;
     }
 }
 

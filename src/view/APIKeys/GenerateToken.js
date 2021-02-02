@@ -18,12 +18,7 @@ export default function GenerateToken() {
 
   const onFinish = async () => {
     const name = form.getFieldValue('key_name');
-    const scopes = []
-    API_SCOPES.forEach(item => {
-      if (form.getFieldValue(item.key)) {
-        scopes.push(item.key)
-      }
-    })
+    const scopes = form.getFieldValue('scope_list')
     const payload = {
       scope: scopes,
       expiry_time: 0,
@@ -40,7 +35,7 @@ export default function GenerateToken() {
       setLoading(false);
       notification.success({
         description:
-        t('IDS_API_KEY_CREATE_SUCCESS'),
+          t('IDS_API_KEY_CREATE_SUCCESS'),
       });
       actionGetAPIKeys();
       form.resetFields();
@@ -51,9 +46,9 @@ export default function GenerateToken() {
   }
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(token).then(function() {
+    navigator.clipboard.writeText(token).then(function () {
       message.success('Copied API key');
-    }, function(err) {
+    }, function (err) {
       message.error('Could not copy API Key: ');
     });
   }
@@ -89,34 +84,34 @@ export default function GenerateToken() {
 
             <div className="checkbox-list">
               <div className="title">Scopes</div>
-
-              {API_SCOPES && API_SCOPES.map(item => (
-                <Form.Item name={item.key} key={item.key} valuePropName="checked">
-                  <Checkbox>
-                    <span>{item.name}</span>
-
-                    <p className="sub-checkbox">
-                      {t(item.description)}
-                    </p>
-                  </Checkbox>
-                </Form.Item>
-              ))}
+              <Form.Item name="scope_list" valuePropName="checked" rules={[{ required: true, message: 'Please select at least one API scope' }]}>
+                <Checkbox.Group>
+                  {API_SCOPES && API_SCOPES.map(item => (
+                    <Checkbox key={item.key} value={item.key}>
+                      <span>{item.name}</span>
+                      <p className="sub-checkbox">
+                        {t(item.description)}
+                      </p>
+                    </Checkbox>
+                  ))}
+                </Checkbox.Group>
+              </Form.Item>
             </div>
 
             <div className="generate-form">
               <Form.Item>
-                <Button type="primary" htmlType="submit" icon={ <PlusOutlined />} loading={loading}>
+                <Button type="primary" htmlType="submit" icon={<PlusOutlined />} loading={loading}>
                   {t('IDS_CREATE_API_KEY')}
                 </Button>
               </Form.Item>
-                <div className="generate-input">
-                  <Input value={token} />
-                  <Button onClick={handleCopy}><CopyOutlined /></Button>
-                </div>
+              <div className="generate-input">
+                <Input value={token} />
+                <Button onClick={handleCopy}><CopyOutlined /></Button>
+              </div>
             </div>
           </Form>
         </div>
       </Col>
-    </Row>
+    </Row >
   );
 }
