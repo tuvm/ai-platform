@@ -82,7 +82,7 @@ export default function GenerateToken() {
               <Input />
             </Form.Item>
 
-            <div className="checkbox-list">
+            <div className="section">
               <div className="title">Scopes</div>
               <Form.Item name="scope_list" valuePropName="checked" rules={[{ required: true, message: 'Please select at least one API scope' }]}>
                 <Checkbox.Group>
@@ -98,7 +98,7 @@ export default function GenerateToken() {
               </Form.Item>
             </div>
 
-            <div className="generate-form">
+            <div className="section generate-form">
               <Form.Item>
                 <Button type="primary" htmlType="submit" icon={<PlusOutlined />} loading={loading}>
                   {t('IDS_CREATE_API_KEY')}

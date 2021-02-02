@@ -49,6 +49,7 @@ export default function Graphs() {
         <Col className="gutter-row" md={{ span: 24 }} lg={{ span: 12 }}>
           <div className="graph-column">
             <div className="graph-name">Requests</div>
+            <div className="graph-sublabel">Requets (request/call)</div>
             <div>
               <RequestGraph
                 data={{
@@ -63,6 +64,7 @@ export default function Graphs() {
         <Col className="gutter-row" md={{ span: 24 }} lg={{ span: 12 }}>
           <div className="graph-column">
             <div className="graph-name">Size</div>
+            <div className="graph-sublabel">Requets (request/MB)</div>
             <div>
               <RequestGraph
                 data={{

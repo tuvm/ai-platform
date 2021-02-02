@@ -5,11 +5,15 @@
         background: #fff;
         padding: 30px;
         color: $font-page-color;
+        height: 100%;
 
         .graph-name {
             color: $app-primary-color;
             font-weight: 600;
             font-size: 16px;
+        }
+        .graph-sublabel {
+            font-size: 12px;
         }
     }
 }
