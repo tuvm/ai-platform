@@ -18,7 +18,7 @@ import {
   SettingOutlined,
 } from '@ant-design/icons';
 const LeftMenu = (props) => {
-  const { location } = props;
+  const { location, userInfo } = props;
   const [collapsed, setCollapsed] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState();
   const { t } = useTranslation();
@@ -66,12 +66,12 @@ const LeftMenu = (props) => {
       route: routes.BILLING,
       isShow: true,
     },
-    {
-      icon: <SettingOutlined />,
-      text: t("IDS_SETTING"),
-      route: routes.SETTING,
-      isShow: true,
-    },
+    // {
+    //   icon: <SettingOutlined />,
+    //   text: t("IDS_SETTING"),
+    //   route: routes.SETTING,
+    //   isShow: true,
+    // },
   ];
 
   return (
@@ -90,10 +90,10 @@ const LeftMenu = (props) => {
             </div>
             {!collapsed && (
               <div className="user-account">
-                <span>
-                  <strong>Mi Nguyen</strong>
+                <span className="username">
+                  <strong>{userInfo?.preferred_username}</strong>
                 </span>
-                <span>minnguyen@gmail.com</span>
+                {/* <span>{userInfo?.email}</span> */}
               </div>
             )}
           </div>
