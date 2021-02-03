@@ -38,7 +38,7 @@ build-docker-image:latest:
   stage: build-docker-image
   only:
     - master
-    - develop
+    # - develop
   script:
     - docker build -t ${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME} .
     - docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE_NAME}
