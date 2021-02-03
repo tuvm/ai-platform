@@ -39,7 +39,7 @@ export default function Filter() {
         <Select
           mode="multiple"
           value={selected}
-          style={{ width: "300px" }}
+          style={{ minWidth: "300px" }}
           onChange={handleChange}
         >
           {API_SCOPES.map(item => <Option key={item.key} value={item.key}>{item.name}</Option>)}
