@@ -108,7 +108,7 @@
   "IDS_API_TABLE_NAME": "Tên",
   "IDS_API_TABLE_TYPE": "Loại",
   "IDS_API_TABLE_REQUEST": "Yêu cầu",
-  "IDS_API_TABLE_SIZE": "Kích cỡ",
+  "IDS_API_TABLE_VOLUME": "Kích cỡ",
   "IDS_API_TABLE_TIME": "Thời gian",
   "IDS_API_SELECT_NAME": "Loại API",
   "IDS_DAY": "Ngày",
