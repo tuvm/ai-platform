@@ -1,31 +1,32 @@
 import React from "react";
+import moment from 'moment';
+
 import { useTranslation } from "react-i18next";
-import './TableStyle.scss';
 
 const demoTableContent = [
   {
     _id: "52434",
     name: "API LungCT",
     time: "1.288.400đ",
-    date: '29 Dec 2020'
+    date:  moment(new Date()).format('MM-DD-YYY HH:mm:ss'),
   },
   {
     _id: "565844",
     name: "API Mammography",
     time: "1.288.400đ",
-    date: '29 Dec 2020'
+    date:  moment(new Date()).format('MM-DD-YYY HH:mm:ss'),
   },
   {
     _id: "654434",
-    name: "API LungCT",
+    name: "Chest Xray",
     time: "1.288.400đ",
-    date: '29 Dec 2020'
+    date:  moment(new Date()).format('MM-DD-YYY HH:mm:ss'),
   },
   {
     _id: "674454",
     name: "API LungCT",
     time: "1.288.400đ",
-    date: '29 Dec 2020'
+    date:  moment(new Date()).format('MM-DD-YYY HH:mm:ss'),
   },
 ];
 

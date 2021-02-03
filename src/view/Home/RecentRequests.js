@@ -1,30 +1,30 @@
 import React from "react";
+import moment from 'moment';
 import { useTranslation } from "react-i18next";
-import './TableStyle.scss';
 
 const demoTableContent = [
   {
     _id: "52434",
     name: "API LungCT",
-    time: "Jan 29, 2020 09:45:00 AM",
+    time: moment(new Date()).format('MM-DD-YYY HH:mm:ss'),
     status: 'Success'
   },
   {
     _id: "565844",
     name: "API Mammography",
-    time: "Jan 29, 2020 09:45:00 AM",
+    time: moment(new Date()).format('MM-DD-YYY HH:mm:ss'),
     status: 'Success'
   },
   {
     _id: "654434",
-    name: "API LungCT",
-    time: "Jan 29, 2020 09:45:00 AM",
+    name: "Chest Xray",
+    time: moment(new Date()).format('MM-DD-YYY HH:mm:ss'),
     status: 'Success'
   },
   {
     _id: "674454",
-    name: "API LungCT",
-    time: "Jan 29, 2020 09:45:00 AM",
+    name: "Liver CT",
+    time: moment(new Date()).format('MM-DD-YYY HH:mm:ss'),
     status: 'Success'
   },
 ];

@@ -248,3 +248,22 @@
     font-size: 12px;
   }
 }
+
+.app-table {
+    width: 100%;
+    background: #fff;
+    thead {
+        background: $app-light-blue;
+        th {
+            color: $app-primary-color;
+            padding: 12px 24px;
+            background: $app-light-blue;
+        }
+    }
+    tbody {
+        td {
+            color: $font-page-color;
+            padding: 14px 24px;
+        }
+    }
+}
