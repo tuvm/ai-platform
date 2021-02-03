@@ -17,12 +17,11 @@ export default function Filter() {
 
   useEffect(() => {
     setFilterType([API_SCOPES[0].key]);
-    setSelected(API_SCOPES[0].key);
+    setSelected([API_SCOPES[0].key]);
     handleChangeDate(7)
   }, [])
 
   function handleChange(value) {
-    console.log(value)
     setFilterType(value);
     setSelected(value);
   }

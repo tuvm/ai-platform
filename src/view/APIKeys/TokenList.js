@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Button } from "antd";
 import { Row, Col } from "antd";
 import { Table, Space, Modal, notification, Spin } from 'antd';
-import get from 'lodash/get';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';

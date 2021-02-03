@@ -1,45 +1,54 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Row, Col } from 'antd';
-import RequestGraph from './RequestGraph';
-import { APIContext } from './index';
-import { actionQueryAPIUsage } from '../actions';
+import React, { useContext, useEffect, useState } from "react";
+import { Row, Col } from "antd";
+import isEmpty from 'lodash/isEmpty';
+import RequestGraph from "./RequestGraph";
+import { APIContext } from "./index";
+import { actionQueryAPIUsage } from "../actions";
 
-import './Graphs.scss';
+import "./Graphs.scss";
 
 export default function Graphs() {
   const context = useContext(APIContext);
   const { filterDate, filterType } = context || {};
-  const [requestData, setRequestData] = useState([]);
-  const [volumeData, setVolumeData] = useState([]);
+  const [requestData, setRequestData] = useState({});
+  const [volumeData, setVolumeData] = useState({});
 
   useEffect(() => {
-    if (filterDate && filterDate.startDate && filterType.length) {
+    if (filterDate && filterDate.startDate) {
       handleFetchData();
     }
     // eslint-disable-next-line
   }, [filterType, filterDate]);
 
   const handleFetchData = async () => {
+    if (isEmpty(filterType)) {
+      setRequestData({});
+      setVolumeData({});
+      return;
+    }
+
     try {
+      const queryString = filterType.map((item) => `ai_model=${item}`);
       const params = {
-        query_string: `ai_model=${filterType.join(',')}`,
+        query_string: queryString.join(";"),
         start_date: filterDate.startDate || undefined,
         end_date: filterDate.endDate || undefined,
-        interval: '1d',
+        interval: "1d",
       };
 
       const { data: rqData } = await actionQueryAPIUsage({
         ...params,
-        metric: 'requests',
+        metric: "requests",
       });
 
-      console.log({ rqData });
-      setRequestData(rqData || []);
+      setRequestData(rqData || {});
+
       const { data: volData } = await actionQueryAPIUsage({
         ...params,
-        metric: 'volume',
+        metric: "volume",
       });
-      setVolumeData(volData || []);
+
+      setVolumeData(volData || {});
     } catch (error) {
       console.log(error);
     }
@@ -51,30 +60,26 @@ export default function Graphs() {
         <Col className="gutter-row" md={{ span: 24 }} lg={{ span: 12 }}>
           <div className="graph-column">
             <div className="graph-name">Requests</div>
-            <div className="graph-sublabel">Requets (request/call)</div>
+            <div className="graph-sublabel">Requests</div>
             <div>
               <RequestGraph
-                data={{
-                  labels: requestData[0]?.labels,
-                  values: requestData[0]?.values,
-                }}
+                data={requestData}
+                filterType={filterType}
                 label="Requests"
+                graphType='request-call'
               />
             </div>
           </div>
         </Col>
         <Col className="gutter-row" md={{ span: 24 }} lg={{ span: 12 }}>
           <div className="graph-column">
-            <div className="graph-name">Size</div>
-            <div className="graph-sublabel">Requets (request/MB)</div>
+            <div className="graph-name">Volume</div>
+            <div className="graph-sublabel">Megabytes</div>
             <div>
               <RequestGraph
-                data={{
-                  labels: volumeData[0]?.labels,
-                  values: (volumeData[0]?.values || []).map(
-                    (vol) => vol / 1024 / 1024
-                  ),
-                }}
+                data={volumeData}
+                filterType={filterType}
+                graphType='request-size'
                 label="Size"
               />
             </div>

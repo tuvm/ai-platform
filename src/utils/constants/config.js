@@ -30,7 +30,6 @@ const {
   REACT_APP_BACKEND_URL,
   REACT_APP_AUTH_URL,
 } = process.env || {};
-// console.log('VANHT-Config.env', process.env);
 
 // let env = process.env.BUILD_MODE || 'local'; // local, dev, stg
 
@@ -249,3 +248,10 @@ export const API_SCOPES = [
     description: 'IDS_LIVER_SCOPE_DESCRIPTION',
   },
 ]
+
+export const CHART_COLORS = {
+  lungct: "#97DAFF",
+  mammogram: "#AAFAD8",
+  chestxray: "#C4B5FF",
+  liverct: "#FFC552"
+}
