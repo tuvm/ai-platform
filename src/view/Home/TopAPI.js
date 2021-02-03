@@ -6,7 +6,7 @@ const demoTableContent = [
   {
     _id: "52434",
     name: "API LungCT",
-    call: 100
+    call: 544
   },
   {
     _id: "565844",
@@ -15,13 +15,13 @@ const demoTableContent = [
   },
   {
     _id: "654434",
-    name: "API LungCT",
-    call: 100
+    name: "Chest Xray",
+    call: 399
   },
   {
     _id: "674454",
-    name: "API LungCT",
-    call: 100
+    name: "Liver CT",
+    call: 999
   },
 ];
 
