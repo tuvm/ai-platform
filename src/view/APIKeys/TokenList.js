@@ -67,7 +67,7 @@ export default function GenerateToken() {
       <Col sm={24} md={17}>
         <div className="generate-token-right-side">
           <Spin spinning={loading}>
-            <Table dataSource={apikeys}>
+            <Table dataSource={apikeys} className="app-table">
               <Column title="Name" dataIndex="name" key="name" />
               <Column title="Created" dataIndex="creation_time" key="creation_time" render={text => moment(text).format('MM-DD-YYYY HH:mm:ss')} />
               <Column title="Scopes" dataIndex="scope" key="scope" render={array => renderKeyList(array).join(', ')} />

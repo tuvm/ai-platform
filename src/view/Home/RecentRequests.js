@@ -1,7 +1,6 @@
 import React from "react";
 import moment from 'moment';
 import { useTranslation } from "react-i18next";
-import './TableStyle.scss';
 
 const demoTableContent = [
   {
