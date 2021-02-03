@@ -9,8 +9,8 @@ import './Graphs.scss';
 export default function Graphs() {
   const context = useContext(APIContext);
   const { filterDate, filterType } = context || {};
-  const [requestData, setRequestData] = useState({});
-  const [volumeData, setVolumeData] = useState({});
+  const [requestData, setRequestData] = useState([]);
+  const [volumeData, setVolumeData] = useState([]);
 
   useEffect(() => {
     if (filterDate && filterDate.startDate && filterType.length) {
@@ -32,12 +32,14 @@ export default function Graphs() {
         ...params,
         metric: 'requests',
       });
-      setRequestData(rqData || {});
+
+      console.log({ rqData });
+      setRequestData(rqData || []);
       const { data: volData } = await actionQueryAPIUsage({
         ...params,
         metric: 'volume',
       });
-      setVolumeData(volData || {});
+      setVolumeData(volData || []);
     } catch (error) {
       console.log(error);
     }
@@ -53,8 +55,8 @@ export default function Graphs() {
             <div>
               <RequestGraph
                 data={{
-                  labels: requestData.labels,
-                  values: requestData.values,
+                  labels: requestData[0]?.labels,
+                  values: requestData[0]?.values,
                 }}
                 label="Requests"
               />
@@ -68,8 +70,8 @@ export default function Graphs() {
             <div>
               <RequestGraph
                 data={{
-                  labels: volumeData.labels,
-                  values: (volumeData.values || []).map(
+                  labels: volumeData[0]?.labels,
+                  values: (volumeData[0]?.values || []).map(
                     (vol) => vol / 1024 / 1024
                   ),
                 }}

@@ -4,7 +4,7 @@ import { Select } from "antd";
 import moment from 'moment';
 
 import { FILTER_DAYS } from '../../../utils/constants/config';
-import { API_SELECT, KEY_LIST } from '../../../utils/constants/config'
+import { API_SCOPES } from '../../../utils/constants/config'
 import { APIContext } from './index';
 import "./Filter.scss";
 
@@ -16,18 +16,14 @@ export default function Filter() {
   const [selected, setSelected] = useState('');
 
   useEffect(() => {
-    setFilterType([API_SELECT[0].key]);
-    setSelected(API_SELECT[0].key);
+    setFilterType([API_SCOPES[0].key]);
+    setSelected(API_SCOPES[0].key);
     handleChangeDate(7)
   }, [])
 
   function handleChange(value) {
-    if (value === 'all') {
-      const keys = Object.keys(KEY_LIST);
-      setFilterType(keys);
-    } else {
-      setFilterType([value]);
-    }
+    console.log(value)
+    setFilterType(value);
     setSelected(value);
   }
 
@@ -40,13 +36,14 @@ export default function Filter() {
   return (
     <div className="filter-bar">
       <div className="left-filter">
-        <div className="filter-name">{t("IDS_API_SELECT_NAME")}</div>
+        <span className="filter-name">{t("IDS_API_SELECT_NAME")}</span>
         <Select
+          mode="multiple"
           value={selected}
           style={{ width: "300px" }}
           onChange={handleChange}
         >
-          {API_SELECT.map(item => <Option key={item.key} value={item.key}>{item.name}</Option>)}
+          {API_SCOPES.map(item => <Option key={item.key} value={item.key}>{item.name}</Option>)}
         </Select>
 
         <Select

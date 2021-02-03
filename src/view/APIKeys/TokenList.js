@@ -57,9 +57,9 @@ export default function GenerateToken() {
     <Row gutter={16}>
       <Col sm={24} md={7}>
         <div className="generate-token-left-side">
-          <h4>Access Token</h4>
+          <h4>Manage API Keys</h4>
           <p>
-            You can generate a personal access token for each application you
+            You can generate a personal API key for each application you
             use that needs access to the VinDr AI Platform.
           </p>
         </div>
@@ -84,8 +84,8 @@ export default function GenerateToken() {
                 )}
               />
             </Table>
-            {showConfirm && <Modal title="Revoke your access token" visible={true} onOk={handleOk} onCancel={handleCancel}>
-              <p>Are you sure you want to revoke this access token? This action cannot be undone.</p>
+            {showConfirm && <Modal title="Revoke your API key" visible={true} onOk={handleOk} onCancel={handleCancel}>
+              <p>Are you sure you want to revoke this API Key? This action cannot be undone.</p>
             </Modal>}
           </Spin>
         </div>

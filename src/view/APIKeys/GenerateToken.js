@@ -57,9 +57,9 @@ export default function GenerateToken() {
     <Row gutter={16}>
       <Col sm={24} md={7}>
         <div className="generate-token-left-side">
-          <h4>Access Token</h4>
+          <h4>API key generator</h4>
           <p>
-            You can generate a personal access token for each application you
+            You can generate a personal API key for each application you
             use that needs access to the VinDr AI Platform.
           </p>
         </div>

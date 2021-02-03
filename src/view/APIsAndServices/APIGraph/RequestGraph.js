@@ -34,7 +34,12 @@ const RequestGraph = (props) => {
             duration: 1000,
           },
           legend: {
-            display: false
+            // display: false
+            align: 'center',
+            labels: {
+              boxWidth: 11,
+              padding: 20,
+            }
           },
           scales: {
             xAxes: [

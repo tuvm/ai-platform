@@ -249,12 +249,3 @@ export const API_SCOPES = [
     description: 'IDS_LIVER_SCOPE_DESCRIPTION',
   },
 ]
-
-export const API_SELECT = [
-  ...API_SCOPES,
-  {
-    key: 'all',
-    name: 'All API',
-    description: 'All API',
-  },
-]
