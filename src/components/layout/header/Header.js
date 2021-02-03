@@ -10,7 +10,7 @@ import { actionLogout, requestLogin } from '../../../view/system/systemAction';
 import './Header.scss';
 
 const Header = (props) => {
-  const { location = {}, account } = props;
+  const { location = {}, profile } = props;
   const { t } = useTranslation();
   // const { pathname = '' } = location;
 
@@ -51,7 +51,7 @@ const Header = (props) => {
           <Dropdown overlay={menu}>
             <div className="user-info">
               <Avatar size={30} icon={<UserOutlined />} />
-              <span className="user-name">{account?.preferred_username}</span>
+              <span className="user-name">{profile?.preferred_username}</span>
             </div>
           </Dropdown>
         </div>
@@ -62,7 +62,7 @@ const Header = (props) => {
 
 export default connect(
   (state) => ({
-    account: { preferred_username: 'Admin' },
+    profile: state.system.profile,
   }),
   {}
 )(withRouter(Header));
