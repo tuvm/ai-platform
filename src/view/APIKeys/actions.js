@@ -23,8 +23,6 @@ export const actionGetAPIKeys = async () => {
             method: 'GET',
         });
 
-        console.log({ data })
-
         const payload = get(data, 'data') || [];
         window.store.dispatch({ type: actions.FETCH_API_KEY_LIST, payload });
         return data;

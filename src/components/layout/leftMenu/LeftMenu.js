@@ -42,12 +42,12 @@ const LeftMenu = (props) => {
   };
 
   const menuList = [
-    {
-      icon: <HomeOutlined />,
-      text: t("IDS_HOME"),
-      route: routes.HOME,
-      isShow: true,
-    },
+    // {
+    //   icon: <HomeOutlined />,
+    //   text: t("IDS_HOME"),
+    //   route: routes.HOME,
+    //   isShow: true,
+    // },
     {
       icon: <ApiOutlined />,
       text: t("IDS_API_AND_SERVICE"),
@@ -60,12 +60,12 @@ const LeftMenu = (props) => {
       route: routes.API_KEYS,
       isShow: true,
     },
-    {
-      icon: <FileTextOutlined />,
-      text: t("IDS_BILLING"),
-      route: routes.BILLING,
-      isShow: true,
-    },
+    // {
+    //   icon: <FileTextOutlined />,
+    //   text: t("IDS_BILLING"),
+    //   route: routes.BILLING,
+    //   isShow: true,
+    // },
     // {
     //   icon: <SettingOutlined />,
     //   text: t("IDS_SETTING"),
