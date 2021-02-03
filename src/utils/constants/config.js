@@ -251,7 +251,7 @@ export const API_SCOPES = [
 
 export const CHART_COLORS = {
   lungct: "#97DAFF",
-  mammogram: "#AAFAD8",
-  chestxray: "#C4B5FF",
+  mammogram: "#C4B5FF",
+  chestxray: "#AAFAD8",
   liverct: "#FFC552"
 }
