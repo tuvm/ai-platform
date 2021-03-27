@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 import { Layout } from 'antd';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
@@ -16,9 +16,9 @@ import './App.scss';
 const initialRequest = async () => {
   const res = await actionGetTenantSetting();
   if (res && res.data) {
-   getAccountInfo();
+    getAccountInfo();
   }
-}
+};
 
 const App = (props) => {
   useEffect(() => {
@@ -40,7 +40,9 @@ const App = (props) => {
 
           <Layout.Content className="content-container">
             <BreadCrumb />
-            <div className="content-inner"><Routes /></div>
+            <div className="content-inner">
+              <Routes />
+            </div>
           </Layout.Content>
         </Layout>
       </Layout>

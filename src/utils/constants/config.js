@@ -25,39 +25,33 @@ const {
   OIDC_USERINFO_ENDPOINT,
   OIDC_SCOPE,
   DASHBOARD_URL_PREFIX,
-  MEDICAL_VIEWER_URL,
   OIDC_AUDIENCE,
   REACT_APP_BACKEND_URL,
   REACT_APP_AUTH_URL,
 } = process.env || {};
 
-// let env = process.env.BUILD_MODE || 'local'; // local, dev, stg
 
 export const BASE_FE_PREFIX = DASHBOARD_URL_PREFIX || '/dashboard';
-// export const URL_VIEWER = MEDICAL_VIEWER_URL || 'http://localhost:3000/medical-view/viewer';
-export const URL_VIEWER =
-  MEDICAL_VIEWER_URL || window.origin + '/medical-view/viewer';
 
 const REDIRECT_URI = OIDC_REDIRECT_URI || window.origin;
 const CLIENT_ID = OIDC_CLIENT_ID || 'console-ui';
 
 export let CONFIG_SERVER = {
-  REACT_APP_BACKEND_URL: REACT_APP_BACKEND_URL || "https://platform.vindr.ai",
-  REACT_APP_AUTH_URL: REACT_APP_AUTH_URL || "https://auth.vindr.ai",
+  REACT_APP_BACKEND_URL: REACT_APP_BACKEND_URL || 'https://platform.vindr.ai',
+  REACT_APP_AUTH_URL: REACT_APP_AUTH_URL || window.origin,
   REDIRECT_URI: REDIRECT_URI,
   CLIENT_ID: CLIENT_ID,
-  RESPONSE_TYPE: "code",
-  AUDIENCE: OIDC_AUDIENCE || "console-api",
-  SCOPE: OIDC_SCOPE || "",
-  REALM_ID: "ai-platform",
+  RESPONSE_TYPE: 'code',
+  AUDIENCE: OIDC_AUDIENCE || 'console-api',
+  SCOPE: OIDC_SCOPE || '',
+  REALM_ID: 'ai-platform',
   STATE: Math.random().toString(36).substring(2),
   OIDC_ACCESS_TOKEN_URI,
   OIDC_AUTHORIZATION_URI,
   OIDC_LOGOUT_URI,
   OIDC_USERINFO_ENDPOINT,
-  TOKEN_PERMISSION: ["api#all"],
+  TOKEN_PERMISSION: ['api#all'],
 };
-
 
 export const OIDC_SETTINGS = 'OIDC_SETTINGS';
 // routes
@@ -78,35 +72,34 @@ export const routes = {
   SETTING: '/setting',
 };
 
-
 export const APP_ROUTES = [
   {
     icon: <HomeOutlined />,
-    name: "IDS_HOME",
+    name: 'IDS_HOME',
     pathname: routes.HOME,
     isShow: true,
   },
   {
     icon: <ApiOutlined />,
-    name: "IDS_API_AND_SERVICE",
+    name: 'IDS_API_AND_SERVICE',
     pathname: routes.API_AND_SERVICES,
     isShow: true,
   },
   {
     icon: <KeyOutlined />,
-    name: "IDS_API_KEY",
+    name: 'IDS_API_KEY',
     pathname: routes.API_KEYS,
     isShow: true,
   },
   {
     icon: <FileTextOutlined />,
-    name: "IDS_BILLING",
+    name: 'IDS_BILLING',
     pathname: routes.BILLING,
     isShow: true,
   },
   {
     icon: <SettingOutlined />,
-    name: "IDS_SETTING",
+    name: 'IDS_SETTING',
     pathname: routes.SETTING,
     isShow: true,
   },
@@ -220,11 +213,11 @@ export const USER_ROLES = {
 export const FILTER_DAYS = [7, 14, 30];
 
 export const KEY_LIST = {
-  lungct: "Lung CT",
-  mammogram: "Mammography",
-  chestxray: "Chest Xray",
-  liverct: "Liver CT"
-}
+  lungct: 'Lung CT',
+  mammogram: 'Mammography',
+  chestxray: 'Chest Xray',
+  liverct: 'Liver CT',
+};
 
 export const API_SCOPES = [
   {
@@ -239,7 +232,7 @@ export const API_SCOPES = [
   },
   {
     key: 'lungct',
-    name:'API ' + KEY_LIST.lungct,
+    name: 'API ' + KEY_LIST.lungct,
     description: 'IDS_LUNGCT_SCOPE_DESCRIPTION',
   },
   {
@@ -247,11 +240,11 @@ export const API_SCOPES = [
     name: 'API ' + KEY_LIST.liverct,
     description: 'IDS_LIVER_SCOPE_DESCRIPTION',
   },
-]
+];
 
 export const CHART_COLORS = {
-  lungct: "#97DAFF",
-  mammogram: "#C4B5FF",
-  chestxray: "#AAFAD8",
-  liverct: "#FFC552"
-}
+  lungct: '#97DAFF',
+  mammogram: '#C4B5FF',
+  chestxray: '#AAFAD8',
+  liverct: '#FFC552',
+};

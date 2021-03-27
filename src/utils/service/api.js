@@ -79,9 +79,12 @@ const authorization = () => {
 
 const api = (options = {}, authAPI) => {
   let config = {
-    baseURL: authAPI ? CONFIG_SERVER.REACT_APP_AUTH_URL : CONFIG_SERVER.REACT_APP_BACKEND_URL,
+    baseURL: authAPI
+      ? CONFIG_SERVER.REACT_APP_AUTH_URL
+      : CONFIG_SERVER.REACT_APP_BACKEND_URL,
     ...options,
-    paramsSerializer: params => Qs.stringify(params, { arrayFormat: 'repeat' }),
+    paramsSerializer: (params) =>
+      Qs.stringify(params, { arrayFormat: 'repeat' }),
     headers: {
       Accept: '*/*',
       ...options.headers,
@@ -94,17 +97,17 @@ const api = (options = {}, authAPI) => {
 };
 
 request.interceptors.request.use(
-  config => {
+  (config) => {
     return config;
   },
-  error => Promise.reject(error)
+  (error) => Promise.reject(error)
 );
 
 request.interceptors.response.use(
-  response => {
+  (response) => {
     return response;
   },
-  error => {
+  (error) => {
     const errorCode = get(error, 'response.status');
     if (errorCode === 401 || errorCode === 403) {
       checkAuthorizationFlow();

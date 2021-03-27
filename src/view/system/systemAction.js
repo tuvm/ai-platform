@@ -151,9 +151,8 @@ export const actionGetTenantSetting = async () => {
 export const getAccountInfo = () => {
   window.store.dispatch(actionShowLoading());
 
-  const url = REACT_APP_BACKEND_URL + '/user/userinfo';
   return api({
-    url: url,
+    url: '/user/userinfo',
     method: 'GET',
   }).then((result) => {
     window.store.dispatch(actionHideLoading());

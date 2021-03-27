@@ -14,6 +14,7 @@
     "babel-plugin-import": "^1.13.1",
     "chart.js": "^2.9.4",
     "craco-less": "^1.17.0",
+    "env-cmd": "^10.1.0",
     "i18next": "^19.8.4",
     "js-cookie": "^2.2.1",
     "lodash": "^4.17.20",
@@ -39,7 +40,7 @@
     "redux-thunk": "^2.3.0"
   },
   "scripts": {
-    "start": "set \"PORT=3001\" && craco start local",
+    "start": "set \"PORT=3001\" &&  env-cmd -f .env craco start local",
     "build:dev": "set \"GENERATE_SOURCEMAP=true\" && craco build dev",
     "build:stg": "set \"GENERATE_SOURCEMAP=false\" && craco build stg",
     "build:prod": "set \"GENERATE_SOURCEMAP=false\" && craco build prod",
