@@ -7,7 +7,7 @@ import {
   CONFIG_SERVER,
   TOKEN,
   REFRESH_TOKEN,
-  REALM_ID,
+  LOCAL_STORAGE_REALM_ID,
   VINLAB_LOCALE,
   // OIDC_SETTINGS,
 } from '../../utils/constants/config';
@@ -23,7 +23,7 @@ const {
 } = CONFIG_SERVER;
 
 export const getAuthUrl = () => {
-  const realmId = localStorage.getItem(REALM_ID);
+  const realmId = localStorage.getItem(LOCAL_STORAGE_REALM_ID);
   const url =
     REACT_APP_AUTH_URL +
     `/auth/realms/${realmId}/protocol/openid-connect/token`;
@@ -32,7 +32,7 @@ export const getAuthUrl = () => {
 };
 
 export const requestLogin = (isRedirect) => {
-  const realmId = localStorage.getItem(REALM_ID);
+  const realmId = localStorage.getItem(LOCAL_STORAGE_REALM_ID);
   const pathAuth =
     REACT_APP_AUTH_URL + `/auth/realms/${realmId}/protocol/openid-connect/auth`;
 
@@ -59,7 +59,7 @@ export const actionRefreshToken = (refreshToken = '') => {
   requestBody.append('client_id', CLIENT_ID);
   requestBody.append('refresh_token', refreshToken);
   requestBody.append('redirect_uri', window.location.origin);
-  const realmId = localStorage.getItem(REALM_ID);
+  const realmId = localStorage.getItem(LOCAL_STORAGE_REALM_ID);
 
   return api(
     {
@@ -141,9 +141,9 @@ export const actionGetTenantSetting = async () => {
   });
 
   // if (res && res.data && res.data.realm_id) {
-  //   localStorage.setItem(REALM_ID, res.data.realm_id);
+  //   localStorage.setItem(LOCAL_STORAGE_REALM_ID, res.data.realm_id);
   // }
-  localStorage.setItem(REALM_ID, CONFIG_SERVER.REALM_ID);
+  localStorage.setItem(LOCAL_STORAGE_REALM_ID, CONFIG_SERVER.REALM_ID);
 
   return res;
 };
@@ -163,7 +163,7 @@ export const getAccountInfo = () => {
 
 export const actionLogout = async () => {
   try {
-    const realmId = localStorage.getItem(REALM_ID);
+    const realmId = localStorage.getItem(LOCAL_STORAGE_REALM_ID);
 
     const url =
       REACT_APP_AUTH_URL +
@@ -171,7 +171,7 @@ export const actionLogout = async () => {
 
     cookie.remove(REFRESH_TOKEN);
     cookie.remove(TOKEN);
-    localStorage.removeItem(REALM_ID);
+    localStorage.removeItem(LOCAL_STORAGE_REALM_ID);
     window.location.href = url;
   } catch (error) {}
 };

@@ -5,7 +5,7 @@ import {
   CONFIG_SERVER,
   TOKEN,
   REFRESH_TOKEN,
-  REALM_ID,
+  LOCAL_STORAGE_REALM_ID,
 } from '../constants/config';
 import {
   actionGetPermissionToken,
@@ -45,7 +45,7 @@ async function callRefreshToken(refreshToken) {
 }
 
 const checkAuthorizationFlow = async () => {
-  let reamId = localStorage.getItem(REALM_ID);
+  let reamId = localStorage.getItem(LOCAL_STORAGE_REALM_ID);
 
   if (!reamId) {
     const res = await actionGetTenantSetting();

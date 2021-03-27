@@ -14,7 +14,7 @@ export const VINLAB_LOCALE = 'vinlab-locale';
 
 export const TOKEN = 'token';
 export const POLLING_TOKEN_TIMER = 4 * 60000;
-export const REALM_ID = 'realm_id';
+export const LOCAL_STORAGE_REALM_ID = 'realm_id';
 
 const {
   OIDC_ACCESS_TOKEN_URI,
@@ -28,6 +28,7 @@ const {
   OIDC_AUDIENCE,
   REACT_APP_BACKEND_URL,
   REACT_APP_AUTH_URL,
+  OIDC_REALM_ID
 } = process.env || {};
 
 
@@ -44,7 +45,7 @@ export let CONFIG_SERVER = {
   RESPONSE_TYPE: 'code',
   AUDIENCE: OIDC_AUDIENCE || 'console-api',
   SCOPE: OIDC_SCOPE || '',
-  REALM_ID: 'ai-platform',
+  REALM_ID: OIDC_REALM_ID || 'ai-platform',
   STATE: Math.random().toString(36).substring(2),
   OIDC_ACCESS_TOKEN_URI,
   OIDC_AUTHORIZATION_URI,
