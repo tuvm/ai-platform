@@ -263,7 +263,10 @@ export const API_SCOPES = [
 
 export const CHART_COLORS = {
   lungct: '#97DAFF',
-  mammogram: '#C4B5FF',
+  mammogram: '#eb34b1',
   chestxray: '#AAFAD8',
   liverct: '#FFC552',
+  brainct: '#eb4c34',
+  brainmri: '#344feb',
+  spinexr: '#C4B5FF'
 };
