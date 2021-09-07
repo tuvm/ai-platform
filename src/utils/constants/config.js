@@ -218,6 +218,9 @@ export const KEY_LIST = {
   mammogram: 'Mammography',
   chestxray: 'Chest Xray',
   liverct: 'Liver CT',
+  brainct: 'Brain CT',
+  brainmri: 'Brain MRI',
+  spinexr: 'Spine XR',
 };
 
 export const API_SCOPES = [
@@ -240,6 +243,21 @@ export const API_SCOPES = [
     key: 'liverct',
     name: 'API ' + KEY_LIST.liverct,
     description: 'IDS_LIVER_SCOPE_DESCRIPTION',
+  },
+  {
+    key: 'brainct',
+    name: 'API ' + KEY_LIST.brainct,
+    description: 'IDS_BRAIN_CT_SCOPE_DESCRIPTION',
+  },
+  {
+    key: 'brainmri',
+    name: 'API ' + KEY_LIST.brainmri,
+    description: 'IDS_BRAIN_MRI_SCOPE_DESCRIPTION',
+  },
+  {
+    key: 'spinexr',
+    name: 'API ' + KEY_LIST.spinexr,
+    description: 'IDS_SPINE_SCOPE_DESCRIPTION',
   },
 ];
 
