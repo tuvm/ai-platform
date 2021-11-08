@@ -4,17 +4,13 @@ import { UserOutlined } from '@ant-design/icons';
 import { withRouter } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
 import { connect } from 'react-redux';
-import { routes, ROLES } from '../../../utils/constants/config';
+import { routes, ROLES, APP_ROUTES } from '../../../utils/constants/config';
 import {
   IconCollapse,
 } from '../../../assets';
 // import { checkRole } from '../../../view/system/systemAction';
 import './LeftMenu.scss';
 import {
-  HomeOutlined,
-  ApiOutlined,
-  KeyOutlined,
-  FileTextOutlined,
   SettingOutlined,
 } from '@ant-design/icons';
 
@@ -43,36 +39,6 @@ const LeftMenu = (props) => {
     setSelectedKeys(key);
     props.history.push(key);
   };
-
-  const menuList = [
-    {
-      icon: <HomeOutlined />,
-      text: t("IDS_DASHBOARD"),
-      route: routes.DASHBOARD,
-      isShow: true,
-      hasSubmenu: true,
-      submenu: [
-        {
-          icon: <ApiOutlined />,
-          text: t("IDS_DASHBOARD_PROJECTS"),
-          route: routes.DASHBOARD_MENU.PROJECTS,
-          isShow: true,
-        }
-      ]
-    },
-    {
-      icon: <ApiOutlined />,
-      text: t("IDS_API_AND_SERVICE"),
-      route: routes.API_AND_SERVICES,
-      isShow: true,
-    },
-    {
-      icon: <KeyOutlined />,
-      text: t("IDS_API_KEY"),
-      route: routes.API_KEYS,
-      isShow: true,
-    },
-  ];
 
   return (
     <Layout.Sider
@@ -104,22 +70,22 @@ const LeftMenu = (props) => {
             // className="menu-list"
             theme="light"
           >
-            {menuList.map((el) => {
+            {APP_ROUTES.map((el) => {
               if (el.isShow) {
                 if (!el.hasSubmenu) {
                   return (
                     <Menu.Item
-                      key={el.route}
+                      key={el.pathname}
                       icon={el.icon}
                     >
-                      {el.text}
+                      {t(el.name)}
                     </Menu.Item>
                   );
                 }
                 return (
-                  <SubMenu key={el.route} icon={<SettingOutlined />} title={el.text}>
+                  <SubMenu key={el.pathname} icon={<SettingOutlined />} title={t(el.name)}>
                     {el.submenu && el.submenu.map(sub => (
-                      <Menu.Item key={sub.route}>{sub.text}</Menu.Item>
+                      <Menu.Item key={sub.pathname}>{t(sub.name)}</Menu.Item>
                     ))}
                   </SubMenu>
                 )

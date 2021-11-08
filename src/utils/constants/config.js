@@ -82,7 +82,7 @@ export const APP_ROUTES = [
     icon: <HomeOutlined />,
     name: 'IDS_HOME',
     pathname: routes.HOME,
-    isShow: true,
+    isShow: false,
   },
   {
     icon: <HomeOutlined />,
@@ -115,13 +115,13 @@ export const APP_ROUTES = [
     icon: <FileTextOutlined />,
     name: 'IDS_BILLING',
     pathname: routes.BILLING,
-    isShow: true,
+    isShow: false,
   },
   {
     icon: <SettingOutlined />,
     name: 'IDS_SETTING',
     pathname: routes.SETTING,
-    isShow: true,
+    isShow: false,
   },
 ];
 
