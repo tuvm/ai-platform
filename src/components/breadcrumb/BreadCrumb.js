@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Breadcrumb } from 'antd';
 import last from 'lodash/last';
 import { withRouter } from 'react-router-dom';
-import get from 'lodash/get';
+// import get from 'lodash/get';
 import { APP_ROUTES } from '../../utils/constants/config';
 import { useTranslation } from 'react-i18next';
 import './BreadCrumb.scss';
@@ -14,9 +14,25 @@ const BreadCrumb = (props) => {
 
   useEffect(() => {
     const { pathname } = location;
-    const filter = APP_ROUTES.find(item => item.pathname === pathname)
-    const name = get(filter, 'name');
-    const list = ['IDS_APP_NAME', name];
+    let routeTree = []
+    APP_ROUTES.forEach(item => {
+      if (item.pathname === pathname) {
+        routeTree.push(item.name)
+        return;
+      } else if(item.submenu) {
+        const submenu = item.submenu;
+        submenu.forEach(subItem => {
+          if (subItem.pathname === pathname) {
+            routeTree.push(item.name)
+            routeTree.push(subItem.name)
+            return;
+          }
+        })
+      }
+    })
+
+    // const name = get(routeTree, 'name');
+    const list = ['IDS_APP_NAME', ...routeTree];
     setBreadcrumbList(list);
   }, [location]);
 

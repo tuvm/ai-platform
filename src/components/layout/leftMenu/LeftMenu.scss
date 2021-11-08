@@ -113,6 +113,7 @@
 
       .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
         background: $app-light-blue;
+        color: $app-primary-color;
         box-shadow: inset -3px 0px 0px #39C2D7;
         &::after {
           border: none;

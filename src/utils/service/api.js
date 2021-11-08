@@ -108,12 +108,12 @@ request.interceptors.response.use(
     return response;
   },
   (error) => {
-    const errorCode = get(error, 'response.status');
-    if (errorCode === 401 || errorCode === 403) {
-      checkAuthorizationFlow();
-    } else {
-      return Promise.reject(error);
-    }
+    // const errorCode = get(error, 'response.status');
+    // if (errorCode === 401 || errorCode === 403) {
+    //   checkAuthorizationFlow();
+    // } else {
+    //   return Promise.reject(error);
+    // }
   }
 );
 

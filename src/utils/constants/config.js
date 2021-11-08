@@ -71,6 +71,10 @@ export const routes = {
   API_KEYS: '/api-keys',
   BILLING: '/billing',
   SETTING: '/setting',
+  DASHBOARD:'/dashboard',
+  DASHBOARD_MENU: {
+    PROJECTS: '/dashboard/projects'
+  }
 };
 
 export const APP_ROUTES = [
@@ -79,6 +83,21 @@ export const APP_ROUTES = [
     name: 'IDS_HOME',
     pathname: routes.HOME,
     isShow: true,
+  },
+  {
+    icon: <HomeOutlined />,
+    name: "IDS_DASHBOARD",
+    pathname: routes.DASHBOARD,
+    isShow: true,
+    hasSubmenu: true,
+    submenu: [
+      {
+        icon: <ApiOutlined />,
+        name: "IDS_DASHBOARD_PROJECTS",
+        pathname: routes.DASHBOARD_MENU.PROJECTS,
+        isShow: true,
+      }
+    ]
   },
   {
     icon: <ApiOutlined />,

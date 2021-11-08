@@ -25,9 +25,9 @@ const App = (props) => {
     initialRequest();
   }, []);
 
-  if (isEmpty(props.profile)) {
-    return <Loading />;
-  }
+  // if (isEmpty(props.profile)) {
+  //   return <Loading />;
+  // }
 
   return (
     <div className="app-container">

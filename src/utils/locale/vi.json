@@ -4,6 +4,8 @@
   "IDS_COMMON_LOGOUT": "Đăng xuất",
   "IDS_CREATE_PROJECT": "Create project",
   "IDS_MY_PROJECTS": "Dự án",
+  "IDS_DASHBOARD": "Bảng điều khiển",
+  "IDS_DASHBOARD_PROJECTS": "Dự án",
   "IDS_APP_NAME": "Vindr AI Platform",
   "IDS_API_AND_SERVICE": "APIs & Services",
   "IDS_API_KEY": "Tạo mã",

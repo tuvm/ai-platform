@@ -17,6 +17,9 @@ import {
   FileTextOutlined,
   SettingOutlined,
 } from '@ant-design/icons';
+
+const { SubMenu } = Menu;
+
 const LeftMenu = (props) => {
   const { location, userInfo } = props;
   const [collapsed, setCollapsed] = useState(false);
@@ -42,12 +45,21 @@ const LeftMenu = (props) => {
   };
 
   const menuList = [
-    // {
-    //   icon: <HomeOutlined />,
-    //   text: t("IDS_HOME"),
-    //   route: routes.HOME,
-    //   isShow: true,
-    // },
+    {
+      icon: <HomeOutlined />,
+      text: t("IDS_DASHBOARD"),
+      route: routes.DASHBOARD,
+      isShow: true,
+      hasSubmenu: true,
+      submenu: [
+        {
+          icon: <ApiOutlined />,
+          text: t("IDS_DASHBOARD_PROJECTS"),
+          route: routes.DASHBOARD_MENU.PROJECTS,
+          isShow: true,
+        }
+      ]
+    },
     {
       icon: <ApiOutlined />,
       text: t("IDS_API_AND_SERVICE"),
@@ -60,18 +72,6 @@ const LeftMenu = (props) => {
       route: routes.API_KEYS,
       isShow: true,
     },
-    // {
-    //   icon: <FileTextOutlined />,
-    //   text: t("IDS_BILLING"),
-    //   route: routes.BILLING,
-    //   isShow: true,
-    // },
-    // {
-    //   icon: <SettingOutlined />,
-    //   text: t("IDS_SETTING"),
-    //   route: routes.SETTING,
-    //   isShow: true,
-    // },
   ];
 
   return (
@@ -101,24 +101,28 @@ const LeftMenu = (props) => {
             onClick={handleMenuClick}
             selectedKeys={[selectedKeys]}
             mode="inline"
-            className="menu-list"
+            // className="menu-list"
+            theme="light"
           >
             {menuList.map((el) => {
               if (el.isShow) {
+                if (!el.hasSubmenu) {
+                  return (
+                    <Menu.Item
+                      key={el.route}
+                      icon={el.icon}
+                    >
+                      {el.text}
+                    </Menu.Item>
+                  );
+                }
                 return (
-                  <Menu.Item
-                    key={el.route}
-                    icon={
-                      el.icon ? (
-                        <span role="img" className="anticon">
-                          {el.icon}
-                        </span>
-                      ) : null
-                    }
-                  >
-                    {el.text}
-                  </Menu.Item>
-                );
+                  <SubMenu key={el.route} icon={<SettingOutlined />} title={el.text}>
+                    {el.submenu && el.submenu.map(sub => (
+                      <Menu.Item key={sub.route}>{sub.text}</Menu.Item>
+                    ))}
+                  </SubMenu>
+                )
               }
               return null;
             })}
