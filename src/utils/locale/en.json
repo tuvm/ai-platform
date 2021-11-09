@@ -134,5 +134,6 @@
   "IDS_SUMMARY": "Summary",
   "IDS_CREATE_API_KEY": "Create API Key",
   "IDS_PROJECT_CREATE_PROJECT_TITLE": "Let's start with a name for your project",
-  "IDS_ADD_PROJECT": "Add project"
+  "IDS_ADD_PROJECT": "Add project",
+  "IDS_DASHBOARD_ANALYSIS": "Analysis"
 }

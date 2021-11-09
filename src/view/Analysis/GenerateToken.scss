@@ -1,0 +1,58 @@
+@import '../../variables.scss';
+
+$text-color: #8C8C8C;
+
+.generate-token-left-side {
+    max-width: 250px;
+    h4 {
+        color: $app-primary-color;
+        font-weight: 600;
+    }
+    p {
+        color: $text-color;
+        font-size: 12px;
+    }
+}
+
+.generate-token-right-side {
+    max-width: 800px;
+    .title {
+        color: $app-primary-color;
+        margin-bottom: 8px;
+    }
+    .sub-checkbox {
+        padding-left: 24px;
+        color: $text-color;
+        font-size: 12px;
+        margin: 0;
+    }
+    .generate-form {
+        display: flex;
+        justify-content: space-between;
+        .generate-input {
+            display: flex;
+            width: 60%;
+        }
+    }
+    .ant-form-item {
+        margin-bottom: 0;
+    }
+    .section {
+        margin-top: 15px;
+        .ant-checkbox-wrapper + .ant-checkbox-wrapper {
+            margin-left: 0;
+        }
+    }
+}
+
+@media all and (max-width: 768px) {
+    .generate-token-right-side {
+        .generate-form {
+            display: inline;
+            .generate-input {
+                margin-top: 10px;
+                width: 100%;
+            }
+        }
+    }
+}

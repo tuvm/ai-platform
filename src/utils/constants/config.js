@@ -73,7 +73,8 @@ export const routes = {
   SETTING: '/setting',
   DASHBOARD:'/dashboard',
   DASHBOARD_MENU: {
-    PROJECTS: '/dashboard/projects'
+    PROJECTS: '/dashboard/projects',
+    ANALYSIS: '/dashboard/analysis'
   }
 };
 
@@ -95,6 +96,12 @@ export const APP_ROUTES = [
         icon: <ApiOutlined />,
         name: "IDS_DASHBOARD_PROJECTS",
         pathname: routes.DASHBOARD_MENU.PROJECTS,
+        isShow: true,
+      },
+      {
+        icon: <ApiOutlined />,
+        name: "IDS_DASHBOARD_ANALYSIS",
+        pathname: routes.DASHBOARD_MENU.ANALYSIS,
         isShow: true,
       }
     ]
