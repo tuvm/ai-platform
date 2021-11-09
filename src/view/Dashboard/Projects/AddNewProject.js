@@ -37,9 +37,7 @@ export default function ProjectBlock() {
     };
 
     const onSave = () => {
-        form.setFieldsValue({
-            'Project ID': changeToSlug(form.getFieldValue('Project name')) + '-' + makeID(4),
-        });
+        //  TODO
     };
 
     const handleOnchange = () => {
@@ -97,6 +95,11 @@ export default function ProjectBlock() {
                             label={t('IDS_PROJECT_NAME')}
                             rules={[
                                 { required: true },
+                                { pattern: new RegExp(
+                                    /^[a-zA-Z@~`!@#$%^&*()_=+\\\\';:\"\\/?>.<,-]+$/i
+                                  ),
+                                  message: "Only alphabets and numbers are allowed"
+                                },
                                 { type: 'string', min: 4 },
                             ]}
                             onChange={handleOnchange}
@@ -109,6 +112,11 @@ export default function ProjectBlock() {
                             label={t('Project ID')}
                             rules={[
                                 { required: true },
+                                { pattern: new RegExp(
+                                    /^[a-zA-Z@~`!@#$%^&*()_=+\\\\';:\"\\/?>.<,-]+$/i
+                                  ),
+                                  message: "Only alphabets and numbers are allowed"
+                                },
                                 { type: 'string', min: 4 },
                             ]}
                             extra="Your project ID is a unique identifier. You cannot change your project ID after project created."
