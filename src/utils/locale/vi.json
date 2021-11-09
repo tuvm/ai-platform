@@ -2,7 +2,7 @@
   "IDS_COMMON_CHANGE_LANGUAGE": "Thay đổi ngôn ngữ",
   "IDS_COMMON_LOGIN": "Đăng nhập",
   "IDS_COMMON_LOGOUT": "Đăng xuất",
-  "IDS_CREATE_PROJECT": "Create project",
+  "IDS_CREATE_PROJECT": "Tạo một dự án",
   "IDS_MY_PROJECTS": "Dự án",
   "IDS_DASHBOARD": "Bảng điều khiển",
   "IDS_DASHBOARD_PROJECTS": "Dự án",
@@ -132,5 +132,7 @@
   "IDS_API_KEY_REVOKE_SUCCESS": "Thu hồi API thành công",
   "IDS_MONTH": "Tháng",
   "IDS_SUMMARY": "Tóm tắt",
-  "IDS_CREATE_API_KEY": "Tạo API key"
+  "IDS_CREATE_API_KEY": "Tạo API key",
+  "IDS_PROJECT_CREATE_PROJECT_TITLE": "Hãy bắt đầu với tên của dự án",
+  "IDS_ADD_PROJECT": "Thêm dự án"
 }

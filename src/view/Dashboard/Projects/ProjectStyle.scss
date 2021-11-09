@@ -1,0 +1,13 @@
+.project-page-inner {
+    max-width: 1366px;
+    margin: auto;
+}
+.project-block {
+    min-height: 150px;
+}
+.add-new-project {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

@@ -2,7 +2,7 @@
   "IDS_COMMON_CHANGE_LANGUAGE": "Change language",
   "IDS_COMMON_LOGIN": "Login",
   "IDS_COMMON_LOGOUT": "Logout",
-  "IDS_CREATE_PROJECT": "Create project",
+  "IDS_CREATE_PROJECT": "Create a project",
   "IDS_MY_PROJECTS": "My Projects",
   "IDS_DASHBOARD": "Dashboard",
   "IDS_DASHBOARD_PROJECTS": "Projects",
@@ -132,5 +132,7 @@
   "IDS_API_KEY_REVOKE_SUCCESS": "Revoke API Key successfully",
   "IDS_MONTH": "Month",
   "IDS_SUMMARY": "Summary",
-  "IDS_CREATE_API_KEY": "Create API Key"
+  "IDS_CREATE_API_KEY": "Create API Key",
+  "IDS_PROJECT_CREATE_PROJECT_TITLE": "Let's start with a name for your project",
+  "IDS_ADD_PROJECT": "Add project"
 }
