@@ -27,6 +27,26 @@ const system = (state = initialState, action) => {
       return { ...state, isFetchingUser: action.payload };
     case actions.FETCH_API_KEY_LIST:
       return { ...state, apikeys: action.payload };
+    case actions.FETCH_PROJECT_LIST:
+      return {
+        ...state,
+        isFetchingProjectList: true,
+        projectListError: false
+      };
+    case actions.FETCH_PROJECT_LIST_SUCCESS:
+      return {
+        ...state,
+        projectListLoading: true,
+        projectListLoaded: true,
+        projectList: action.payload
+      };
+
+    case actions.FETCH_PROJECT_LIST_ERROR:
+      return {
+        ...state,
+        projectListLoading: false,
+        projectListError: true
+      };
     default:
       return state;
   }
