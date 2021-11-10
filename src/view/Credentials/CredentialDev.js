@@ -65,9 +65,9 @@ export default function Analysis(data = {}) {
 
             </div>
             <div className="credential-key-input">
-                <Input value={data.apikey} style={{ width: '97%' }} disabled />
+                <Input value={data.apikey} style={{ paddingRight: '40px' }} disabled />
                 <CopyOutlined
-                    style={{ fontSize: '24px' }}
+                    style={{ fontSize: '20px' }}
                     className="copy-button"
                     onClick={handleCopy}
                 />

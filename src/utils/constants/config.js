@@ -287,6 +287,37 @@ export const API_SCOPES = [
   },
 ];
 
+export const VINDR_MODULES = [
+  {
+    name: 'Vindr ChestXray',
+    key: 'chestxray'
+  },
+  {
+    name: 'Vindr Mammo',
+    key: 'mammo'
+  },
+  {
+    name: 'Vindr SpineXR',
+    key: 'spinexr'
+  },
+  {
+    name: 'Vindr LungCT',
+    key: 'lungct'
+  },
+  {
+    name: 'Vindr LiverCT',
+    key: 'liverct'
+  },
+  {
+    name: 'Vindr BrainCT',
+    key: 'brainct'
+  },
+  {
+    name: 'Vindr BrainMRI',
+    key: 'brainmri'
+  }
+]
+
 export const CHART_COLORS = {
   lungct: '#97DAFF',
   mammogram: '#eb34b1',

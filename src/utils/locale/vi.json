@@ -135,5 +135,6 @@
   "IDS_CREATE_API_KEY": "Tạo API key",
   "IDS_PROJECT_CREATE_PROJECT_TITLE": "Hãy bắt đầu với tên của dự án",
   "IDS_ADD_PROJECT": "Thêm dự án",
-  "IDS_DASHBOARD_ANALYSIS": "Phân tích"
+  "IDS_DASHBOARD_ANALYSIS": "Phân tích",
+  "IDS_CREATE_CREDENTIAL": "Tạo key"
 }
