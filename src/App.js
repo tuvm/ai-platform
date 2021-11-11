@@ -5,6 +5,7 @@ import isEmpty from 'lodash/isEmpty';
 import Routes from './Routes';
 import { LeftMenu, Header } from './components/layout';
 import Loading from './components/loading/Loading';
+import get from 'lodash/get';
 import {
   getAccountInfo,
   actionGetTenantSetting,
@@ -12,6 +13,8 @@ import {
 import BreadCrumb from './components/breadcrumb/BreadCrumb';
 import AppHelmet from './components/Helmet';
 import './App.scss';
+import { PAGES_HAS_NO_LAYOUT } from './utils/constants/config'
+import { withRouter } from "react-router-dom";
 
 const initialRequest = async () => {
   const res = await actionGetTenantSetting();
@@ -29,6 +32,8 @@ const App = (props) => {
   //   return <Loading />;
   // }
 
+  const pathname = get(props, 'location.pathname')
+
   return (
     <div className="app-container">
       <Loading />
@@ -36,10 +41,10 @@ const App = (props) => {
       <Layout>
         <Header />
         <Layout>
-          <LeftMenu />
+          {PAGES_HAS_NO_LAYOUT.includes(pathname) ? null : <LeftMenu />}
 
           <Layout.Content className="content-container">
-            <BreadCrumb />
+            { PAGES_HAS_NO_LAYOUT.includes(pathname) ? null : <BreadCrumb /> }
             <div className="content-inner">
               <Routes />
             </div>
@@ -55,4 +60,4 @@ export default connect(
     profile: state.system.profile,
   }),
   {}
-)(App);
+)(withRouter(App));

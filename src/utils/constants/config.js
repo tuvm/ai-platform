@@ -74,8 +74,9 @@ export const routes = {
   DASHBOARD:'/dashboard',
   DASHBOARD_MENU: {
     PROJECTS: '/dashboard/projects',
-    ANALYSIS: '/dashboard/analysis'
-  }
+    // ANALYSIS: '/dashboard/analysis'
+  },
+  PROJECT_SETTING: '/project-setting'
 };
 
 export const APP_ROUTES = [
@@ -85,23 +86,23 @@ export const APP_ROUTES = [
     pathname: routes.HOME,
     isShow: false,
   },
+  // {
+  //   icon: <ApiOutlined />,
+  //   name: "IDS_PROJECTS",
+  //   pathname: routes.PROJECTS,
+  //   isShow: true,
+  // },
   {
     icon: <HomeOutlined />,
     name: "IDS_DASHBOARD",
     pathname: routes.DASHBOARD,
     isShow: true,
-    hasSubmenu: true,
+    hasSubmenu: false,
     submenu: [
       {
         icon: <ApiOutlined />,
         name: "IDS_DASHBOARD_PROJECTS",
         pathname: routes.DASHBOARD_MENU.PROJECTS,
-        isShow: true,
-      },
-      {
-        icon: <ApiOutlined />,
-        name: "IDS_DASHBOARD_ANALYSIS",
-        pathname: routes.DASHBOARD_MENU.ANALYSIS,
         isShow: true,
       }
     ]
@@ -110,12 +111,18 @@ export const APP_ROUTES = [
     icon: <ApiOutlined />,
     name: 'IDS_API_AND_SERVICE',
     pathname: routes.API_AND_SERVICES,
-    isShow: true,
+    isShow: false,
   },
   {
     icon: <KeyOutlined />,
     name: 'IDS_API_KEY',
     pathname: routes.API_KEYS,
+    isShow: false,
+  },
+  {
+    icon: <KeyOutlined />,
+    name: 'IDS_PROJECT_SETTING',
+    pathname: routes.PROJECT_SETTING,
     isShow: true,
   },
   {
@@ -327,3 +334,6 @@ export const CHART_COLORS = {
   brainmri: '#344feb',
   spinexr: '#C4B5FF'
 };
+
+
+export const PAGES_HAS_NO_LAYOUT = ['/', '/projects']

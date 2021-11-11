@@ -9,7 +9,7 @@ import './Credentials.scss';
 
 const { Title } = Typography;
 
-export default function Analysis() {
+export default function ProjectSetting() {
     const [openModal, setOpenModal] = useState(false);
     const { TabPane } = Tabs;
     const { t } = useTranslation();

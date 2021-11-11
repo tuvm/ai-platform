@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card, Modal, Input } from 'antd';
 import { PlusOutlined } from '@ant-design/icons'
 import { useTranslation } from "react-i18next";
-import { changeToSlug, makeID } from '../../../utils/helpers';
+import { changeToSlug, makeID } from '../../utils/helpers';
 
 import { Form, message, Button } from 'antd';
 

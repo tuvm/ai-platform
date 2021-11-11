@@ -1,5 +1,5 @@
 import get from 'lodash/get';
-import api from '../../../utils/service/api';
+import api from '../../utils/service/api';
 // import * as actions from '../../../utils/constants/actions';
 
 export const actionCreateProject = ({ params, payload }) => {
