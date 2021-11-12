@@ -11,6 +11,14 @@ export const actionCreateProject = ({ params, payload }) => {
     })
 }
 
+export const actionGetProjectDetail = ({ payload }) => {
+    const url = `/projects/detail/${payload.projectId}`;
+    return api({
+        url,
+        method: 'GET'
+    })
+}
+
 export const actionGetProjectList = () => async dispatch => {
     const url = '/projects/list';
     dispatch(fetchProjectList());

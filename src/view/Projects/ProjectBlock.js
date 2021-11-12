@@ -1,9 +1,10 @@
 import React from 'react';
 import { Card, Skeleton } from 'antd';
 import './ProjectStyle.scss';
-import { CloudFilled } from '@ant-design/icons';
+import { CloudOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { actionGetProjectDetail } from './actions';
 
 
 const { Meta } = Card;
@@ -11,6 +12,8 @@ const { Meta } = Card;
 function ProjectBlock(props) {
     const handleActiveProject = () => {
         props.history.push(`/projects/${props.data.project_id}/dashboard`)
+        const payload = { projectId: props.data.project_id }
+        actionGetProjectDetail({ payload });
     }
 
     if (!props.data) {
@@ -26,7 +29,7 @@ function ProjectBlock(props) {
             <div className="project-block">
                 <Meta title={props.data.name} description={props.data.project_id} />
             </div>
-            <CloudFilled key="setting" style={{ fontSize: '20px' }} />
+            <CloudOutlined key="setting" style={{ fontSize: '20px' }} />
         </Card>
     );
 }
