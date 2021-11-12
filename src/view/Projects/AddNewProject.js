@@ -5,8 +5,10 @@ import { useTranslation } from "react-i18next";
 import { changeToSlug, makeID } from '../../utils/helpers';
 
 import { Form, message, Button } from 'antd';
+import { actionCreateProject } from './actions';
 
 import './ProjectStyle.scss';
+import { get } from 'lodash-es';
 
 export default function ProjectBlock() {
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -29,7 +31,7 @@ export default function ProjectBlock() {
 
 
     const onFinish = () => {
-        message.success('Submit success!');
+        console.log(form)
     };
 
     const onFinishFailed = () => {
@@ -38,15 +40,24 @@ export default function ProjectBlock() {
 
     const onSave = () => {
         //  TODO
+        const values = form.getFieldsValue();
+        const data = {
+            "project_name": get(values, 'Project name'),
+            "project_id": get(values, 'Project ID'),
+        }
+
+        actionCreateProject({ payload: data }).then(() => {
+            message.success('Create project sucessfully')
+        });
     };
 
     const handleOnchange = () => {
         const projectName = form.getFieldValue('Project name')
         let projectId = ''
         if (projectName) {
-            projectId =  changeToSlug(form.getFieldValue('Project name')) + '-' + makeID(4)
+            projectId = changeToSlug(form.getFieldValue('Project name')) + '-' + makeID(4)
         }
-        
+
         form.setFieldsValue({
             'Project ID': projectId,
         });
@@ -60,7 +71,7 @@ export default function ProjectBlock() {
                 style={{ width: '100%', height: '100%', position: 'relative' }}
                 onClick={showModal}
             >
-                <div className="add-new-project" >
+                <div className="add-new-project">
                     <PlusOutlined style={{ fontSize: '5em' }} />
                     <div>{t('IDS_ADD_PROJECT')}</div>
                 </div>
@@ -96,7 +107,7 @@ export default function ProjectBlock() {
                             rules={[
                                 { required: true },
                                 { pattern: new RegExp(
-                                    /^[a-zA-Z@~`!@#$%^&*()_=+\\\\';:\"\\/?>.<,-]+$/i
+                                    /^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/i
                                   ),
                                   message: "Only alphabets and numbers are allowed"
                                 },
@@ -112,10 +123,11 @@ export default function ProjectBlock() {
                             label={t('Project ID')}
                             rules={[
                                 { required: true },
-                                { pattern: new RegExp(
-                                    /^[a-zA-Z@~`!@#$%^&*()_=+\\\\';:\"\\/?>.<,-]+$/i
-                                  ),
-                                  message: "Only alphabets and numbers are allowed"
+                                {
+                                    pattern: new RegExp(
+                                        /^[a-zA-Z@~`!@#$%^&*()_=+\\\\';:\"\\/?>.<,-]+$/i
+                                    ),
+                                    message: "Only alphabets and numbers are allowed"
                                 },
                                 { type: 'string', min: 4 },
                             ]}

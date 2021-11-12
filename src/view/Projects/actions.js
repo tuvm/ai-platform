@@ -3,9 +3,9 @@ import api from '../../utils/service/api';
 // import * as actions from '../../../utils/constants/actions';
 
 export const actionCreateProject = ({ params, payload }) => {
-    const url = '/projects/create';
+    const url = '/projects/new';
     try {
-        api({
+        return api({
             url,
             data: payload,
             method: "POST",
@@ -15,17 +15,17 @@ export const actionCreateProject = ({ params, payload }) => {
     }
 }
 
-export const actionGetProjectList = async () => {
+export const actionGetProjectList = () => {
     const url = '/projects/list';
 
     try {
-        const { data } = await api({
+        return api({
             url,
             method: 'GET',
         });
 
-        const payload = get(data, 'data') || [];
-        return payload;
+        // const payload = get(data, 'data') || [];
+        // return payload;
     } catch (error) {
         console.log(error);
     }

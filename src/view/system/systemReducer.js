@@ -9,6 +9,7 @@ const initialState = {
   users: {},
   isFetchingUser: false,
   apikeys: [],
+  activeProject: null,
 };
 
 const system = (state = initialState, action) => {
@@ -47,6 +48,11 @@ const system = (state = initialState, action) => {
         projectListLoading: false,
         projectListError: true
       };
+    case actions.SET_ACTIVE_PROJECT:
+      return {
+        ...state,
+        activeProject: action.payload
+      }
     default:
       return state;
   }

@@ -3,6 +3,7 @@ import { Menu, Layout, Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { withRouter } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
+import { useParams } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { routes, ROLES, APP_ROUTES } from '../../../utils/constants/config';
 import {
@@ -36,8 +37,10 @@ const LeftMenu = (props) => {
   };
 
   const handleMenuClick = ({ key }) => {
+    const { pathname } = location;
     setSelectedKeys(key);
-    props.history.push(key);
+    console.log({ pathname })
+    // props.history.push(key);
   };
 
   return (

@@ -5,29 +5,19 @@ import AddNewProject from './AddNewProject';
 
 const { Title } = Typography;
 
-export default function RecentProjects() {
+export default function RecentProjects({ data }) {
     return (
         <>
-        <Title level={4}>Recent Projects</Title>
+            <Title level={4}>Recent Projects</Title>
             <Row gutter={[16, 16]}>
                 <Col className="gutter-row" sm={24} md={8}>
                     <AddNewProject />
                 </Col>
-                <Col className="gutter-row" sm={24} md={8}>
-                    <ProjectBlock />
-                </Col>
-                <Col className="gutter-row" sm={24} md={8}>
-                    <ProjectBlock />
-                </Col>
-                <Col className="gutter-row" sm={24} md={8}>
-                    <ProjectBlock />
-                </Col>
-                <Col className="gutter-row" sm={24} md={8}>
-                    <ProjectBlock />
-                </Col>
-                <Col className="gutter-row" sm={24} md={8}>
-                    <ProjectBlock />
-                </Col>
+                {data && data.data && data.data.map(pro => (
+                    <Col className="gutter-row" sm={24} md={8} key={pro.id}>
+                        <ProjectBlock data={pro} />
+                    </Col>
+                ))}
             </Row>
         </>
     );

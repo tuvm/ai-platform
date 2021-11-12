@@ -9,10 +9,11 @@ import ProjectSetting from './view/ProjectSetting';
 const Routes = (props) => {
   return (
     <Switch>
-      <Route exact from="/" component={Projects} />
-      <Route from={routes.PROJECTS} component={Projects} />
-      <Route path={`/project/:projectId/${routes.DASHBOARD}`} component={APIsAndServices} />
-      <Route path={`/project/:projectId/${routes.PROJECT_SETTING}`} component={ProjectSetting} />
+      <Route exact path="/" component={Projects} />
+      <Route exact path={routes.API_AND_SERVICES} component={APIsAndServices} />
+      <Route path="/projects/:projectId/dashboard" component={APIsAndServices} />
+      <Route path="/projects/:projectId/project-setting" component={ProjectSetting} />
+      <Route path="/projects" component={Projects} />
       {/* <Route exact path={routes.API_KEYS} component={APIKeys} /> */}
     </Switch>
   );
