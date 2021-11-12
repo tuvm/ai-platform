@@ -10,7 +10,7 @@ import {
 export const REFRESH_TOKEN = 'refresh_token';
 export const FIRST_REFRESH_TOKEN = 'first_refresh_token';
 export const EXPIRED_REFRESH_TOKEN = 60 * 60 * 1000;
-export const VINLAB_LOCALE = 'vinlab-locale';
+export const AI_PLATFORM_LOCALE = 'ai-platform-locale';
 
 export const TOKEN = 'token';
 export const POLLING_TOKEN_TIMER = 4 * 60000;

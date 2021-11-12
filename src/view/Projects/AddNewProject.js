@@ -2,17 +2,18 @@ import React, { useState } from 'react';
 import { Card, Modal, Input } from 'antd';
 import { PlusOutlined } from '@ant-design/icons'
 import { useTranslation } from "react-i18next";
+import { useDispatch } from 'react-redux';
+import { Form, message, Button } from 'antd';
+import get from 'lodash/get';
+import { actionCreateProject } from './actions';
 import { changeToSlug, makeID } from '../../utils/helpers';
 
-import { Form, message, Button } from 'antd';
-import { actionCreateProject } from './actions';
-
 import './ProjectStyle.scss';
-import { get } from 'lodash-es';
 
 export default function ProjectBlock() {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [form] = Form.useForm();
+    const dispatch = useDispatch();
 
     const { t } = useTranslation();
 
@@ -38,17 +39,17 @@ export default function ProjectBlock() {
         message.error('Submit failed!');
     };
 
-    const onSave = () => {
-        //  TODO
+    const onSave = async () => {
         const values = form.getFieldsValue();
         const data = {
             "project_name": get(values, 'Project name'),
             "project_id": get(values, 'Project ID'),
         }
 
-        actionCreateProject({ payload: data }).then(() => {
+        const res = await dispatch(actionCreateProject({ payload: data }))
+        if (res.status === 200) {
             message.success('Create project sucessfully')
-        });
+        }
     };
 
     const handleOnchange = () => {
@@ -68,7 +69,7 @@ export default function ProjectBlock() {
         <>
             <Card
                 hoverable
-                style={{ width: '100%', height: '100%', position: 'relative' }}
+                style={{ width: '100%', height: '100%', minHeight: 160, position: 'relative' }}
                 onClick={showModal}
             >
                 <div className="add-new-project">
@@ -106,10 +107,11 @@ export default function ProjectBlock() {
                             label={t('IDS_PROJECT_NAME')}
                             rules={[
                                 { required: true },
-                                { pattern: new RegExp(
-                                    /^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/i
-                                  ),
-                                  message: "Only alphabets and numbers are allowed"
+                                {
+                                    pattern: new RegExp(
+                                        /^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/i
+                                    ),
+                                    message: "Only alphabets and numbers are allowed"
                                 },
                                 { type: 'string', min: 4 },
                             ]}

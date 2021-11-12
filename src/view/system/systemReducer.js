@@ -1,15 +1,25 @@
 import cookie from 'js-cookie';
-import { VINLAB_LOCALE } from '../../utils/constants/config';
+import { AI_PLATFORM_LOCALE } from '../../utils/constants/config';
 import * as actions from '../../utils/constants/actions';
 
 const initialState = {
-  locale: cookie.get(VINLAB_LOCALE) || 'en',
+  locale: cookie.get(AI_PLATFORM_LOCALE) || 'en',
   isLoading: false,
   profile: {},
   users: {},
   isFetchingUser: false,
   apikeys: [],
   activeProject: null,
+  projectList: {
+    all: {
+      data: [],
+      count:0
+    },
+    recent: {
+      data: [],
+      count: 0
+    }
+  }
 };
 
 const system = (state = initialState, action) => {
@@ -31,13 +41,13 @@ const system = (state = initialState, action) => {
     case actions.FETCH_PROJECT_LIST:
       return {
         ...state,
-        isFetchingProjectList: true,
+        projectListLoading: true,
         projectListError: false
       };
     case actions.FETCH_PROJECT_LIST_SUCCESS:
       return {
         ...state,
-        projectListLoading: true,
+        projectListLoading: false,
         projectListLoaded: true,
         projectList: action.payload
       };

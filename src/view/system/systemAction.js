@@ -8,7 +8,7 @@ import {
   TOKEN,
   REFRESH_TOKEN,
   LOCAL_STORAGE_REALM_ID,
-  VINLAB_LOCALE,
+  AI_PLATFORM_LOCALE,
   // OIDC_SETTINGS,
 } from '../../utils/constants/config';
 import cookie from 'js-cookie';
@@ -181,7 +181,7 @@ export const actionShowLoading = () => ({ type: actionType.SHOW_LOADING });
 export const actionHideLoading = () => ({ type: actionType.HIDE_LOADING });
 
 export const actionChangeLanguage = (lang) => {
-  cookie.set(VINLAB_LOCALE, lang);
+  cookie.set(AI_PLATFORM_LOCALE, lang);
   return {
     type: actionType.CHANGE_LANGUAGE,
     payload: lang,
