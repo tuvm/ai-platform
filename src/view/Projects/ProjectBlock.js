@@ -10,7 +10,7 @@ const { Meta } = Card;
 
 function ProjectBlock(props) {
     const handleActiveProject = () => {
-        props.history.push('/projects/da-khoa-phu-tho-23as/dashboard')
+        props.history.push(`/projects/${props.data.project_id}/dashboard`)
     }
 
     if (!props.data) {

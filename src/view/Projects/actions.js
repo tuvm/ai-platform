@@ -2,20 +2,13 @@ import get from 'lodash/get';
 import api from '../../utils/service/api';
 import * as actions from '../../utils/constants/actions';
 
-export const actionCreateProject = ({ params, payload }) => async dispatch => {
+export const actionCreateProject = ({ params, payload }) => {
     const url = '/projects/new';
-    try {
-        const res = await api({
-            url,
-            data: payload,
-            method: "POST",
-        })
-
-        dispatch(actionGetProjectList())
-        return res;
-    } catch (error) {
-        console.log(error);
-    }
+    return api({
+        url,
+        data: payload,
+        method: "POST",
+    })
 }
 
 export const actionGetProjectList = () => async dispatch => {

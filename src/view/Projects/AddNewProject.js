@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from 'react-redux';
 import { Form, message, Button } from 'antd';
 import get from 'lodash/get';
-import { actionCreateProject } from './actions';
+import { actionCreateProject, actionGetProjectList } from './actions';
 import { changeToSlug, makeID } from '../../utils/helpers';
 
 import './ProjectStyle.scss';
@@ -46,10 +46,16 @@ export default function ProjectBlock() {
             "project_id": get(values, 'Project ID'),
         }
 
-        const res = await dispatch(actionCreateProject({ payload: data }))
-        if (res.status === 200) {
+        actionCreateProject({ payload: data }).then(res => {
             message.success('Create project sucessfully')
-        }
+            dispatch(actionGetProjectList());
+        }).catch(error => {
+            console.log(error)
+            const errorMessage = get(error, 'response.data.detail', '');
+            if (errorMessage.toLowerCase() === 'duplicate project id') {
+                message.error('Project ID already exist')
+            }
+        });
     };
 
     const handleOnchange = () => {
@@ -126,10 +132,10 @@ export default function ProjectBlock() {
                             rules={[
                                 { required: true },
                                 {
-                                    pattern: new RegExp(
-                                        /^[a-zA-Z@~`!@#$%^&*()_=+\\\\';:\"\\/?>.<,-]+$/i
-                                    ),
-                                    message: "Only alphabets and numbers are allowed"
+                                    // pattern: new RegExp(
+                                    //     /^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/i
+                                    // ),
+                                    // message: "Only alphabets and numbers are allowed"
                                 },
                                 { type: 'string', min: 4 },
                             ]}
