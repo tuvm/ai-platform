@@ -40,11 +40,12 @@ const Header = (props) => {
   return (
     <Layout.Header>
       <div className="header-container">
-        <div className="header-left-content">
-          <span role="img" className="anticon app-logo" onClick={goHomePage}>
+        <div className="header-left-content" onClick={goHomePage}>
+          {/* <span role="img" className="anticon app-logo" onClick={goHomePage}>
             <span className="logo-text">VinDr</span>
             <span className="logo-sub-text">AI Platform</span>
-          </span>
+          </span> */}
+          <img src="/ai-platform-logo.png" alt="logo" />
         </div>
 
         <div className="header-right-content">
