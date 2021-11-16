@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Menu, Layout, Avatar } from 'antd';
+import { Menu, Layout } from 'antd';
 // import { UserOutlined } from '@ant-design/icons';
 import { withRouter } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
 import { connect } from 'react-redux';
 import get from 'lodash/get';
-import { routes, APP_ROUTES } from '../../../utils/constants/config';
+import { APP_ROUTES } from '../../../utils/constants/config';
 import {
   IconCollapse,
 } from '../../../assets';
@@ -27,11 +27,13 @@ const LeftMenu = (props) => {
 
   useEffect(() => {
     const { pathname } = location;
-    if (pathname?.indexOf(routes.STUDY_LIST) > -1) {
-      setSelectedKeys(routes.PROJECTS);
-    } else {
-      setSelectedKeys(pathname);
-    }
+    const match = matchPath(pathname, {
+      path: '/projects/:projectId/:page',
+      exact: true,
+      strict: false
+    });
+    const page = get(match, 'params.page', '/');
+    setSelectedKeys('/' + page);
   }, [location]);
 
   const onCollapse = (isCollapse) => {
@@ -40,10 +42,8 @@ const LeftMenu = (props) => {
 
   const handleMenuClick = ({ key }) => {
     const { pathname } = location;
-    setSelectedKeys(key);
-    
     const match = matchPath(pathname, {
-      path: '/projects/:projectId/*',
+      path: '/projects/:projectId/:page',
       exact: true,
       strict: false
     });
