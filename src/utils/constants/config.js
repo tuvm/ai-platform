@@ -4,6 +4,7 @@ import {
   KeyOutlined,
   FileTextOutlined,
   SettingOutlined,
+  DashboardOutlined
 } from '@ant-design/icons';
 
 // common
@@ -93,7 +94,7 @@ export const APP_ROUTES = [
   //   isShow: true,
   // },
   {
-    icon: <HomeOutlined />,
+    icon: <DashboardOutlined />,
     name: "IDS_DASHBOARD",
     pathname: routes.DASHBOARD,
     isShow: true,

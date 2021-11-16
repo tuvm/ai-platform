@@ -11,9 +11,9 @@ const Routes = (props) => {
     <Switch>
       <Route exact path="/" component={Projects} />
       <Route exact path={routes.API_AND_SERVICES} component={APIsAndServices} />
-      <Route path="/projects/:projectId/dashboard" component={APIsAndServices} />
-      <Route path="/projects/:projectId/project-setting" component={ProjectSetting} />
-      <Route path="/projects" component={Projects} />
+      <Route exact path="/projects/:projectId/dashboard" component={APIsAndServices} />
+      <Route exact path="/projects/:projectId/project-setting" component={ProjectSetting} />
+      <Route exact path="/projects" component={Projects} />
       {/* <Route exact path={routes.API_KEYS} component={APIKeys} /> */}
     </Switch>
   );

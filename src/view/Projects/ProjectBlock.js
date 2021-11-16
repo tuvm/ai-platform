@@ -23,7 +23,7 @@ function ProjectBlock(props) {
     return (
         <Card
             hoverable
-            style={{ width: '100%' }}
+            style={{ width: '100%', minWidth: 150 }}
             onClick={handleActiveProject}
         >
             <div className="project-block">

@@ -12,11 +12,37 @@ const initialState = {
   activeProject: null,
   projectList: {
     all: {
-      data: [],
-      count:0
+      data: [
+        // {
+        //   id: '3123123213',
+        //   name: 'Da khoa Phú Thọ',
+        //   project_id: 'da-khoa-phu-tho',
+        //   owner: 'trung'
+        // },
+        // {
+        //   id: '3123123213',
+        //   name: 'Da khoa Thanh Ba',
+        //   project_id: 'da-khoa-thanh-ba',
+        //   owner: 'trung'
+        // }
+      ],
+      count: 0
     },
     recent: {
-      data: [],
+      data: [
+        // {
+        //   id: '3123123213',
+        //   name: 'Da khoa Phú Thọ',
+        //   project_id: 'da-khoa-phu-tho',
+        //   owner: 'trung'
+        // },
+        // {
+        //   id: '3123123213',
+        //   name: 'Da khoa Thanh Ba',
+        //   project_id: 'da-khoa-thanh-ba',
+        //   owner: 'trung'
+        // }
+      ],
       count: 0
     }
   }

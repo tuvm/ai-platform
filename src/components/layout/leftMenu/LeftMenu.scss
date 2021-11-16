@@ -140,3 +140,28 @@
     }
   }
 }
+
+.left-menu-download-project {
+  position: relative;
+  padding: 5px 15px;
+  border-bottom: 1px solid #f1f1f1;
+  .project-drop-down-icon {
+    position: absolute;
+    top: 50%;
+    left: 90%;
+    transform: translate(-50%, -50%);
+  }
+  .current-project {
+    cursor: pointer;
+    @media screen and (max-width: 480px){
+      text-align: center;
+    }
+  }
+}
+.left-menu-project-slug{
+  font-size: 11px;
+}
+.left-menu-dropdown-overlay {
+  max-height: 50vh;
+  overflow-y: scroll;
+}

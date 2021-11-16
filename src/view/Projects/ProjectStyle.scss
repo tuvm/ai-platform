@@ -3,11 +3,14 @@
     margin: auto;
 }
 .project-block {
-    min-height: 150px;
+    min-height: 125px;
+    min-width: 150px;
 }
 .add-new-project {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    width: 80%;
+    text-align: center;
 }

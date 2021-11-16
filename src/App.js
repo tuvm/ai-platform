@@ -15,6 +15,10 @@ import AppHelmet from './components/Helmet';
 import './App.scss';
 import { PAGES_HAS_NO_LAYOUT } from './utils/constants/config'
 import { withRouter } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { actionGetProjectList } from './view/Projects/actions';
+
+
 
 const initialRequest = async () => {
   const res = await actionGetTenantSetting();
@@ -24,9 +28,11 @@ const initialRequest = async () => {
 };
 
 const App = (props) => {
+  const dispatch = useDispatch()
   useEffect(() => {
     initialRequest();
-  }, []);
+    dispatch(actionGetProjectList())
+  }, [dispatch]);
 
   // if (isEmpty(props.profile)) {
   //   return <Loading />;

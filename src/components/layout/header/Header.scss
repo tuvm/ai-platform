@@ -35,7 +35,7 @@
       //   font-size: 12px;
       // }
       img {
-        height: 45px;
+        height: 40px;
         cursor: pointer;
       }
     }
@@ -70,6 +70,12 @@
         .user-name {
           margin-left: 8px;
           color: #fff;
+          @media screen and (max-width: 480px) {
+            white-space: nowrap;
+            width: 130px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
         }
       }
     }

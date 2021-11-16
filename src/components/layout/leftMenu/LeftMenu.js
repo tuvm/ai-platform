@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { Menu, Layout, Avatar } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+// import { UserOutlined } from '@ant-design/icons';
 import { withRouter } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
-import { useParams } from 'react-router-dom'
 import { connect } from 'react-redux';
-import { routes, ROLES, APP_ROUTES } from '../../../utils/constants/config';
+import get from 'lodash/get';
+import { routes, APP_ROUTES } from '../../../utils/constants/config';
 import {
   IconCollapse,
 } from '../../../assets';
-// import { checkRole } from '../../../view/system/systemAction';
 import './LeftMenu.scss';
 import {
   SettingOutlined,
 } from '@ant-design/icons';
+import ProjectSelect from './ProjectSelect';
+
+import { matchPath } from 'react-router';
 
 const { SubMenu } = Menu;
 
@@ -39,8 +41,15 @@ const LeftMenu = (props) => {
   const handleMenuClick = ({ key }) => {
     const { pathname } = location;
     setSelectedKeys(key);
-    console.log({ pathname })
-    // props.history.push(key);
+    
+    const match = matchPath(pathname, {
+      path: '/projects/:projectId/*',
+      exact: true,
+      strict: false
+    });
+
+    const projectId = get(match, 'params.projectId', '/');
+    props.history.push(`/projects/${projectId}${key}`);
   };
 
   return (
@@ -53,19 +62,7 @@ const LeftMenu = (props) => {
     >
       <div className="sider-container">
         <div className="left-menu-wrapper">
-          <div className="user-infor">
-            <div className="user-avatar" style={{ margin: collapsed ? 'auto' : ''}}>
-              <Avatar size={40} icon={<UserOutlined />} />
-            </div>
-            {!collapsed && (
-              <div className="user-account">
-                <span className="username">
-                  <strong>{userInfo?.preferred_username}</strong>
-                </span>
-                {/* <span>{userInfo?.email}</span> */}
-              </div>
-            )}
-          </div>
+          <ProjectSelect />
           <Menu
             onClick={handleMenuClick}
             selectedKeys={[selectedKeys]}
