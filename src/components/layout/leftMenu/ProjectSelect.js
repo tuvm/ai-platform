@@ -10,7 +10,7 @@ import { matchPath } from 'react-router';
 
 const { Text } = Typography;
 
-export default function ProjectSelect() {
+export default function ProjectSelect(props) {
     const [showPopup, setShowPopup] = useState(false);
     const history = useHistory();
     const location = useLocation();
@@ -52,7 +52,9 @@ export default function ProjectSelect() {
                 {recentProjects && recentProjects.map(item => (
                     <Menu.Item key={item.project_id} onClick={() => history.push(`/projects/${item.project_id}/dashboard`)}>
                         <Text>{item.name}</Text>
-                        <div><Text type="secondary" className="left-menu-project-slug">{item.project_id}</Text></div>
+                        <div className="left-menu-project-slug">
+                            {item.project_id}
+                        </div>
                     </Menu.Item>
                 ))}
             </Menu.ItemGroup>
@@ -63,7 +65,7 @@ export default function ProjectSelect() {
                 {allProjects && allProjects.map(item => (
                     <Menu.Item key={item.project_id} onClick={() => history.push(`/projects/${item.project_id}/dashboard`)}>
                         <Text>{item.name}</Text>
-                        <div><Text type="secondary" className="left-menu-project-slug">{item.project_id}</Text></div>
+                        <div className="left-menu-project-slug">{item.project_id}</div>
                     </Menu.Item>
                 ))}
             </Menu.ItemGroup>
@@ -73,16 +75,17 @@ export default function ProjectSelect() {
     return (
         <div className="left-menu-download-project">
             <Dropdown overlay={menu} trigger={['click']} overlayClassName="left-menu-dropdown-overlay">
-                <div className="current-project">
+                {!props.collapsed ? <div className="current-project">
                     <Space align="center">
                         <HomeFilled />
                         <div>
                             <Text>{activeProject?.name}</Text>
-                            <div><Text type="secondary" className="left-menu-project-slug">{activeProject?.project_id}</Text></div>
+                            <div className="left-menu-project-slug">{activeProject?.project_id}</div>
                         </div>
                         <DownOutlined className="project-drop-down-icon" />
                     </Space>
                 </div>
+                    : <HomeFilled />}
             </Dropdown>
             {showPopup && <AddNewProjectModal handleCancel={handleCancel} />}
         </div>

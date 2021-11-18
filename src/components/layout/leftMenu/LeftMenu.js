@@ -62,7 +62,7 @@ const LeftMenu = (props) => {
     >
       <div className="sider-container">
         <div className="left-menu-wrapper">
-          <ProjectSelect />
+          <ProjectSelect collapsed={collapsed}/>
           <Menu
             onClick={handleMenuClick}
             selectedKeys={[selectedKeys]}

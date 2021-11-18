@@ -15,6 +15,9 @@
 
   &.ant-layout-sider-collapsed {
     @include setLeftMenuWidth($left-menu-collapsed-width);
+    .left-menu-download-project {
+      text-align: center;
+    }
     .ant-layout-sider-trigger {
       svg {
         transform: rotate(180deg);
@@ -153,15 +156,17 @@
   }
   .current-project {
     cursor: pointer;
-    @media screen and (max-width: 480px){
-      text-align: center;
-    }
   }
 }
 .left-menu-project-slug{
   font-size: 11px;
+  color: $app-dark-text;
+  line-height: 11px;
 }
 .left-menu-dropdown-overlay {
   max-height: 50vh;
   overflow-y: scroll;
+  @media screen and (max-width:768px){
+    max-height: calc(100vh - 120px);
+  }
 }

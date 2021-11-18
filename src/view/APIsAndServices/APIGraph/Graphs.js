@@ -57,7 +57,7 @@ export default function Graphs() {
   return (
     <div className="graphs-list">
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-        <Col className="gutter-row" md={{ span: 24 }} lg={{ span: 12 }}>
+        <Col className="gutter-row" xs={{span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
           <div className="graph-column">
             <div className="graph-name">Requests</div>
             <div className="graph-sublabel">Requests</div>
@@ -71,7 +71,7 @@ export default function Graphs() {
             </div>
           </div>
         </Col>
-        <Col className="gutter-row" md={{ span: 24 }} lg={{ span: 12 }}>
+        <Col className="gutter-row" xs={{span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
           <div className="graph-column">
             <div className="graph-name">Volume</div>
             <div className="graph-sublabel">Megabytes</div>
