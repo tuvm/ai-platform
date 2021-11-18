@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import { Table, Input, Select, Form } from 'antd';
+import { Table, AutoComplete, Select, Form, Input } from 'antd';
+import { QUOTA_DEV_TEMPLATE, ENV_OPTIONS } from '../../../utils/constants/config';
 
 import './CredentialTableModule.scss';
 const { Option } = Select;
@@ -18,6 +19,7 @@ const EditableRow = ({ index, ...props }) => {
     );
 };
 
+
 const EditableCell = ({
     title,
     editable,
@@ -25,16 +27,30 @@ const EditableCell = ({
     dataIndex,
     record,
     handleSave,
+    env,
     ...restProps
 }) => {
     const [editing, setEditing] = useState(false);
     const inputRef = useRef(null);
     const form = useContext(EditableContext);
-    useEffect(() => {
-        if (editing) {
-            inputRef.current.focus();
-        }
-    }, [editing]);
+
+    const [value, setValue] = useState('');
+    const [options, setOptions] = useState([
+        {
+            value: 'Unlimited',
+        },
+    ]);
+
+
+    console.log({ env })
+
+    const onSelect = (data) => {
+        console.log('onSelect', data);
+    };
+
+    const onChange = (data) => {
+        setValue(data);
+    };
 
     const toggleEdit = () => {
         setEditing(!editing);
@@ -67,9 +83,35 @@ const EditableCell = ({
                         required: true,
                         message: `${title} is required.`,
                     },
+                    {
+                        pattern: new RegExp(
+                            /^[A-Za-z0-9]*[A-Za-z0-9][A-Za-z0-9]*$/i
+                        ),
+                        message: 'Quota is only number or "Unlimited"'
+                    }
                 ]}
             >
-                <Input ref={inputRef} onPressEnter={save} onBlur={save} />
+                {env === ENV_OPTIONS.DEV ? <Input disabled={true} /> : <AutoComplete
+                    value={value}
+                    options={options}
+                    style={{
+                        width: '100%',
+                    }}
+                    ref={inputRef}
+                    onSelect={onSelect}
+                    filterOption={(inputValue, option) =>
+                        option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+                    }
+                    onChange={onChange}
+                    placeholder="Quota"
+                    rules={[
+                        {
+                            required: true,
+
+                        }
+                    ]}
+                />}
+
             </Form.Item>
         ) : (
             <div
@@ -77,7 +119,7 @@ const EditableCell = ({
                 style={{
                     paddingRight: 24,
                 }}
-                onClick={toggleEdit}
+                onClick={env === ENV_OPTIONS.DEV ? () => {} :  toggleEdit}
             >
                 {children}
             </div>
@@ -112,7 +154,11 @@ export default class EditableTable extends React.Component {
 
                     }
                     return (
-                        <Select defaultValue="daily" style={{ width: 120 }} onChange={handleSelectModule}>
+                        <Select
+                            defaultValue="daily"
+                            disabled={this.props.env === ENV_OPTIONS.DEV }
+                            style={{ width: 120 }} onChange={handleSelectModule}
+                        >
                             <Option value="none">None</Option>
                             <Option value="daily">Daily</Option>
                             <Option value="monthly">Monthly</Option>
@@ -145,18 +191,6 @@ export default class EditableTable extends React.Component {
         });
     };
 
-    // componentDidMount() {
-    //     const moduleSelected = this.props.moduleSelected;
-    //     const moduleSelectedFormated = moduleSelected.map(item => ({
-    //         key: item,
-    //         api_name: item,
-    //         quota: '100',
-    //         period: 'daily',
-    //     }));
-
-    //     this.setState({ dataSource: moduleSelectedFormated })
-    // }
-
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.moduleSelected !== this.props.moduleSelected) {
             const moduleSelected = this.props.moduleSelected;
@@ -175,8 +209,8 @@ export default class EditableTable extends React.Component {
                     item.period = filterItem.period
                 }
                 return item;
-            }) 
-    
+            })
+
             this.setState({ dataSource: moduleSelectedFormated })
         }
     }
@@ -202,6 +236,7 @@ export default class EditableTable extends React.Component {
                     dataIndex: col.dataIndex,
                     title: col.title,
                     handleSave: this.handleSave,
+                    env: this.props.env
                 }),
             };
         });

@@ -11,7 +11,7 @@ import {
     CopyOutlined
 } from '@ant-design/icons';
 import { DatePicker } from 'antd';
-import { VINDR_MODULES } from '../../../utils/constants/config';
+import { VINDR_MODULES, ENV_OPTIONS } from '../../../utils/constants/config';
 
 import './Credentials.scss';
 import CredentialTableModule from './CredentialTableModule';
@@ -30,6 +30,7 @@ const data = {
 export default function CreateCredentialModal(props) {
     const { t } = useTranslation();
     const [moduleSelected, setModuleSelected] = useState([]);
+    const [env, setEnv] = useState(ENV_OPTIONS.DEV);
     const [form] = Form.useForm();
 
     const { Text, Link } = Typography;
@@ -75,8 +76,9 @@ export default function CreateCredentialModal(props) {
         console.log('generate api key')
     }
 
-    const onChangeEvironment = () => {
-
+    const onChangeEvironment = e => {
+        const value = e.target.value;
+        setEnv(value);
     }
 
     const handleModule = value => {
@@ -151,15 +153,15 @@ export default function CreateCredentialModal(props) {
                     <div className="create-credential-environment-section">
                         <Text strong>Environment</Text>
                         <Form.Item>
-                            <Radio.Group name={'rb1'} onChange={onChangeEvironment}>
+                            <Radio.Group name={'rb1'} onChange={onChangeEvironment} value={env}>
                                 <Space direction="vertical">
-                                    <Radio value={true}>
+                                    <Radio value={ENV_OPTIONS.DEV}>
                                         Development <br />
                                         <Text type="secondary" className="create-credential-radio-subtext">
                                             Free quota amounts on each project are applied daily and reset at 0:00 AM.
                                         </Text>
                                     </Radio>
-                                    <Radio value={false}>
+                                    <Radio value={ENV_OPTIONS.PRO}>
                                         Production <br />
                                         <Text type="secondary" className="create-credential-radio-subtext">
                                             Unlimited quota amounts beyond your configuration.
@@ -192,7 +194,7 @@ export default function CreateCredentialModal(props) {
                             </Select>
                         </div>
 
-                        <CredentialTableModule moduleSelected={moduleSelected} />
+                        <CredentialTableModule moduleSelected={moduleSelected} env={env}/>
                     </div>
                 </Form>
             </Modal>

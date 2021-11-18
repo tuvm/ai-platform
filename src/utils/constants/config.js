@@ -72,7 +72,7 @@ export const routes = {
   API_KEYS: '/api-keys',
   BILLING: '/billing',
   SETTING: '/setting',
-  DASHBOARD:'/dashboard',
+  DASHBOARD: '/dashboard',
   DASHBOARD_MENU: {
     PROJECTS: '/dashboard/projects',
     // ANALYSIS: '/dashboard/analysis'
@@ -338,3 +338,41 @@ export const CHART_COLORS = {
 
 
 export const PAGES_HAS_NO_LAYOUT = ['/', '/projects']
+
+
+export const QUOTA_DEV_TEMPLATE = {
+  chestxray: {
+    quota: 100,
+    period: 'daily'
+  },
+  mammo: {
+    quota: 100,
+    period: 'daily'
+  },
+  lungct: {
+    quota: 100,
+    period: 'daily'
+  },
+  brainct: {
+    quota: 100,
+    period: 'daily'
+  },
+  brainmri: {
+    quota: 100,
+    period: 'daily'
+  },
+  liverct: {
+    quota: 100,
+    period: 'daily'
+  },
+  spinexr: {
+    quota: 100,
+    period: 'daily'
+  }
+}
+
+
+export const ENV_OPTIONS = {
+  PRO: 'production',
+  DEV: 'development'
+}
