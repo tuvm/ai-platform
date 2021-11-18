@@ -11,7 +11,7 @@ import {
     CopyOutlined
 } from '@ant-design/icons';
 import { DatePicker } from 'antd';
-import { VINDR_MODULES } from '../../utils/constants/config';
+import { VINDR_MODULES } from '../../../utils/constants/config';
 
 import './Credentials.scss';
 import CredentialTableModule from './CredentialTableModule';

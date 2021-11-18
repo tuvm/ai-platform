@@ -137,5 +137,8 @@
   "IDS_ADD_PROJECT": "Thêm dự án",
   "IDS_DASHBOARD_ANALYSIS": "Phân tích",
   "IDS_CREATE_CREDENTIAL": "Tạo key",
-  "IDS_PROJECT_SETTING": "Cài đặt dự án"
+  "IDS_PROJECT_SETTING": "Cài đặt dự án",
+  "IDS_ADD_MEMBER": "Thêm thành viên",
+  "IDS_EMAIL_ADDRESS": "Địa chỉ email",
+  "IDS_ROLE": "Quyền"
 }

@@ -1,46 +1,27 @@
-import React, { useState } from 'react';
-import { Tabs, Button, Typography } from 'antd';
-import { KeyOutlined } from '@ant-design/icons';
-import { useTranslation } from 'react-i18next';
-import CreateCredentialModal from './CreateCredentialModal';
-import CredentialDev from './CredentialDev';
-import './Credentials.scss';
+import React from 'react';
+import { Tabs } from 'antd';
+import Credentials from './Credentials';
+import Permissions from './Permissions';
 
+const { TabPane } = Tabs;
 
-const { Title } = Typography;
+export default function Analysis() {
+  const callback = () => { }
+  return (
+    <>
+      <Tabs defaultActiveKey="1" onChange={callback}>
+        <TabPane tab="General" key="1">
+          General
+        </TabPane>
 
-export default function ProjectSetting() {
-    const [openModal, setOpenModal] = useState(false);
-    const { TabPane } = Tabs;
-    const { t } = useTranslation();
+        <TabPane tab="Credentials" key="2">
+          <Credentials />
+        </TabPane>
 
-    const handleOpenModal = () => {
-        setOpenModal(true)
-    }
-
-    return (
-        <div className="credential-page content-inner-center">
-            <div className="credential-head">
-                <Title level={4}>Your API keys</Title>
-                <Button type="primary"
-                    icon={<KeyOutlined />}
-                    onClick={handleOpenModal}
-                >
-                    {t('IDS_CREATE_CREDENTIAL')}
-                </Button>
-            </div>
-            <div className="credential-tabs">
-                <Tabs tabPosition="left">
-                    <TabPane tab="Đa khoa Phú Thọ - DEV" key="1">
-                        <CredentialDev />
-                    </TabPane>
-                    <TabPane tab="Đa khoa Phú Thọ - PROD" key="2">
-                        <CredentialDev />
-                    </TabPane>
-                </Tabs>
-            </div>
-            {openModal && <CreateCredentialModal onCancel={() => setOpenModal(false)}/>}
-        </div>
-        
-    );
+        <TabPane tab="Users and permissions" key="3">
+            <Permissions />
+        </TabPane>
+      </Tabs>
+    </>
+  );
 }

@@ -137,5 +137,8 @@
   "IDS_ADD_PROJECT": "Add project",
   "IDS_DASHBOARD_ANALYSIS": "Analysis",
   "IDS_CREATE_CREDENTIAL": "Create Credential",
-  "IDS_PROJECT_SETTING": "Project Setting"
+  "IDS_PROJECT_SETTING": "Project Setting",
+  "IDS_ADD_MEMBER": "Add Member",
+  "IDS_EMAIL_ADDRESS": "Email address",
+  "IDS_ROLE": "Role"
 }
