@@ -1,176 +1,18 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
-import { Table, AutoComplete, Select, Form, Input } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { AutoComplete, Select } from 'antd';
 import { QUOTA_DEV_TEMPLATE, ENV_OPTIONS } from '../../../utils/constants/config';
+import get from 'lodash/get';
 
 import './CredentialTableModule.scss';
+
 const { Option } = Select;
 
-
-const EditableContext = React.createContext(null);
-
-const EditableRow = ({ index, ...props }) => {
-    const [form] = Form.useForm();
-    return (
-        <Form form={form} component={false}>
-            <EditableContext.Provider value={form}>
-                <tr {...props} />
-            </EditableContext.Provider>
-        </Form>
-    );
-};
-
-
-const EditableCell = ({
-    title,
-    editable,
-    children,
-    dataIndex,
-    record,
-    handleSave,
-    env,
-    ...restProps
-}) => {
-    const [editing, setEditing] = useState(false);
-    const inputRef = useRef(null);
-    const form = useContext(EditableContext);
-
-    const [value, setValue] = useState('');
-    const [options, setOptions] = useState([
-        {
-            value: 'Unlimited',
-        },
-    ]);
-
-
-    console.log({ env })
-
-    const onSelect = (data) => {
-        console.log('onSelect', data);
-    };
-
-    const onChange = (data) => {
-        setValue(data);
-    };
-
-    const toggleEdit = () => {
-        setEditing(!editing);
-        form.setFieldsValue({
-            [dataIndex]: record[dataIndex],
-        });
-    };
-
-    const save = async () => {
-        try {
-            const values = await form.validateFields();
-            toggleEdit();
-            handleSave({ ...record, ...values });
-        } catch (errInfo) {
-            console.log('Save failed:', errInfo);
-        }
-    };
-
-    let childNode = children;
-
-    if (editable) {
-        childNode = editing ? (
-            <Form.Item
-                style={{
-                    margin: 0,
-                }}
-                name={dataIndex}
-                rules={[
-                    {
-                        required: true,
-                        message: `${title} is required.`,
-                    },
-                    {
-                        pattern: new RegExp(
-                            /^[A-Za-z0-9]*[A-Za-z0-9][A-Za-z0-9]*$/i
-                        ),
-                        message: 'Quota is only number or "Unlimited"'
-                    }
-                ]}
-            >
-                {env === ENV_OPTIONS.DEV ? <Input disabled={true} /> : <AutoComplete
-                    value={value}
-                    options={options}
-                    style={{
-                        width: '100%',
-                    }}
-                    ref={inputRef}
-                    onSelect={onSelect}
-                    filterOption={(inputValue, option) =>
-                        option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
-                    }
-                    onChange={onChange}
-                    placeholder="Quota"
-                    rules={[
-                        {
-                            required: true,
-
-                        }
-                    ]}
-                />}
-
-            </Form.Item>
-        ) : (
-            <div
-                className="editable-cell-value-wrap"
-                style={{
-                    paddingRight: 24,
-                }}
-                onClick={env === ENV_OPTIONS.DEV ? () => {} :  toggleEdit}
-            >
-                {children}
-            </div>
-        );
-    }
-
-    return <td {...restProps}>{childNode}</td>;
-};
 
 export default class EditableTable extends React.Component {
     constructor(props) {
         super(props);
-        this.columns = [
-            {
-                title: 'API name',
-                dataIndex: 'api_name',
-                width: '30%',
-            },
-            {
-                title: 'Quota',
-                dataIndex: 'quota',
-                editable: true,
-                required: true,
-                width: '30%',
-            },
-            {
-                title: 'Period',
-                dataIndex: 'period',
-                width: '30%',
-                render: (_, record) => {
-                    const handleSelectModule = () => {
-
-                    }
-                    return (
-                        <Select
-                            defaultValue="daily"
-                            disabled={this.props.env === ENV_OPTIONS.DEV }
-                            style={{ width: 120 }} onChange={handleSelectModule}
-                        >
-                            <Option value="none">None</Option>
-                            <Option value="daily">Daily</Option>
-                            <Option value="monthly">Monthly</Option>
-                            <Option value="annualy">Annualy</Option>
-                            <Option value="notreset">Not reset</Option>
-                        </Select>
-                    )
-                }
-            },
-        ];
         this.state = {
-            dataSource: [],
+            dataSource: []
         };
     }
 
@@ -181,25 +23,25 @@ export default class EditableTable extends React.Component {
         });
     };
 
-    handleSave = (row) => {
+    handleUpdatePeriodAndQuota = (row) => {
         const newData = [...this.state.dataSource];
-        const index = newData.findIndex((item) => row.key === item.key);
+        const index = newData.findIndex((item) => row.api_name === item.api_name);
         const item = newData[index];
         newData.splice(index, 1, { ...item, ...row });
         this.setState({
             dataSource: newData,
         });
-    };
+    }
 
     componentDidUpdate(prevProps, prevState) {
+        let moduleSelectedFormated;
         if (prevProps.moduleSelected !== this.props.moduleSelected) {
             const moduleSelected = this.props.moduleSelected;
-
-            let moduleSelectedFormated = moduleSelected.map(item => ({
+            moduleSelectedFormated = moduleSelected.map(item => ({
                 key: item,
                 api_name: item,
-                quota: '100',
-                period: 'daily',
+                quota: get(QUOTA_DEV_TEMPLATE, `${item}.quota`),
+                period: get(QUOTA_DEV_TEMPLATE, `${item}.period`)
             }));
 
             moduleSelectedFormated = moduleSelectedFormated.map(item => {
@@ -210,48 +52,125 @@ export default class EditableTable extends React.Component {
                 }
                 return item;
             })
-
-            this.setState({ dataSource: moduleSelectedFormated })
+            this.setState({ dataSource: moduleSelectedFormated });
         }
+
+        if (prevProps.env !== this.props.env) {
+            const moduleSelected = this.props.moduleSelected;
+            moduleSelectedFormated = moduleSelected.map(item => ({
+                key: item,
+                api_name: item,
+                quota: get(QUOTA_DEV_TEMPLATE, `${item}.quota`),
+                period: get(QUOTA_DEV_TEMPLATE, `${item}.period`)
+            }));
+            this.setState({ dataSource: moduleSelectedFormated });
+        }
+
     }
 
     render() {
         const { dataSource } = this.state;
-        const components = {
-            body: {
-                row: EditableRow,
-                cell: EditableCell,
-            },
-        };
-        const columns = this.columns.map((col) => {
-            if (!col.editable) {
-                return col;
-            }
-
-            return {
-                ...col,
-                onCell: (record) => ({
-                    record,
-                    editable: col.editable,
-                    dataIndex: col.dataIndex,
-                    title: col.title,
-                    handleSave: this.handleSave,
-                    env: this.props.env
-                }),
-            };
-        });
+        const { env } = this.props;
 
         return (
             <div className="create-credential-table-content">
-                <Table
-                    components={components}
-                    rowClassName={() => 'editable-row'}
-                    bordered
-                    dataSource={dataSource}
-                    columns={columns}
-                    pagination={false}
-                />
+                <table className="app-table">
+                    <thead>
+                        <tr>
+                            <th style={{ width: '33%' }}>API name</th>
+                            <th style={{ width: '33%' }}>Quota</th>
+                            <th style={{ width: '33%' }}>Period</th>
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        {
+                            env === ENV_OPTIONS.PRO && dataSource && dataSource.map((row, i) => (
+                                <TableRowEditable key={row.api_name + i} row={row} handleUpdatePeriodAndQuota={this.handleUpdatePeriodAndQuota} />
+                            ))
+                        }
+                        {
+                            env === ENV_OPTIONS.DEV && dataSource && dataSource.map((row, i) => (
+                                <TableRow row={row} key={row.api_name + i} handleUpdatePeriodAndQuota={this.handleUpdatePeriodAndQuota} />
+                            ))
+                        }
+                    </tbody>
+
+                </table>
             </div>
         );
     }
+}
+
+
+const TableRowEditable = ({ row, handleUpdatePeriodAndQuota }) => {
+    const [quotaValue, setQuotaValue] = useState('')
+    const [periodValue, setPeriodValue] = useState('')
+
+    useEffect(() => {
+        setQuotaValue(row.quota)
+        setPeriodValue(row.period)
+    }, [row])
+
+
+    const onSelectQuota = value => {
+        setQuotaValue(value);
+    }
+
+    const onChangeQuota = value => {
+        setQuotaValue(value);
+        row.quota = value;
+        handleUpdatePeriodAndQuota(row)
+    }
+
+    const handleSelectModule = value => {
+        setPeriodValue(value);
+        row.period = value;
+        handleUpdatePeriodAndQuota(row)
+    }
+
+    return (
+        <tr key={row.api_name}>
+            <td>{row.api_name}</td>
+            <td>
+                <AutoComplete
+                    value={quotaValue}
+                    options={[{ value: 'Unlimited' }]}
+                    style={{
+                        width: '100%',
+                    }}
+                    onSelect={onSelectQuota}
+                    filterOption={(inputValue, option) => option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
+                    onChange={onChangeQuota}
+                    placeholder="Quota"
+                    rules={[
+                        {
+                            required: true,
+                        }
+                    ]}
+                />
+            </td>
+            <td>
+                <Select
+                    value={periodValue}
+                    style={{ width: 120 }} onChange={handleSelectModule}
+                >
+                    <Option value="daily">Daily</Option>
+                    <Option value="monthly">Monthly</Option>
+                    <Option value="annualy">Annualy</Option>
+                    <Option value="notreset">Not reset</Option>
+                </Select>
+            </td>
+        </tr>
+    )
+}
+
+const TableRow = ({ row }) => {
+    return (
+        <tr key={row.api_name}>
+            <td>{row.api_name}</td>
+            <td>{row.quota}</td>
+            <td>{row.period}</td>
+        </tr>
+    )
 }

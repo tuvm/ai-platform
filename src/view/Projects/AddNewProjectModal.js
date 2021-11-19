@@ -32,6 +32,7 @@ export default function AddNewProjectModal(props) {
         actionCreateProject({ payload: data }).then(res => {
             message.success('Create project sucessfully')
             dispatch(actionGetProjectList());
+            handleCancel();
         }).catch(error => {
             console.log(error)
             const errorMessage = get(error, 'response.data.detail', '');

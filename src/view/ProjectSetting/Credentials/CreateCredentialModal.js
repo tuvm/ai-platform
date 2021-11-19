@@ -111,7 +111,7 @@ export default function CreateCredentialModal(props) {
                     autoComplete="off"
                 >
                     <Form.Item
-                        name="name"
+                        name="api_name"
                         label={t('IDS_NAME')}
                         rules={[
                             { required: true },

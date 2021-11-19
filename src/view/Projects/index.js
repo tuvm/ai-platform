@@ -17,9 +17,9 @@ export default function Projects() {
   //   dispatch(actionGetProjectList())
   // }, [dispatch])
 
-  if (loading || !data) {
-    return <Loading />;
-  }
+  // if (loading || !data) {
+  //   return <Loading />;
+  // }
 
   return (
     <div className="project-page-inner">

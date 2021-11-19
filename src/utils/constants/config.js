@@ -342,31 +342,31 @@ export const PAGES_HAS_NO_LAYOUT = ['/', '/projects']
 
 export const QUOTA_DEV_TEMPLATE = {
   chestxray: {
-    quota: 100,
+    quota: '100',
     period: 'daily'
   },
   mammo: {
-    quota: 100,
+    quota: '100',
     period: 'daily'
   },
   lungct: {
-    quota: 100,
+    quota: '100',
     period: 'daily'
   },
   brainct: {
-    quota: 100,
+    quota: '100',
     period: 'daily'
   },
   brainmri: {
-    quota: 100,
+    quota: '100',
     period: 'daily'
   },
   liverct: {
-    quota: 100,
+    quota: '100',
     period: 'daily'
   },
   spinexr: {
-    quota: 100,
+    quota: '100',
     period: 'daily'
   }
 }

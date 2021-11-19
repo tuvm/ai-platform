@@ -3,7 +3,7 @@ import api from '../../utils/service/api';
 import * as actions from '../../utils/constants/actions';
 
 export const actionCreateProject = ({ params, payload }) => {
-    const url = '/projects/new';
+    const url = '/console/projects/new';
     return api({
         url,
         data: payload,
@@ -12,7 +12,7 @@ export const actionCreateProject = ({ params, payload }) => {
 }
 
 export const actionGetProjectDetail = ({ payload }) => {
-    const url = `/projects/detail/${payload.projectId}`;
+    const url = `/console/projects/detail/${payload.projectId}`;
     return api({
         url,
         method: 'GET'
@@ -20,7 +20,7 @@ export const actionGetProjectDetail = ({ payload }) => {
 }
 
 export const actionGetProjectList = () => async dispatch => {
-    const url = '/projects/list';
+    const url = '/console/projects/list';
     dispatch(fetchProjectList());
     try {
         const data = await api({
