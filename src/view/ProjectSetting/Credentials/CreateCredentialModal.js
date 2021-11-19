@@ -11,27 +11,36 @@ import {
     CopyOutlined
 } from '@ant-design/icons';
 import { DatePicker } from 'antd';
-import { VINDR_MODULES, ENV_OPTIONS } from '../../../utils/constants/config';
+import { ENV_OPTIONS } from '../../../utils/constants/config';
 
 import './Credentials.scss';
 import CredentialTableModule from './CredentialTableModule';
+import { useSelector } from 'react-redux';
+import get from 'lodash/get';
+import { useLocation } from 'react-router-dom';
+import { matchPath } from 'react-router';
+import { actionGenerateAPIKey, actionGrantAPIKey } from './actions';
 
 
 const { Option } = Select;
 
-
-const data = {
-    apikey: 'ae96d426-91ac-4511-a11b-79db15390921-ae96d426-91ac-4511-a11b-79db15390921-ae96d426-91ac-4511-a11b-79db15390921-ae96d426-91ac-4511-a11b-79db15390921',
-    createdTime: '05/15/2021 19:20:15 PM',
-    endTime: '05/15/2023 19:20:15 PM',
-    status: 'active'
+const filterModules = (modules, ids) => {
+    if (modules && ids) {
+        return modules.filter(item => ids.includes(item.id))
+    }
+    return [];
 }
 
 export default function CreateCredentialModal(props) {
     const { t } = useTranslation();
     const [moduleSelected, setModuleSelected] = useState([]);
+    const [quotaSelected, setQuotaSelected] = useState([])
     const [env, setEnv] = useState(ENV_OPTIONS.DEV);
     const [form] = Form.useForm();
+    const resourceList = useSelector(state => state.system.resourceList);
+    const vindrModules = get(resourceList, 'modules');
+    const [token, setToken] = useState('')
+    const location = useLocation();
 
     const { Text, Link } = Typography;
 
@@ -43,8 +52,50 @@ export default function CreateCredentialModal(props) {
         form.resetFields()
     };
 
-    const onSave = () => {
+    const onSave = async () => {
+        const name = form.getFieldValue('key_name');
+        const end_time = form.getFieldValue('end_time');
 
+        const { pathname } = location;
+
+        const match = matchPath(pathname, {
+            path: '/projects/:projectId/*',
+            exact: true,
+            strict: false
+        });
+    
+        const projectId = get(match, 'params.projectId', '');
+
+        const newQuotaSelected = quotaSelected.map(item => {
+            item.resource_id = item['id'];
+            item.period = 'daily';
+            delete item['id'];
+            delete item['name']
+            return item;
+        })
+
+        const payload = {          
+            project_id: projectId,
+            environment: env === ENV_OPTIONS.DEV ? 1 : 2, // 1 is dev, 2 is prod
+            request_data: newQuotaSelected
+        }
+
+        const res = await actionGrantAPIKey({ payload })
+        if (res && res.token) {
+            const payload_apikey = {
+                "name": name,
+                "grant_id": get(res, 'data.grant_id'),
+                end_time,
+                "project_id": projectId,
+                "token": res.token
+            }
+            let token_res = await actionGenerateAPIKey({ payload: payload_apikey });
+            token_res = get(token_res, 'data')
+            if (token_res && token_res.token) {
+                setToken(token_res.token);
+                message.success(t('IDS_GENERATE_API_KEY_SUCCESS'));
+            }
+        }
     }
 
 
@@ -56,16 +107,12 @@ export default function CreateCredentialModal(props) {
         message.error('Submit failed!');
     };
 
-    function onChange(value, dateString) {
-        console.log('Formatted Selected Time: ', dateString);
-    }
-
-    function onOk(value) {
-        console.log('onOk: ', value);
+    function onOkEndTime(value) {
+        form.setFieldsValue({ end_time: value.toISOString() })
     }
 
     const handleCopy = () => {
-        navigator.clipboard.writeText(data.apikey).then(function () {
+        navigator.clipboard.writeText(token).then(function () {
             message.success('Copied API key');
         }, function (err) {
             message.error('Could not copy API Key: ');
@@ -82,9 +129,9 @@ export default function CreateCredentialModal(props) {
     }
 
     const handleModule = value => {
-        setModuleSelected(value)
+        const list = filterModules(vindrModules, value)
+        setModuleSelected(list)
     }
-
 
     return (
         <div>
@@ -111,13 +158,13 @@ export default function CreateCredentialModal(props) {
                     autoComplete="off"
                 >
                     <Form.Item
-                        name="api_name"
+                        name="key_name"
                         label={t('IDS_NAME')}
                         rules={[
                             { required: true },
                             {
                                 pattern: new RegExp(
-                                    /^[a-zA-Z@~`!@#$%^&*()_=+\\\\';:\"\\/?>.<,-]+$/i
+                                    /^[A-Za-z0-9 _-]*[A-Za-z0-9][A-Za-z0-9 _-]*$/i
                                 ),
                                 message: "Only alphabets and numbers are allowed"
                             },
@@ -128,17 +175,17 @@ export default function CreateCredentialModal(props) {
                     </Form.Item>
 
                     <Form.Item
-                        name="End date"
+                        name="end_time"
                         label={t('End time')}
                     >
                         <div className="create-credential-subtitle"><Text type="secondary">Schedule expiration time for your API key</Text></div>
-                        <DatePicker showTime onChange={onChange} onOk={onOk} style={{ width: '40%' }} />
+                        <DatePicker showTime onOk={onOkEndTime} style={{ width: '40%' }} />
                     </Form.Item>
 
                     <div className="create-credential-apikey-section">
                         <Text>API Key</Text>
                         <div className="credential-key-input">
-                            <Input value={data.apikey} style={{ paddingRight: '40px' }} disabled />
+                            <Input value={token} style={{ paddingRight: '40px' }} disabled />
                             <CopyOutlined
                                 style={{ fontSize: '20px' }}
                                 className="copy-button"
@@ -184,17 +231,21 @@ export default function CreateCredentialModal(props) {
                         <div className="create-credential-select-module">
                             <Select
                                 mode="multiple"
-                                value={moduleSelected}
+                                // value={moduleSelected}
                                 style={{ width: "100%" }}
                                 onChange={handleModule}
                                 placeholder="Select modules"
                                 showArrow
                             >
-                                {VINDR_MODULES.map(item => <Option key={item.key} value={item.key}>{item.name}</Option>)}
+                                {vindrModules && vindrModules.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>)}
                             </Select>
                         </div>
-
-                        <CredentialTableModule moduleSelected={moduleSelected} env={env}/>
+                        <CredentialTableModule
+                            moduleSelected={moduleSelected}
+                            env={env}
+                            quotaSelected={quotaSelected}
+                            setQuotaSelected={setQuotaSelected}
+                        />
                     </div>
                 </Form>
             </Modal>

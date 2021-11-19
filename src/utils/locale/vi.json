@@ -140,5 +140,6 @@
   "IDS_PROJECT_SETTING": "Cài đặt dự án",
   "IDS_ADD_MEMBER": "Thêm thành viên",
   "IDS_EMAIL_ADDRESS": "Địa chỉ email",
-  "IDS_ROLE": "Quyền"
+  "IDS_ROLE": "Quyền",
+  "IDS_GENERATE_API_KEY_SUCCESS": "Tạo mới API key thành công."
 }

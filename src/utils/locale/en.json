@@ -140,5 +140,6 @@
   "IDS_PROJECT_SETTING": "Project Setting",
   "IDS_ADD_MEMBER": "Add Member",
   "IDS_EMAIL_ADDRESS": "Email address",
-  "IDS_ROLE": "Role"
+  "IDS_ROLE": "Role",
+  "IDS_GENERATE_API_KEY_SUCCESS": "Generate API key successfully."
 }

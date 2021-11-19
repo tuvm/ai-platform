@@ -12,39 +12,16 @@ const initialState = {
   activeProject: null,
   projectList: {
     all: {
-      data: [
-        // {
-        //   id: '3123123213',
-        //   name: 'Da khoa Phú Thọ',
-        //   project_id: 'da-khoa-phu-tho',
-        //   owner: 'trung'
-        // },
-        // {
-        //   id: '3123123213',
-        //   name: 'Da khoa Thanh Ba',
-        //   project_id: 'da-khoa-thanh-ba',
-        //   owner: 'trung'
-        // }
-      ],
+      data: [],
       count: 0
     },
     recent: {
-      data: [
-        // {
-        //   id: '3123123213',
-        //   name: 'Da khoa Phú Thọ',
-        //   project_id: 'da-khoa-phu-tho',
-        //   owner: 'trung'
-        // },
-        // {
-        //   id: '3123123213',
-        //   name: 'Da khoa Thanh Ba',
-        //   project_id: 'da-khoa-thanh-ba',
-        //   owner: 'trung'
-        // }
-      ],
+      data: [],
       count: 0
     }
+  },
+  resourceList: {
+    
   }
 };
 
@@ -89,6 +66,26 @@ const system = (state = initialState, action) => {
         ...state,
         activeProject: action.payload
       }
+    case actions.FETCH_RESOURCE:
+      return {
+        ...state,
+        resourceLoading: true,
+        resourceLoadError: false
+      };
+    case actions.FETCH_RESOURCE_SUCCESS:
+      return {
+        ...state,
+        resourceLoading: false,
+        resourceLoadError: false,
+        resourceList: action.payload
+      };
+
+    case actions.FETCH_RESOURCE_ERROR:
+      return {
+        ...state,
+        resourceLoading: false,
+        resourceLoadError: true,
+      };
     default:
       return state;
   }

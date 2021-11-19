@@ -1,105 +1,105 @@
 import React, { useEffect, useState } from 'react';
 import { AutoComplete, Select } from 'antd';
-import { QUOTA_DEV_TEMPLATE, ENV_OPTIONS } from '../../../utils/constants/config';
+import { ENV_OPTIONS } from '../../../utils/constants/config';
 import get from 'lodash/get';
+import find from 'lodash/find';
+import { useSelector } from 'react-redux';
 
 import './CredentialTableModule.scss';
 
 const { Option } = Select;
 
 
-export default class EditableTable extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            dataSource: []
-        };
-    }
+const EditableTable = (props) => {
+    const resourceList = useSelector(state => state.system.resourceList);
+    const quotaDev = get(resourceList, 'quota_dev');
 
-    handleDelete = (key) => {
-        const dataSource = [...this.state.dataSource];
-        this.setState({
-            dataSource: dataSource.filter((item) => item.key !== key),
-        });
-    };
+    // const handleDelete = (key) => {
+    //     const newDataSource = [...dataSource];
+    //     setDataSource(newDataSource.filter((item) => item.key !== key));
+    // };
 
-    handleUpdatePeriodAndQuota = (row) => {
-        const newData = [...this.state.dataSource];
-        const index = newData.findIndex((item) => row.api_name === item.api_name);
+    const handleUpdatePeriodAndQuota = (row) => {
+        const newData = [...props.quotaSelected];
+        const index = newData.findIndex((item) => row.id === item.id);
         const item = newData[index];
         newData.splice(index, 1, { ...item, ...row });
-        this.setState({
-            dataSource: newData,
-        });
+        props.setQuotaSelected(newData);
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    useEffect(() => {
+        if (!props.moduleSelected || (props.moduleSelected && props.moduleSelected.length === 0)) {
+            props.setQuotaSelected([]);
+            return;
+        }
+
         let moduleSelectedFormated;
-        if (prevProps.moduleSelected !== this.props.moduleSelected) {
-            const moduleSelected = this.props.moduleSelected;
-            moduleSelectedFormated = moduleSelected.map(item => ({
-                key: item,
-                api_name: item,
-                quota: get(QUOTA_DEV_TEMPLATE, `${item}.quota`),
-                period: get(QUOTA_DEV_TEMPLATE, `${item}.period`)
-            }));
+        const moduleSelected = props.moduleSelected;
+        moduleSelectedFormated = moduleSelected.map(item => {
+            const finder = find(quotaDev, { 'resource_id': item.id })
+            const data = {
+                id: item.id,
+                name: item.name,
+                quota: get(finder, 'quota'),
+                period: get(finder, 'period')
+            }
+            return data;
+        })
+
+        if (props.env === ENV_OPTIONS.PRO) {
+            const moduleSelected = props.moduleSelected;
+            moduleSelectedFormated = moduleSelected.map(item => {
+                const finder = find(quotaDev, { 'resource_id': item.id })
+                const data = {
+                    id: item.id,
+                    name: item.name,
+                    quota: get(finder, 'quota'),
+                    period: get(finder, 'period')
+                }
+                return data;
+            })
 
             moduleSelectedFormated = moduleSelectedFormated.map(item => {
-                const filterItem = this.state.dataSource.find(el => el.api_name === item.api_name)
+                const filterItem = props.quotaSelected.find(el => el.id === item.id)
                 if (filterItem) {
                     item.quota = filterItem.quota;
                     item.period = filterItem.period
                 }
                 return item;
-            })
-            this.setState({ dataSource: moduleSelectedFormated });
+            });
         }
+        props.setQuotaSelected(moduleSelectedFormated);
+    }, [props.moduleSelected, props.env, quotaDev])
 
-        if (prevProps.env !== this.props.env) {
-            const moduleSelected = this.props.moduleSelected;
-            moduleSelectedFormated = moduleSelected.map(item => ({
-                key: item,
-                api_name: item,
-                quota: get(QUOTA_DEV_TEMPLATE, `${item}.quota`),
-                period: get(QUOTA_DEV_TEMPLATE, `${item}.period`)
-            }));
-            this.setState({ dataSource: moduleSelectedFormated });
-        }
+    const { env } = props;
 
-    }
+    return (
+        <div className="create-credential-table-content">
+            <table className="app-table">
+                <thead>
+                    <tr>
+                        <th style={{ width: '33%' }}>API name</th>
+                        <th style={{ width: '33%' }}>Quota</th>
+                        <th style={{ width: '33%' }}>Period</th>
+                    </tr>
 
-    render() {
-        const { dataSource } = this.state;
-        const { env } = this.props;
+                </thead>
+                <tbody>
+                    {
+                        env === ENV_OPTIONS.PRO && props.quotaSelected && props.quotaSelected.map((row, i) => (
+                            <TableRowEditable key={row.id} row={row} handleUpdatePeriodAndQuota={handleUpdatePeriodAndQuota} />
+                        ))
+                    }
+                    {
+                        env === ENV_OPTIONS.DEV && props.quotaSelected && props.quotaSelected.map((row, i) => (
+                            <TableRow row={row} key={row.id} handleUpdatePeriodAndQuota={handleUpdatePeriodAndQuota} />
+                        ))
+                    }
+                </tbody>
 
-        return (
-            <div className="create-credential-table-content">
-                <table className="app-table">
-                    <thead>
-                        <tr>
-                            <th style={{ width: '33%' }}>API name</th>
-                            <th style={{ width: '33%' }}>Quota</th>
-                            <th style={{ width: '33%' }}>Period</th>
-                        </tr>
-
-                    </thead>
-                    <tbody>
-                        {
-                            env === ENV_OPTIONS.PRO && dataSource && dataSource.map((row, i) => (
-                                <TableRowEditable key={row.api_name + i} row={row} handleUpdatePeriodAndQuota={this.handleUpdatePeriodAndQuota} />
-                            ))
-                        }
-                        {
-                            env === ENV_OPTIONS.DEV && dataSource && dataSource.map((row, i) => (
-                                <TableRow row={row} key={row.api_name + i} handleUpdatePeriodAndQuota={this.handleUpdatePeriodAndQuota} />
-                            ))
-                        }
-                    </tbody>
-
-                </table>
-            </div>
-        );
-    }
+            </table>
+        </div>
+    );
 }
 
 
@@ -130,8 +130,8 @@ const TableRowEditable = ({ row, handleUpdatePeriodAndQuota }) => {
     }
 
     return (
-        <tr key={row.api_name}>
-            <td>{row.api_name}</td>
+        <tr key={row.id}>
+            <td>{row.name}</td>
             <td>
                 <AutoComplete
                     value={quotaValue}
@@ -140,7 +140,7 @@ const TableRowEditable = ({ row, handleUpdatePeriodAndQuota }) => {
                         width: '100%',
                     }}
                     onSelect={onSelectQuota}
-                    filterOption={(inputValue, option) => option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
+                    filterOption={(inputValue, option) => option.value.toString().toUpperCase().indexOf(inputValue.toString().toUpperCase()) !== -1}
                     onChange={onChangeQuota}
                     placeholder="Quota"
                     rules={[
@@ -167,10 +167,12 @@ const TableRowEditable = ({ row, handleUpdatePeriodAndQuota }) => {
 
 const TableRow = ({ row }) => {
     return (
-        <tr key={row.api_name}>
-            <td>{row.api_name}</td>
+        <tr key={row.id}>
+            <td>{row.name}</td>
             <td>{row.quota}</td>
             <td>{row.period}</td>
         </tr>
     )
 }
+
+export default EditableTable;

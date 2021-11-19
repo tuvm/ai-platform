@@ -39,7 +39,7 @@ export default function Credentials() {
                     </TabPane>
                 </Tabs>
             </div>
-            {openModal && <CreateCredentialModal onCancel={() => setOpenModal(false)}/>}
+            {openModal && <CreateCredentialModal onCancel={() => setOpenModal(false)} />}
         </div>
         
     );
