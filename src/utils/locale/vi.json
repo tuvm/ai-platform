@@ -141,5 +141,7 @@
   "IDS_ADD_MEMBER": "Thêm thành viên",
   "IDS_EMAIL_ADDRESS": "Địa chỉ email",
   "IDS_ROLE": "Quyền",
-  "IDS_GENERATE_API_KEY_SUCCESS": "Tạo mới API key thành công."
+  "IDS_GENERATE_API_KEY_SUCCESS": "Tạo mới API key thành công.",
+  "IDS_ACTIVE": "Kích hoạt",
+  "IDS_DEACTIVE": "Không kích hoạt"
 }

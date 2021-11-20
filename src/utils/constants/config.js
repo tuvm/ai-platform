@@ -374,5 +374,7 @@ export const QUOTA_DEV_TEMPLATE = {
 
 export const ENV_OPTIONS = {
   PRO: 'production',
-  DEV: 'development'
+  DEV: 'development',
+  1: 'development',
+  2: 'production'
 }

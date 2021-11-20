@@ -52,8 +52,8 @@ export default function CreateCredentialModal(props) {
         form.resetFields()
     };
 
-    const onSave = async () => {
-        const name = form.getFieldValue('key_name');
+    const onFinish = async () => {
+        const name = form.getFieldValue('Credential name');
         const end_time = form.getFieldValue('end_time');
 
         const { pathname } = location;
@@ -68,9 +68,10 @@ export default function CreateCredentialModal(props) {
 
         const newQuotaSelected = quotaSelected.map(item => {
             item.resource_id = item['id'];
-            item.period = 'daily';
             delete item['id'];
             delete item['name']
+            item.quota = item.quota.toString().toLowerCase();
+            item.period = item.period.toString().toLowerCase()
             return item;
         })
 
@@ -94,18 +95,10 @@ export default function CreateCredentialModal(props) {
             if (token_res && token_res.token) {
                 setToken(token_res.token);
                 message.success(t('IDS_GENERATE_API_KEY_SUCCESS'));
+                props.handleGetCredentials()
             }
         }
     }
-
-
-    const onFinish = () => {
-        message.success('Submit success!');
-    };
-
-    const onFinishFailed = () => {
-        message.error('Submit failed!');
-    };
 
     function onOkEndTime(value) {
         form.setFieldsValue({ end_time: value.toISOString() })
@@ -138,12 +131,13 @@ export default function CreateCredentialModal(props) {
             <Modal title={t('IDS_CREATE_CREDENTIAL')}
                 visible={true}
                 onOk={handleOk}
+                maskClosable={false}
                 onCancel={handleCancel}
                 footer={[
                     <Button key="back" onClick={handleCancel}>
                         Cancel
                     </Button>,
-                    <Button key="submit" type="primary" onClick={onSave}>
+                    <Button key="submit" type="primary" form="credential_form" htmlType="submit">
                         Save
                     </Button>
                 ]}
@@ -152,13 +146,13 @@ export default function CreateCredentialModal(props) {
 
                 <Form
                     form={form}
+                    id="credential_form"
                     layout="vertical"
                     onFinish={onFinish}
-                    onFinishFailed={onFinishFailed}
                     autoComplete="off"
                 >
                     <Form.Item
-                        name="key_name"
+                        name="Credential name"
                         label={t('IDS_NAME')}
                         rules={[
                             { required: true },

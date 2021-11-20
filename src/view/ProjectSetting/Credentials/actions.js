@@ -3,7 +3,6 @@ import api from "../../../utils/service/api";
 import * as actions from '../../../utils/constants/actions';
 
 export const actionGrantAPIKey = async ({ payload }) => {
-    console.log({payload})
     const url = '/resource/resource-access/grant';
     try {
         const res =  await api({ url, method: 'POST', data: payload });
@@ -35,5 +34,15 @@ export const actionGetResourceList = ({ params }) => async dispatch => {
         dispatch({ type: actions.FETCH_RESOURCE_SUCCESS, payload: data })
     } catch (error) {
         dispatch({ type: actions.FETCH_RESOURCE_ERROR })
+    }
+}
+
+export const actionGetCredentialList = async ({ params }) => {
+    const url = '/key/api-key-v2/list';
+    try {
+        const res = await api({ url, method: 'GET', params });
+        const data = get(res, 'data.data');
+        return data;
+    } catch (error) {
     }
 }

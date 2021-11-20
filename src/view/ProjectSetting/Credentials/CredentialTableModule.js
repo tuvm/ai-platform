@@ -135,7 +135,7 @@ const TableRowEditable = ({ row, handleUpdatePeriodAndQuota }) => {
             <td>
                 <AutoComplete
                     value={quotaValue}
-                    options={[{ value: 'Unlimited' }]}
+                    options={[{ value: 'unlimited', label: 'Unlimited' }]}
                     style={{
                         width: '100%',
                     }}
@@ -158,7 +158,7 @@ const TableRowEditable = ({ row, handleUpdatePeriodAndQuota }) => {
                     <Option value="daily">Daily</Option>
                     <Option value="monthly">Monthly</Option>
                     <Option value="annualy">Annualy</Option>
-                    <Option value="notreset">Not reset</Option>
+                    <Option value="not_reset">Not reset</Option>
                 </Select>
             </td>
         </tr>

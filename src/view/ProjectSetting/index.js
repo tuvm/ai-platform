@@ -18,9 +18,9 @@ export default function Analysis() {
   return (
     <>
       <Tabs defaultActiveKey="1" onChange={callback}>
-        <TabPane tab="General" key="1">
+        {/* <TabPane tab="General" key="1">
           General
-        </TabPane>
+        </TabPane> */}
 
         <TabPane tab="Credentials" key="2">
           <Credentials />

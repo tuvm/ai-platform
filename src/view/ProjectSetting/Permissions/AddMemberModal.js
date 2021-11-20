@@ -93,6 +93,7 @@ export default function CreateCredentialModal(props) {
                 visible={true}
                 onOk={handleOk}
                 onCancel={handleCancel}
+                maskClosable={false}
                 footer={[
                     <Button key="back" onClick={handleCancel}>
                         Cancel
