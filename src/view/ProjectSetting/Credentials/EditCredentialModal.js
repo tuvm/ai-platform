@@ -62,7 +62,7 @@ export default function EditCredentialModal(props) {
                 return item;
             })
 
-            setModuleSelected(selectedItem)
+            setQuotaSelected(selectedItem);
         }
     }, [data, vindrModules])
 

@@ -5,6 +5,7 @@ import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 import EditCredentialModal from './EditCredentialModal';
 import { ENV_OPTIONS } from '../../../utils/constants/config'
+import { actionDeleteCredential, actionRevokeCredential } from './actions'
 import './Credentials.scss';
 
 import {
@@ -50,16 +51,26 @@ export default function CredentialContent({ data, handleGetCredentials }) {
         setOpenConfirmRevokeModal(true)
     }
 
-    const handleDelete = () => {
-
+    const handleDelete = async () => {
+        const res = await actionDeleteCredential({ payload: data })
+        if (res.status === 200) {
+            message.success('Delete credential successfully.');
+            setOpenConfirmDeleteModal(false);
+            handleGetCredentials();
+        }
     }
 
     const handleCancelDelete = () => {
         setOpenConfirmDeleteModal(false)
     }
 
-    const handleRevoke = () => {
-
+    const handleRevoke = async () => {
+        const res = await actionRevokeCredential({ payload: data })
+        if (res.status === 200) {
+            message.success('Revoke credential successfully.');
+            setOpenConfirmRevokeModal(false);
+            handleGetCredentials();
+        }
     }
 
     const handleCancelRevoke = () => {
@@ -108,9 +119,9 @@ export default function CredentialContent({ data, handleGetCredentials }) {
 
             <div className="credential-footer">
                 <Space size={16}>
-                    <Button type="" onClick={handleDeleteModal}>Delete</Button>
-                    <Button type="" onClick={handleRevokeModal}>Revoke</Button>
-                    <Button type="primary" onClick={handleOpenEditCredential}>Edit</Button>
+                    <Button type="" danger onClick={handleDeleteModal}>Delete</Button>
+                    <Button type="" onClick={handleRevokeModal} disabled={!Boolean(data.status)}>Revoke</Button>
+                    <Button type="primary" onClick={handleOpenEditCredential} disabled={!Boolean(data.status)}>Edit</Button>
                 </Space>
             </div>
 

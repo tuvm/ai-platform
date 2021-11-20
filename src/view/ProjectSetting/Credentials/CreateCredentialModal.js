@@ -63,7 +63,7 @@ export default function CreateCredentialModal(props) {
             exact: true,
             strict: false
         });
-    
+
         const projectId = get(match, 'params.projectId', '');
 
         const newQuotaSelected = quotaSelected.map(item => {
@@ -75,7 +75,7 @@ export default function CreateCredentialModal(props) {
             return item;
         })
 
-        const payload = {          
+        const payload = {
             project_id: projectId,
             environment: env === ENV_OPTIONS.DEV ? 'dev' : 'prod',
             request_data: newQuotaSelected
@@ -222,16 +222,19 @@ export default function CreateCredentialModal(props) {
                         </div>
 
                         <div className="create-credential-select-module">
-                            <Select
-                                mode="multiple"
-                                // value={moduleSelected}
-                                style={{ width: "100%" }}
-                                onChange={handleModule}
-                                placeholder="Select modules"
-                                showArrow
-                            >
-                                {vindrModules && vindrModules.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>)}
-                            </Select>
+                            <Form.Item rules={[
+                                { required: true }]}>
+                                <Select
+                                    mode="multiple"
+                                    // value={moduleSelected}
+                                    style={{ width: "100%" }}
+                                    onChange={handleModule}
+                                    placeholder="Select modules"
+                                    showArrow
+                                >
+                                    {vindrModules && vindrModules.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>)}
+                                </Select>
+                            </Form.Item>
                         </div>
                         <CredentialTableModule
                             moduleSelected={moduleSelected}

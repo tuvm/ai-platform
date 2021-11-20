@@ -14,11 +14,6 @@ const EditableTable = (props) => {
     const resourceList = useSelector(state => state.system.resourceList);
     const quotaDev = get(resourceList, 'quota_dev');
 
-    // const handleDelete = (key) => {
-    //     const newDataSource = [...dataSource];
-    //     setDataSource(newDataSource.filter((item) => item.key !== key));
-    // };
-
     const handleUpdatePeriodAndQuota = (row) => {
         const newData = [...props.quotaSelected];
         const index = newData.findIndex((item) => row.id === item.id);
