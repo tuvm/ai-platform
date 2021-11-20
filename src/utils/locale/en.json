@@ -143,5 +143,6 @@
   "IDS_ROLE": "Role",
   "IDS_GENERATE_API_KEY_SUCCESS": "Generate API key successfully.",
   "IDS_ACTIVE": "Active",
-  "IDS_DEACTIVE": "Deactive"
+  "IDS_DEACTIVE": "Deactive",
+  "IDS_UPDATE_CREDENTIAL_SUCCESS": "Update Credential successfully."
 }

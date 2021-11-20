@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Input, Space, message, Button, Empty } from 'antd';
 import { Typography, Table } from 'antd';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
+import EditCredentialModal from './EditCredentialModal';
 import { ENV_OPTIONS } from '../../../utils/constants/config'
 import './Credentials.scss';
 
@@ -12,12 +13,12 @@ import {
 
 const { Column } = Table;
 
-
 const { Title, Text } = Typography;
 
 
-export default function Analysis({ data }) {
+export default function CredentialContent({ data, handleGetCredentials }) {
     const { t } = useTranslation();
+    const [openEditCredentialModal, setOpenEditCredentialModal] = useState(false);
 
     const handleCopy = () => {
         navigator.clipboard.writeText(data.token).then(function () {
@@ -25,6 +26,14 @@ export default function Analysis({ data }) {
         }, function (err) {
             message.error('Could not copy API Key: ');
         });
+    }
+
+    const handleCloseEditCredential = () => {
+        setOpenEditCredentialModal(false)
+    }
+
+    const handleOpenEditCredential = () => {
+        setOpenEditCredentialModal(true)
     }
 
     if (!data) {
@@ -39,7 +48,10 @@ export default function Analysis({ data }) {
                     <Text>Evironment: {ENV_OPTIONS[data.environment]}</Text>
                     <Text>Create time: {moment(data.create_time).format('MM-DD-YYYY HH:mm:ss')}</Text>
                     <Text>End time: {moment(data.end_time).format('MM-DD-YYYY HH:mm:ss')}</Text>
-                    <Text>Status: <Text type={`${data.status === 1 ? 'success' : 'danger'}`}>{data.status === 1 ? t('IDS_ACTIVE') : t('IDS_DEACTIVE')}</Text></Text>
+                    <Text>Status: <Text type={`${data.status === 1 ? 'success' : 'danger'}`}>
+                        {data.status === 1 ? t('IDS_ACTIVE') : t('IDS_DEACTIVE')}
+                        </Text>
+                    </Text>
                 </Space>
             </div>
             <div className="credential-key-input">
@@ -65,13 +77,17 @@ export default function Analysis({ data }) {
             </div>
 
             <div className="credential-footer">
-
                 <Space size={16}>
                     <Button type="">Delete</Button>
                     <Button type="">Revoke</Button>
-                    <Button type="primary">Edit</Button>
+                    <Button type="primary" onClick={handleOpenEditCredential}>Edit</Button>
                 </Space>
             </div>
+            {openEditCredentialModal && <EditCredentialModal
+                onCancel={handleCloseEditCredential}
+                handleGetCredentials={handleGetCredentials}
+                data={data}
+            />}
         </>
     );
 }

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Typography, Space, Row, Col } from 'antd';
+import { Button, Typography, Row, Col } from 'antd';
 import { KeyOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import get from 'lodash/get';
 import { matchPath } from 'react-router';
 import CreateCredentialModal from './CreateCredentialModal';
-import CredentialDev from './CredentialDev';
+import CredentialContent from './CredentialContent';
 import { actionGetCredentialList } from './actions';
 import './Credentials.scss';
 
@@ -14,7 +14,7 @@ import './Credentials.scss';
 const { Title } = Typography;
 
 export default function Credentials() {
-    const [openModal, setOpenModal] = useState(false);
+    const [openCreateCredentialModal, setOpenCreateCredentialModal] = useState(false);
     const { t } = useTranslation();
     const location = useLocation();
     const [credentialList, setCredentialList] = useState([]);
@@ -42,13 +42,17 @@ export default function Credentials() {
         handleGetCredentials()
     }, [])
 
-    const handleOpenModal = () => {
-        setOpenModal(true)
+    const handleCreateCredentialModal = () => {
+        setOpenCreateCredentialModal(true)
     }
 
     const handleChangeMenu = credential => {
         const finder = credentialList.find(item => item.id === credential.id)
         setCurrentCredential(finder)
+    }
+
+    const handleCloseCreateCredential = () => {
+        setOpenCreateCredentialModal(false)
     }
 
     return (
@@ -57,7 +61,7 @@ export default function Credentials() {
                 <Title level={4}>Your API keys</Title>
                 <Button type="primary"
                     icon={<KeyOutlined />}
-                    onClick={handleOpenModal}
+                    onClick={handleCreateCredentialModal}
                 >
                     {t('IDS_CREATE_CREDENTIAL')}
                 </Button>
@@ -68,19 +72,24 @@ export default function Credentials() {
                         <ul className="credential-list-item">
                             {credentialList && credentialList && credentialList.map(item => (
                                 <li key={item.id}
-                                onClick={() => handleChangeMenu(item)}
-                                className={`${currentCredential && currentCredential.id === item.id ? 'active' : ''}`}><KeyOutlined /> {item.name}</li>
+                                    onClick={() => handleChangeMenu(item)}
+                                    className={`${currentCredential && currentCredential.id === item.id ? 'active' : ''}`}><KeyOutlined /> {item.name}</li>
                             ))}
                         </ul>
                     </Col>
 
                     <Col xs={24} md={18}>
-                        <div className="credential-content"><CredentialDev data={currentCredential} /></div>
+                        <div className="credential-content">
+                            <CredentialContent
+                                data={currentCredential}
+                                handleGetCredentials={handleGetCredentials}
+                            />
+                        </div>
                     </Col>
                 </Row>
             </div>
-            {openModal && <CreateCredentialModal
-                onCancel={() => setOpenModal(false)}
+            {openCreateCredentialModal && <CreateCredentialModal
+                onCancel={handleCloseCreateCredential}
                 handleGetCredentials={handleGetCredentials}
             />}
         </div>

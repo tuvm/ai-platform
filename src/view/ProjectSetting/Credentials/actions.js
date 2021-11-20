@@ -14,10 +14,19 @@ export const actionGrantAPIKey = async ({ payload }) => {
 
 
 export const actionGenerateAPIKey = async ({ payload }) => {
-    console.log({payload})
     const url = '/key/api-key-v2/generate';
     try {
         const res =  await api({ url, method: 'POST', data: payload });
+        const data = get(res, 'data');
+        return data;
+    } catch (error) {
+    }
+}
+
+export const actionUpdateCredential = async ({ payload }) => {
+    const url = '/key/api-key-v2/update';
+    try {
+        const res =  await api({ url, method: 'PUT', data: payload });
         const data = get(res, 'data');
         return data;
     } catch (error) {

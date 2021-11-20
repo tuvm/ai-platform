@@ -143,5 +143,6 @@
   "IDS_ROLE": "Quyền",
   "IDS_GENERATE_API_KEY_SUCCESS": "Tạo mới API key thành công.",
   "IDS_ACTIVE": "Kích hoạt",
-  "IDS_DEACTIVE": "Không kích hoạt"
+  "IDS_DEACTIVE": "Không kích hoạt",
+  "IDS_UPDATE_CREDENTIAL_SUCCESS": "Cập nhật chứng chỉ thành công."
 }
