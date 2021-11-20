@@ -11,7 +11,7 @@ import {
     CopyOutlined
 } from '@ant-design/icons';
 import { DatePicker } from 'antd';
-import { ENV_OPTIONS } from '../../../utils/constants/config';
+import { ENV_OPTIONS, regex_name } from '../../../utils/constants/config';
 
 import './Credentials.scss';
 import CredentialTableModule from './CredentialTableModule';
@@ -77,7 +77,7 @@ export default function CreateCredentialModal(props) {
 
         const payload = {          
             project_id: projectId,
-            environment: env === ENV_OPTIONS.DEV ? 1 : 2, // 1 is dev, 2 is prod
+            environment: env === ENV_OPTIONS.DEV ? 'dev' : 'prod',
             request_data: newQuotaSelected
         }
 
@@ -95,7 +95,8 @@ export default function CreateCredentialModal(props) {
             if (token_res && token_res.token) {
                 setToken(token_res.token);
                 message.success(t('IDS_GENERATE_API_KEY_SUCCESS'));
-                props.handleGetCredentials()
+                props.handleGetCredentials();
+                handleCancel();
             }
         }
     }
@@ -157,9 +158,7 @@ export default function CreateCredentialModal(props) {
                         rules={[
                             { required: true },
                             {
-                                pattern: new RegExp(
-                                    /^[A-Za-z0-9 _-]*[A-Za-z0-9][A-Za-z0-9 _-]*$/i
-                                ),
+                                pattern: regex_name,
                                 message: "Only alphabets and numbers are allowed"
                             },
                             { type: 'string', min: 4 },

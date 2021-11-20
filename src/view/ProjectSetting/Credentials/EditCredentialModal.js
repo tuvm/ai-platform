@@ -11,7 +11,7 @@ import {
     CopyOutlined
 } from '@ant-design/icons';
 import { DatePicker } from 'antd';
-import { ENV_OPTIONS } from '../../../utils/constants/config';
+import { ENV_OPTIONS, regex_name } from '../../../utils/constants/config';
 
 import './Credentials.scss';
 import CredentialTableModule from './CredentialTableModule';
@@ -50,6 +50,9 @@ export default function EditCredentialModal(props) {
 
     useEffect(() => {
         let selectedItem = get(data, 'request_data', []);
+        form.setFieldsValue({end_time: moment(data.end_time, 'YYYY-MM-DD HH:mm:ss')});
+        form.setFieldsValue({credential_name: data.name});
+
         if (selectedItem.length > 0) {
             selectedItem = selectedItem.map(item => {
                 const finder = vindrModules.find(el => el.id === item.resource_id);
@@ -69,7 +72,7 @@ export default function EditCredentialModal(props) {
     };
 
     const onFinish = async () => {
-        const name = form.getFieldValue('Credential name');
+        const name = form.getFieldValue('credential_name');
         const end_time = form.getFieldValue('end_time');
 
         const { pathname } = location;
@@ -93,24 +96,27 @@ export default function EditCredentialModal(props) {
 
         const payload = {          
             project_id: projectId,
-            environment: env === ENV_OPTIONS.DEV ? 1 : 2, // 1 is dev, 2 is prod
-            request_data: newQuotaSelected
+            environment: env === ENV_OPTIONS.DEV ? 'dev' : 'prod',
+            request_data: newQuotaSelected,
+            grant_id: data.grant_id,
         }
 
         const res = await actionGrantAPIKey({ payload })
         if (res && res.token) {
             const payload_apikey = {
                 "name": name,
-                "grant_id": get(res, 'data.grant_id'),
+                "grant_id": data.grant_id,
                 end_time,
                 "project_id": projectId,
-                "token": res.token
+                "token": res.token,
+                id: data.id,
             }
-            let token_res = await actionUpdateCredential({ payload: payload_apikey });
-            token_res = get(token_res, 'data')
-            if (token_res && token_res.token) {
+            let update_res = await actionUpdateCredential({ payload: payload_apikey });
+            update_res = get(update_res, 'updated_id')
+            if (update_res) {
                 message.success(t('IDS_UPDATE_CREDENTIAL_SUCCESS'));
-                props.handleGetCredentials()
+                props.handleGetCredentials();
+                handleCancel();
             }
         }
     }
@@ -169,14 +175,12 @@ export default function EditCredentialModal(props) {
                     autoComplete="off"
                 >
                     <Form.Item
-                        name="Credential name"
+                        name="credential_name"
                         label={t('IDS_NAME')}
                         rules={[
                             { required: true },
                             {
-                                pattern: new RegExp(
-                                    /^[A-Za-z0-9 _-]*[A-Za-z0-9][A-Za-z0-9 _-]*$/i
-                                ),
+                                pattern: regex_name,
                                 message: "Only alphabets and numbers are allowed"
                             },
                             { type: 'string', min: 4 },
@@ -190,7 +194,7 @@ export default function EditCredentialModal(props) {
                         label={t('End time')}
                     >
                         <div className="create-credential-subtitle"><Text type="secondary">Schedule expiration time for your API key</Text></div>
-                        <DatePicker showTime onOk={onOkEndTime} style={{ width: '40%' }} defaultValue={moment(data.end_time, 'YYYY-MM-DD HH:mm:ss')} />
+                        <DatePicker showTime onOk={onOkEndTime} style={{ width: '40%' }} value={moment(data.end_time, 'YYYY-MM-DD HH:mm:ss')} />
                     </Form.Item>
 
                     <div className="create-credential-apikey-section">

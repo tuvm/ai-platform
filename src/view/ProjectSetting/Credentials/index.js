@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Typography, Row, Col } from 'antd';
+import { Button, Typography, Row, Col, Empty } from 'antd';
 import { KeyOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
@@ -66,7 +66,8 @@ export default function Credentials() {
                     {t('IDS_CREATE_CREDENTIAL')}
                 </Button>
             </div>
-            <div className="credential-tabs">
+
+            {!credentialList || credentialList.length === 0 ? <div className="empty-list"><Empty /></div> : <div className="credential-tabs">
                 <Row gutter={16}>
                     <Col xs={24} md={6}>
                         <ul className="credential-list-item">
@@ -87,7 +88,7 @@ export default function Credentials() {
                         </div>
                     </Col>
                 </Row>
-            </div>
+            </div>}
             {openCreateCredentialModal && <CreateCredentialModal
                 onCancel={handleCloseCreateCredential}
                 handleGetCredentials={handleGetCredentials}

@@ -24,7 +24,7 @@ export const actionGenerateAPIKey = async ({ payload }) => {
 }
 
 export const actionUpdateCredential = async ({ payload }) => {
-    const url = '/key/api-key-v2/update';
+    const url = `/key/api-key-v2/update/${payload.id}`;
     try {
         const res =  await api({ url, method: 'PUT', data: payload });
         const data = get(res, 'data');

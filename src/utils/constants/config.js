@@ -376,5 +376,12 @@ export const ENV_OPTIONS = {
   PRO: 'production',
   DEV: 'development',
   1: 'development',
-  2: 'production'
+  2: 'production',
+  dev: 'development',
+  prod: 'production'
 }
+
+
+export const regex_name = new RegExp(
+  /^[0-9a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s -]+$/i
+)

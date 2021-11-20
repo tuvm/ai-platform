@@ -144,5 +144,8 @@
   "IDS_GENERATE_API_KEY_SUCCESS": "Generate API key successfully.",
   "IDS_ACTIVE": "Active",
   "IDS_DEACTIVE": "Deactive",
-  "IDS_UPDATE_CREDENTIAL_SUCCESS": "Update Credential successfully."
+  "IDS_UPDATE_CREDENTIAL_SUCCESS": "Update Credential successfully.",
+  "IDS_CONFIRMATION": "Confirmation",
+  "IDS_CONFIRM_DELETE_CREDENTIAL_MESSAGE": "Are you sure want to delete credential?",
+  "IDS_CONFIRM_REVOKE_CREDENTIAL_MESSAGE": "Are you sure want to revoke credential?"
 }

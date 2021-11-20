@@ -6,6 +6,7 @@ import { Form, message, Button } from 'antd';
 import get from 'lodash/get';
 import { actionCreateProject, actionGetProjectList } from './actions';
 import { changeToSlug, makeID } from '../../utils/helpers';
+import { regex_name } from '../../utils/constants/config';
 
 import './ProjectStyle.scss';
 
@@ -34,7 +35,6 @@ export default function AddNewProjectModal(props) {
             dispatch(actionGetProjectList());
             handleCancel();
         }).catch(error => {
-            console.log(error)
             const errorMessage = get(error, 'response.data.detail', '');
             if (errorMessage.toLowerCase() === 'duplicate project id') {
                 message.error('Project ID already exist')
@@ -87,9 +87,7 @@ export default function AddNewProjectModal(props) {
                             rules={[
                                 { required: true },
                                 {
-                                    pattern: new RegExp(
-                                        /^[A-Za-z0-9 _-]*[A-Za-z0-9][A-Za-z0-9 _-]*$/i
-                                    ),
+                                    pattern: regex_name,
                                     message: "Only alphabets and numbers are allowed"
                                 },
                                 { type: 'string', min: 4 },
