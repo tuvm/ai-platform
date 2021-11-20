@@ -50,8 +50,8 @@ export default function EditCredentialModal(props) {
 
     useEffect(() => {
         let selectedItem = get(data, 'request_data', []);
-        form.setFieldsValue({end_time: moment(data.end_time, 'YYYY-MM-DD HH:mm:ss')});
-        form.setFieldsValue({credential_name: data.name});
+        form.setFieldsValue({ end_time: moment(data.end_time, 'YYYY-MM-DD HH:mm:ss') });
+        form.setFieldsValue({ credential_name: data.name });
 
         if (selectedItem.length > 0) {
             selectedItem = selectedItem.map(item => {
@@ -63,7 +63,11 @@ export default function EditCredentialModal(props) {
             })
 
             setQuotaSelected(selectedItem);
+
+            const selectedKeys = selectedItem.map(item => item.id);
+            form.setFieldsValue({ "Modules": selectedKeys });
         }
+
     }, [data, vindrModules])
 
     const handleCancel = () => {
@@ -82,7 +86,7 @@ export default function EditCredentialModal(props) {
             exact: true,
             strict: false
         });
-    
+
         const projectId = get(match, 'params.projectId', '');
 
         const newQuotaSelected = quotaSelected.map(item => {
@@ -94,7 +98,7 @@ export default function EditCredentialModal(props) {
             return item;
         })
 
-        const payload = {          
+        const payload = {
             project_id: projectId,
             environment: env === ENV_OPTIONS.DEV ? 'dev' : 'prod',
             request_data: newQuotaSelected,
@@ -186,7 +190,7 @@ export default function EditCredentialModal(props) {
                             { type: 'string', min: 4 },
                         ]}
                     >
-                        <Input placeholder={t('IDS_PROJECT_NAME')} defaultValue={data.name}/>
+                        <Input placeholder={t('IDS_PROJECT_NAME')} defaultValue={data.name} />
                     </Form.Item>
 
                     <Form.Item
@@ -244,16 +248,21 @@ export default function EditCredentialModal(props) {
                         </div>
 
                         <div className="create-credential-select-module">
-                            <Select
-                                mode="multiple"
-                                style={{ width: "100%" }}
-                                onChange={handleModule}
-                                placeholder="Select modules"
-                                value={selectedKeys}
-                                showArrow
+                            <Form.Item
+                                rules={[{ required: true }]}
+                                label="Modules"
+                                name="Modules"
                             >
-                                {vindrModules && vindrModules.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>)}
-                            </Select>
+                                <Select
+                                    mode="multiple"
+                                    style={{ width: "100%" }}
+                                    onChange={handleModule}
+                                    placeholder="Select modules"
+                                    showArrow
+                                >
+                                    {vindrModules && vindrModules.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>)}
+                                </Select>
+                            </Form.Item>
                         </div>
                         <CredentialTableModule
                             moduleSelected={moduleSelected}

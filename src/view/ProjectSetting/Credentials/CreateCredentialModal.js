@@ -54,7 +54,19 @@ export default function CreateCredentialModal(props) {
 
     const onFinish = async () => {
         const name = form.getFieldValue('Credential name');
-        const end_time = form.getFieldValue('end_time');
+        let end_time = form.getFieldValue('end_time') || null;
+
+        if (!end_time) {
+            var d = new Date();
+            var year = d.getFullYear();
+            var month = d.getMonth();
+            var day = d.getDate();
+            var seconds = d.getSeconds();
+            var minutes = d.getMinutes();
+            var hour = d.getHours();
+            end_time = new Date(year + 1, month, day, hour + 7, minutes, seconds);
+            end_time = end_time.toISOString();
+        }
 
         const { pathname } = location;
 
@@ -222,11 +234,13 @@ export default function CreateCredentialModal(props) {
                         </div>
 
                         <div className="create-credential-select-module">
-                            <Form.Item rules={[
-                                { required: true }]}>
+                            <Form.Item
+                                rules={[{ required: true }]}
+                                label="Modules"
+                                name="Modules"
+                            >
                                 <Select
                                     mode="multiple"
-                                    // value={moduleSelected}
                                     style={{ width: "100%" }}
                                     onChange={handleModule}
                                     placeholder="Select modules"
