@@ -7,6 +7,8 @@ import {
   DashboardOutlined
 } from '@ant-design/icons';
 
+import find from 'lodash/find';
+
 // common
 export const REFRESH_TOKEN = 'refresh_token';
 export const FIRST_REFRESH_TOKEN = 'first_refresh_token';
@@ -298,31 +300,31 @@ export const API_SCOPES = [
 export const VINDR_MODULES = [
   {
     name: 'Vindr ChestXray',
-    key: 'chestxray'
+    key: 'vindr-chestxray'
   },
   {
     name: 'Vindr Mammo',
-    key: 'mammo'
+    key: 'vindr-mammo'
   },
   {
     name: 'Vindr SpineXR',
-    key: 'spinexr'
+    key: 'vindr-spinexr'
   },
   {
     name: 'Vindr LungCT',
-    key: 'lungct'
+    key: 'vindr-lungct'
   },
   {
     name: 'Vindr LiverCT',
-    key: 'liverct'
+    key: 'vindr-liverct'
   },
   {
     name: 'Vindr BrainCT',
-    key: 'brainct'
+    key: 'vindr-brainct'
   },
   {
     name: 'Vindr BrainMRI',
-    key: 'brainmri'
+    key: 'vindr-brainmri'
   }
 ]
 
@@ -373,15 +375,50 @@ export const QUOTA_DEV_TEMPLATE = {
 
 
 export const ENV_OPTIONS = {
-  PRO: 'production',
-  DEV: 'development',
-  1: 'development',
-  2: 'production',
-  dev: 'development',
-  prod: 'production'
+  PRO: 'Production',
+  DEV: 'Development',
+  1: 'Development',
+  2: 'Production',
+  dev: 'Development',
+  prod: 'Production'
 }
 
 
 export const regex_name = new RegExp(
   /^[0-9a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s -]+$/i
 )
+
+export const getModuleName = (modules, slug) => {
+  let finder = {}
+  if (modules && slug) {
+    finder = find(modules, { slug: slug }) || {}
+  }
+  return finder;
+}
+
+export const PERIOD_SELECTION = [
+  {
+    label: 'Daily',
+    value: 'daily',
+  },
+  {
+    label: 'Monthly',
+    value: 'monthly',
+  },
+  {
+    label: 'Annualy',
+    value: 'annualy',
+  },
+  {
+    label: 'Not reset',
+    value: 'not_reset',
+  }
+]
+
+export const getPeriodSelected = (key) => {
+  let time = {}
+  if (key) {
+    time = find(PERIOD_SELECTION, { value: key }) || {}
+  }
+  return time;
+}

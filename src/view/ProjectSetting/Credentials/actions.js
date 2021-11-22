@@ -24,9 +24,9 @@ export const actionGenerateAPIKey = async ({ payload }) => {
 }
 
 export const actionRegenerateAPIKey = async ({ payload }) => {
-    const url = '/key/api-key-v2/regenerate';
+    const url = `/key/api-key-v2/regenerate/${payload.id}`;
     try {
-        const res = await api({ url, method: 'POST', data: payload });
+        const res = await api({ url, method: 'PUT' });
         const data = get(res, 'data');
         return data;
     } catch (error) {

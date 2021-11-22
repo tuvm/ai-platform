@@ -151,5 +151,6 @@
   "IDS_COPY_API_KEY": "Đã sao chép chứng chỉ vào khay nhớ đệm",
   "IDS_CREDENTIAL_CANNOT_COPY_API_KEY": "Không thể sao chép chứng chỉ",
   "IDS_CREDENTIAL_DELETE_SUCCESS": "Xóa chứng chỉ thành công",
-  "IDS_CREDENTIAL_REVOKE_SUCCESS":"Thu hồi chứng chỉ thành công"
+  "IDS_CREDENTIAL_REVOKE_SUCCESS":"Thu hồi chứng chỉ thành công",
+  "IDS_REGENERATE_KEY_SUCCESS": "Tạo lại chứng chỉ thành công"
 }

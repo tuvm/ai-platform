@@ -25,7 +25,7 @@ import {
     actionRegenerateAPIKey
 } from './actions';
 import { CredentialContext } from './context';
-
+import cloneDeep from 'lodash/cloneDeep';
 
 const { Option } = Select;
 
@@ -54,6 +54,7 @@ export default function EditCredentialModal(props) {
 
     useEffect(() => {
         let selectedItem = get(currentCredential, 'request_data', []);
+        selectedItem = cloneDeep(selectedItem);
         form.setFieldsValue({ end_time: moment(currentCredential.end_time, 'YYYY-MM-DD HH:mm:ss') });
         form.setFieldsValue({ credential_name: currentCredential.name });
 
@@ -65,7 +66,6 @@ export default function EditCredentialModal(props) {
 
                 return item;
             })
-
             setQuotaSelected(selectedItem);
 
             const selectedKeys = selectedItem.map(item => item.id);
@@ -127,14 +127,18 @@ export default function EditCredentialModal(props) {
 
     const handleCopy = () => {
         navigator.clipboard.writeText(currentCredential.token).then(function () {
-            message.success('Copied API key');
+            message.success(t('IDS_COPY_API_KEY'));
         }, function (err) {
-            message.error('Could not copy API Key: ');
+            message.error(t('IDS_CREDENTIAL_CANNOT_COPY_API_KEY'));
         });
     }
 
-    const handleRegenerageAPIKey = () => {
-        actionRegenerateAPIKey(currentCredential);
+    const handleRegenerageAPIKey = async () => {
+        const token = await actionRegenerateAPIKey({ payload: currentCredential });
+        if (token) {
+            message.success(t('IDS_REGENERATE_KEY_SUCCESS'))
+            handleGetCredentials();
+        }
     }
 
     const onChangeEvironment = e => {
@@ -215,13 +219,13 @@ export default function EditCredentialModal(props) {
                         <Form.Item>
                             <Radio.Group name={'rb1'} onChange={onChangeEvironment} value={ENV_OPTIONS[currentCredential.environment]} disabled={true}>
                                 <Space direction="vertical">
-                                    <Radio value={ENV_OPTIONS.DEV}>
+                                    <Radio value={ENV_OPTIONS.dev}>
                                         Development <br />
                                         <Text type="secondary" className="create-credential-radio-subtext">
                                             Free quota amounts on each project are applied daily and reset at 0:00 AM.
                                         </Text>
                                     </Radio>
-                                    <Radio value={ENV_OPTIONS.PRO}>
+                                    <Radio value={ENV_OPTIONS.prod}>
                                         Production <br />
                                         <Text type="secondary" className="create-credential-radio-subtext">
                                             Unlimited quota amounts beyond your configuration.

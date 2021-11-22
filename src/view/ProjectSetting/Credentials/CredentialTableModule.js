@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { AutoComplete, Select } from 'antd';
-import { ENV_OPTIONS } from '../../../utils/constants/config';
+import { ENV_OPTIONS, PERIOD_SELECTION } from '../../../utils/constants/config';
 import get from 'lodash/get';
 import find from 'lodash/find';
 import { useSelector } from 'react-redux';
+import { getPeriodSelected } from '../../../utils/constants/config';
 
 import './CredentialTableModule.scss';
 
@@ -13,6 +14,7 @@ const { Option } = Select;
 const EditableTable = (props) => {
     const resourceList = useSelector(state => state.system.resourceList);
     const quotaDev = get(resourceList, 'quota_dev');
+    const vindrModules = get(resourceList, 'modules');
 
     const handleUpdatePeriodAndQuota = (row) => {
         const newData = [...props.quotaSelected];
@@ -36,12 +38,12 @@ const EditableTable = (props) => {
                 id: item.id,
                 name: item.name,
                 quota: get(finder, 'quota'),
-                period: get(finder, 'period')
+                period: get(finder, 'period'),
             }
             return data;
         })
 
-        if (props.env === ENV_OPTIONS.PRO) {
+        if (props.env === ENV_OPTIONS.prod) {
             const moduleSelected = props.moduleSelected;
             moduleSelectedFormated = moduleSelected.map(item => {
                 const finder = find(quotaDev, { 'resource_id': item.id })
@@ -49,7 +51,7 @@ const EditableTable = (props) => {
                     id: item.id,
                     name: item.name,
                     quota: get(finder, 'quota'),
-                    period: get(finder, 'period')
+                    period: get(finder, 'period'),
                 }
                 return data;
             })
@@ -67,7 +69,6 @@ const EditableTable = (props) => {
     }, [props.moduleSelected, props.env, quotaDev])
 
     const { env } = props;
-
     return (
         <div className="create-credential-table-content">
             <table className="app-table">
@@ -81,13 +82,13 @@ const EditableTable = (props) => {
                 </thead>
                 <tbody>
                     {
-                        env === ENV_OPTIONS.PRO && props.quotaSelected && props.quotaSelected.map((row, i) => (
-                            <TableRowEditable key={row.id} row={row} handleUpdatePeriodAndQuota={handleUpdatePeriodAndQuota} />
+                        env === ENV_OPTIONS.prod && props.quotaSelected && props.quotaSelected.map((row, i) => (
+                            <TableRowEditable vindrModules={vindrModules} key={row.id} row={row} handleUpdatePeriodAndQuota={handleUpdatePeriodAndQuota} />
                         ))
                     }
                     {
-                        env === ENV_OPTIONS.DEV && props.quotaSelected && props.quotaSelected.map((row, i) => (
-                            <TableRow row={row} key={row.id} handleUpdatePeriodAndQuota={handleUpdatePeriodAndQuota} />
+                        env === ENV_OPTIONS.dev && props.quotaSelected && props.quotaSelected.map((row, i) => (
+                            <TableRow row={row} key={row.id} vindrModules={vindrModules} handleUpdatePeriodAndQuota={handleUpdatePeriodAndQuota} />
                         ))
                     }
                 </tbody>
@@ -150,22 +151,23 @@ const TableRowEditable = ({ row, handleUpdatePeriodAndQuota }) => {
                     value={periodValue}
                     style={{ width: 120 }} onChange={handleSelectModule}
                 >
-                    <Option value="daily">Daily</Option>
-                    <Option value="monthly">Monthly</Option>
-                    <Option value="annualy">Annualy</Option>
-                    <Option value="not_reset">Not reset</Option>
+                    {
+                        PERIOD_SELECTION.map(item => (
+                            <Option value={item.value} key={item.value}>{item.label}</Option>
+                        ))
+                    }
                 </Select>
             </td>
         </tr>
     )
 }
 
-const TableRow = ({ row }) => {
+const TableRow = ({ row, vindrModules}) => {
     return (
         <tr key={row.id}>
             <td>{row.name}</td>
             <td>{row.quota}</td>
-            <td>{row.period}</td>
+            <td>{getPeriodSelected(row.period).label}</td>
         </tr>
     )
 }

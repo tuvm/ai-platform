@@ -151,5 +151,6 @@
   "IDS_COPY_API_KEY": "Copied API key",
   "IDS_CREDENTIAL_CANNOT_COPY_API_KEY": "Cannot copy API key",
   "IDS_CREDENTIAL_DELETE_SUCCESS": "Delete credential successfully.",
-  "IDS_CREDENTIAL_REVOKE_SUCCESS":"Revoke credential successfully."
+  "IDS_CREDENTIAL_REVOKE_SUCCESS":"Revoke credential successfully.",
+  "IDS_REGENERATE_KEY_SUCCESS": "Regenerate API key sucessfully."
 }

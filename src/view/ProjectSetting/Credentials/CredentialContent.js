@@ -4,9 +4,12 @@ import { Typography, Table, Modal } from 'antd';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 import EditCredentialModal from './EditCredentialModal';
-import { ENV_OPTIONS } from '../../../utils/constants/config'
+import { ENV_OPTIONS, getPeriodSelected } from '../../../utils/constants/config'
 import { actionDeleteCredential, actionRevokeCredential } from './actions';
+import { useSelector } from 'react-redux';
 import { CredentialContext } from './context';
+import get from 'lodash/get';
+import { getModuleName } from '../../../utils/constants/config';
 import './Credentials.scss';
 
 import {
@@ -23,6 +26,8 @@ export default function CredentialContent() {
     const [openEditCredentialModal, setOpenEditCredentialModal] = useState(false);
     const [openConfirmDeleteModal, setOpenConfirmDeleteModal] = useState(false);
     const [openConfirmRevokeModal, setOpenConfirmRevokeModal] = useState(false);
+    const resourceList = useSelector(state => state.system.resourceList);
+    const vindrModules = get(resourceList, 'modules');
     const {
         handleGetCredentials,
         currentCredential,
@@ -112,9 +117,13 @@ export default function CredentialContent() {
                 </Space>
 
                 <Table dataSource={currentCredential.request_data} className="app-table quotation-table" pagination={false}>
-                    <Column title="API Name" dataIndex="name" key="name" />
+                    <Column title="API Name" dataIndex="name" key="name" render={name => (
+                        <>{getModuleName(vindrModules, name).name}</>
+                    )} />
                     <Column title="Quota" dataIndex="quota" key="quota" />
-                    <Column title="Period" dataIndex="period" key="period" />
+                    <Column title="Period" dataIndex="period" key="period" render={period => (
+                        <>{getPeriodSelected(period).label}</>
+                    )}/>
                 </Table>
             </div>
 
@@ -129,8 +138,6 @@ export default function CredentialContent() {
             {
                 openEditCredentialModal && <EditCredentialModal
                     onCancel={handleCloseEditCredential}
-                    handleGetCredentials={handleGetCredentials}
-                    data={currentCredential}
                 />
             }
 
