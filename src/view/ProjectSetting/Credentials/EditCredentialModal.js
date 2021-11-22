@@ -17,8 +17,7 @@ import './Credentials.scss';
 import CredentialTableModule from './CredentialTableModule';
 import { useSelector } from 'react-redux';
 import get from 'lodash/get';
-import { useLocation } from 'react-router-dom';
-import { matchPath } from 'react-router';
+import { useProjectsParams } from '../../../utils/hooks';
 import moment from 'moment';
 import { actionUpdateCredential, actionGrantAPIKey } from './actions';
 
@@ -41,7 +40,7 @@ export default function EditCredentialModal(props) {
     const [form] = Form.useForm();
     const resourceList = useSelector(state => state.system.resourceList);
     const vindrModules = get(resourceList, 'modules');
-    const location = useLocation();
+    const { params } = useProjectsParams();
 
     const { Text, Link } = Typography;
 
@@ -79,15 +78,7 @@ export default function EditCredentialModal(props) {
         const name = form.getFieldValue('credential_name');
         const end_time = form.getFieldValue('end_time');
 
-        const { pathname } = location;
-
-        const match = matchPath(pathname, {
-            path: '/projects/:projectId/*',
-            exact: true,
-            strict: false
-        });
-
-        const projectId = get(match, 'params.projectId', '');
+        const projectId = get(params, 'projectId', '');
 
         const newQuotaSelected = quotaSelected.map(item => {
             item.resource_id = item['id'];
@@ -150,8 +141,6 @@ export default function EditCredentialModal(props) {
         const list = filterModules(vindrModules, value)
         setModuleSelected(list)
     }
-
-    const selectedKeys = moduleSelected.map(item => item.id);
 
     return (
         <div>

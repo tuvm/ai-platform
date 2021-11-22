@@ -17,8 +17,7 @@ import './Credentials.scss';
 import CredentialTableModule from './CredentialTableModule';
 import { useSelector } from 'react-redux';
 import get from 'lodash/get';
-import { useLocation } from 'react-router-dom';
-import { matchPath } from 'react-router';
+import { useProjectsParams } from '../../../utils/hooks';
 import { actionGenerateAPIKey, actionGrantAPIKey } from './actions';
 
 
@@ -40,7 +39,7 @@ export default function CreateCredentialModal(props) {
     const resourceList = useSelector(state => state.system.resourceList);
     const vindrModules = get(resourceList, 'modules');
     const [token, setToken] = useState('')
-    const location = useLocation();
+    const { params } = useProjectsParams();
 
     const { Text, Link } = Typography;
 
@@ -68,15 +67,7 @@ export default function CreateCredentialModal(props) {
             end_time = end_time.toISOString();
         }
 
-        const { pathname } = location;
-
-        const match = matchPath(pathname, {
-            path: '/projects/:projectId/*',
-            exact: true,
-            strict: false
-        });
-
-        const projectId = get(match, 'params.projectId', '');
+        const projectId = get(params, 'projectId', '');
 
         const newQuotaSelected = quotaSelected.map(item => {
             item.resource_id = item['id'];

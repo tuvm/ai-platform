@@ -1,31 +1,24 @@
 import { Menu, Dropdown, Typography, Space } from 'antd';
 import { DownOutlined, HomeFilled } from '@ant-design/icons';
-import { Link, useHistory, useLocation } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import './LeftMenu.scss';
 import { useState } from 'react';
 import AddNewProjectModal from '../../../view/Projects/AddNewProjectModal';
 import { useSelector } from 'react-redux';
 import get from 'lodash/get';
-import { matchPath } from 'react-router';
+import { useProjectsParams } from '../../../utils/hooks';
 
 const { Text } = Typography;
 
 export default function ProjectSelect(props) {
     const [showPopup, setShowPopup] = useState(false);
     const history = useHistory();
-    const location = useLocation();
     const projectList = useSelector(state => state.system.projectList) || []
     const recentProjects = get(projectList, 'recent.data', []);
     const allProjects = get(projectList, 'all.data', []);
-    const { pathname } = location;
+    const { params } = useProjectsParams();
 
-    const match = matchPath(pathname, {
-        path: '/projects/:projectId/*',
-        exact: true,
-        strict: false
-    });
-
-    const projectId = get(match, 'params.projectId', '');
+    const projectId = get(params, 'projectId', '');
     const allProject = get(projectList, 'all.data', []);
 
     let activeProject = allProject.find(item => item.project_id === projectId)

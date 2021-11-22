@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Button, Typography, Row, Col, Empty } from 'antd';
 import { KeyOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
 import get from 'lodash/get';
-import { matchPath } from 'react-router';
 import CreateCredentialModal from './CreateCredentialModal';
 import CredentialContent from './CredentialContent';
+import { useProjectsParams } from '../../../utils/hooks';
 import { actionGetCredentialList } from './actions';
 import './Credentials.scss';
 
@@ -16,19 +15,11 @@ const { Title } = Typography;
 export default function Credentials() {
     const [openCreateCredentialModal, setOpenCreateCredentialModal] = useState(false);
     const { t } = useTranslation();
-    const location = useLocation();
     const [credentialList, setCredentialList] = useState([]);
     const [currentCredential, setCurrentCredential] = useState({});
+    const { params } = useProjectsParams();
 
-    const { pathname } = location;
-
-    const match = matchPath(pathname, {
-        path: '/projects/:projectId/*',
-        exact: true,
-        strict: false
-    });
-
-    const projectId = get(match, 'params.projectId', '');
+    const projectId = get(params, 'projectId', '');
 
     const handleGetCredentials = async () => {
         const data = await actionGetCredentialList({ params: { project_id: projectId } })

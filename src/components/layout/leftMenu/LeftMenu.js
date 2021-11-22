@@ -14,41 +14,28 @@ import {
   SettingOutlined,
 } from '@ant-design/icons';
 import ProjectSelect from './ProjectSelect';
-
-import { matchPath } from 'react-router';
+import { useProjectsParams } from '../../../utils/hooks';
 
 const { SubMenu } = Menu;
 
 const LeftMenu = (props) => {
-  const { location, userInfo } = props;
+  const { userInfo } = props;
   const [collapsed, setCollapsed] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState();
   const { t } = useTranslation();
+  const { params } = useProjectsParams();
 
   useEffect(() => {
-    const { pathname } = location;
-    const match = matchPath(pathname, {
-      path: '/projects/:projectId/:page',
-      exact: true,
-      strict: false
-    });
-    const page = get(match, 'params.page', '/');
+    const page = get(params, 'page', '/');
     setSelectedKeys('/' + page);
-  }, [location]);
+  }, [params]);
 
   const onCollapse = (isCollapse) => {
     setCollapsed(isCollapse);
   };
 
   const handleMenuClick = ({ key }) => {
-    const { pathname } = location;
-    const match = matchPath(pathname, {
-      path: '/projects/:projectId/:page',
-      exact: true,
-      strict: false
-    });
-
-    const projectId = get(match, 'params.projectId', '/');
+    const projectId = get(params, 'projectId', '');
     props.history.push(`/projects/${projectId}${key}`);
   };
 
