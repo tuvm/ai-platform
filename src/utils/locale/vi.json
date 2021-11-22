@@ -147,5 +147,9 @@
   "IDS_UPDATE_CREDENTIAL_SUCCESS": "Cập nhật chứng chỉ thành công.",
   "IDS_CONFIRMATION": "Xác nhận",
   "IDS_CONFIRM_DELETE_CREDENTIAL_MESSAGE": "Bạn có chắc muốn xóa chứng chỉ này?",
-  "IDS_CONFIRM_REVOKE_CREDENTIAL_MESSAGE": "Bạn có chắc muốn thu hồi chứng chỉ này?"
+  "IDS_CONFIRM_REVOKE_CREDENTIAL_MESSAGE": "Bạn có chắc muốn thu hồi chứng chỉ này?",
+  "IDS_COPY_API_KEY": "Đã sao chép chứng chỉ vào khay nhớ đệm",
+  "IDS_CREDENTIAL_CANNOT_COPY_API_KEY": "Không thể sao chép chứng chỉ",
+  "IDS_CREDENTIAL_DELETE_SUCCESS": "Xóa chứng chỉ thành công",
+  "IDS_CREDENTIAL_REVOKE_SUCCESS":"Thu hồi chứng chỉ thành công"
 }

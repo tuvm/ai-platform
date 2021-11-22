@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Input, Space, message, Button, Empty } from 'antd';
 import { Typography, Table, Modal } from 'antd';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 import EditCredentialModal from './EditCredentialModal';
 import { ENV_OPTIONS } from '../../../utils/constants/config'
-import { actionDeleteCredential, actionRevokeCredential } from './actions'
+import { actionDeleteCredential, actionRevokeCredential } from './actions';
+import { CredentialContext } from './context';
 import './Credentials.scss';
 
 import {
@@ -17,21 +18,21 @@ const { Column } = Table;
 const { Title, Text } = Typography;
 
 
-export default function CredentialContent({ data, handleGetCredentials }) {
+export default function CredentialContent() {
     const { t } = useTranslation();
     const [openEditCredentialModal, setOpenEditCredentialModal] = useState(false);
     const [openConfirmDeleteModal, setOpenConfirmDeleteModal] = useState(false);
     const [openConfirmRevokeModal, setOpenConfirmRevokeModal] = useState(false);
-    const [confirmDeleteLoading, setConfirmDeleteLoading] = useState(false);
-    const [confirmRevokeLoading, setConfirmRevokeLoading] = useState(false);
-
-
+    const {
+        handleGetCredentials,
+        currentCredential,
+    } = useContext(CredentialContext);
 
     const handleCopy = () => {
-        navigator.clipboard.writeText(data.token).then(function () {
-            message.success('Copied API key');
+        navigator.clipboard.writeText(currentCredential.token).then(function () {
+            message.success(t('IDS_COPY_API_KEY'));
         }, function (err) {
-            message.error('Could not copy API Key: ');
+            message.error('IDS_CREDENTIAL_CANNOT_COPY_API_KEY');
         });
     }
 
@@ -52,9 +53,9 @@ export default function CredentialContent({ data, handleGetCredentials }) {
     }
 
     const handleDelete = async () => {
-        const res = await actionDeleteCredential({ payload: data })
+        const res = await actionDeleteCredential({ payload: currentCredential })
         if (res.status === 200) {
-            message.success('Delete credential successfully.');
+            message.success(t('IDS_CREDENTIAL_DELETE_SUCCESS'));
             setOpenConfirmDeleteModal(false);
             handleGetCredentials();
         }
@@ -65,9 +66,9 @@ export default function CredentialContent({ data, handleGetCredentials }) {
     }
 
     const handleRevoke = async () => {
-        const res = await actionRevokeCredential({ payload: data })
+        const res = await actionRevokeCredential({ payload: currentCredential })
         if (res.status === 200) {
-            message.success('Revoke credential successfully.');
+            message.success(t('IDS_CREDENTIAL_REVOKE_SUCCESS'));
             setOpenConfirmRevokeModal(false);
             handleGetCredentials();
         }
@@ -77,7 +78,7 @@ export default function CredentialContent({ data, handleGetCredentials }) {
         setOpenConfirmRevokeModal(false)
     }
 
-    if (!data) {
+    if (!currentCredential) {
         return (<Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />)
     }
 
@@ -85,18 +86,18 @@ export default function CredentialContent({ data, handleGetCredentials }) {
         <>
             <div>
                 <Space direction="vertical">
-                    <Title level={5}>{data.name}</Title>
-                    <Text>Evironment: {ENV_OPTIONS[data.environment]}</Text>
-                    <Text>Create time: {moment(data.create_time).format('MM-DD-YYYY HH:mm:ss')}</Text>
-                    <Text>End time: {moment(data.end_time).format('MM-DD-YYYY HH:mm:ss')}</Text>
-                    <Text>Status: <Text type={`${data.status === 1 ? 'success' : 'danger'}`}>
-                        {data.status === 1 ? t('IDS_ACTIVE') : t('IDS_DEACTIVE')}
+                    <Title level={5}>{currentCredential.name}</Title>
+                    <Text>Evironment: {ENV_OPTIONS[currentCredential.environment]}</Text>
+                    <Text>Create time: {moment(currentCredential.create_time).format('MM-DD-YYYY HH:mm:ss')}</Text>
+                    <Text>End time: {moment(currentCredential.end_time).format('MM-DD-YYYY HH:mm:ss')}</Text>
+                    <Text>Status: <Text type={`${currentCredential.status === 1 ? 'success' : 'danger'}`}>
+                        {currentCredential.status === 1 ? t('IDS_ACTIVE') : t('IDS_DEACTIVE')}
                     </Text>
                     </Text>
                 </Space>
             </div>
             <div className="credential-key-input">
-                <Input value={data.token} style={{ paddingRight: '40px' }} disabled />
+                <Input value={currentCredential.token} style={{ paddingRight: '40px' }} disabled />
                 <CopyOutlined
                     style={{ fontSize: '20px' }}
                     className="copy-button"
@@ -110,7 +111,7 @@ export default function CredentialContent({ data, handleGetCredentials }) {
                     <Text type="secondary">Limit the number of requests you can make to call API in the period</Text>
                 </Space>
 
-                <Table dataSource={data.request_data} className="app-table quotation-table" pagination={false}>
+                <Table dataSource={currentCredential.request_data} className="app-table quotation-table" pagination={false}>
                     <Column title="API Name" dataIndex="name" key="name" />
                     <Column title="Quota" dataIndex="quota" key="quota" />
                     <Column title="Period" dataIndex="period" key="period" />
@@ -120,8 +121,8 @@ export default function CredentialContent({ data, handleGetCredentials }) {
             <div className="credential-footer">
                 <Space size={16}>
                     <Button type="" danger onClick={handleDeleteModal}>Delete</Button>
-                    <Button type="" onClick={handleRevokeModal} disabled={!Boolean(data.status)}>Revoke</Button>
-                    <Button type="primary" onClick={handleOpenEditCredential} disabled={!Boolean(data.status)}>Edit</Button>
+                    <Button type="" onClick={handleRevokeModal} disabled={!Boolean(currentCredential.status)}>Revoke</Button>
+                    <Button type="primary" onClick={handleOpenEditCredential} disabled={!Boolean(currentCredential.status)}>Edit</Button>
                 </Space>
             </div>
 
@@ -129,7 +130,7 @@ export default function CredentialContent({ data, handleGetCredentials }) {
                 openEditCredentialModal && <EditCredentialModal
                     onCancel={handleCloseEditCredential}
                     handleGetCredentials={handleGetCredentials}
-                    data={data}
+                    data={currentCredential}
                 />
             }
 
@@ -138,7 +139,6 @@ export default function CredentialContent({ data, handleGetCredentials }) {
                     title={t('IDS_CONFIRMATION')}
                     visible={true}
                     onOk={handleDelete}
-                    confirmLoading={confirmDeleteLoading}
                     onCancel={handleCancelDelete}
                 >
                     <p>{t('IDS_CONFIRM_DELETE_CREDENTIAL_MESSAGE')}</p>
@@ -150,7 +150,6 @@ export default function CredentialContent({ data, handleGetCredentials }) {
                     title={t('IDS_CONFIRMATION')}
                     visible={true}
                     onOk={handleRevoke}
-                    confirmLoading={confirmRevokeLoading}
                     onCancel={handleCancelRevoke}
                 >
                     <p>{t('IDS_CONFIRM_REVOKE_CREDENTIAL_MESSAGE')}</p>

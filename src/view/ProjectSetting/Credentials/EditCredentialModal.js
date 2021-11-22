@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Modal } from 'antd';
 import { useTranslation } from 'react-i18next';
 import {
@@ -19,7 +19,12 @@ import { useSelector } from 'react-redux';
 import get from 'lodash/get';
 import { useProjectsParams } from '../../../utils/hooks';
 import moment from 'moment';
-import { actionUpdateCredential, actionGrantAPIKey } from './actions';
+import {
+    actionUpdateCredential,
+    actionGrantAPIKey,
+    actionRegenerateAPIKey
+} from './actions';
+import { CredentialContext } from './context';
 
 
 const { Option } = Select;
@@ -33,7 +38,6 @@ const filterModules = (modules, ids) => {
 
 export default function EditCredentialModal(props) {
     const { t } = useTranslation();
-    const { data } = props;
     const [moduleSelected, setModuleSelected] = useState([]);
     const [quotaSelected, setQuotaSelected] = useState([])
     const [env, setEnv] = useState(ENV_OPTIONS.DEV);
@@ -41,6 +45,7 @@ export default function EditCredentialModal(props) {
     const resourceList = useSelector(state => state.system.resourceList);
     const vindrModules = get(resourceList, 'modules');
     const { params } = useProjectsParams();
+    const { handleGetCredentials, currentCredential } = useContext(CredentialContext);
 
     const { Text, Link } = Typography;
 
@@ -48,9 +53,9 @@ export default function EditCredentialModal(props) {
     };
 
     useEffect(() => {
-        let selectedItem = get(data, 'request_data', []);
-        form.setFieldsValue({ end_time: moment(data.end_time, 'YYYY-MM-DD HH:mm:ss') });
-        form.setFieldsValue({ credential_name: data.name });
+        let selectedItem = get(currentCredential, 'request_data', []);
+        form.setFieldsValue({ end_time: moment(currentCredential.end_time, 'YYYY-MM-DD HH:mm:ss') });
+        form.setFieldsValue({ credential_name: currentCredential.name });
 
         if (selectedItem.length > 0) {
             selectedItem = selectedItem.map(item => {
@@ -67,7 +72,7 @@ export default function EditCredentialModal(props) {
             form.setFieldsValue({ "Modules": selectedKeys });
         }
 
-    }, [data, vindrModules])
+    }, [currentCredential, vindrModules])
 
     const handleCancel = () => {
         props.onCancel();
@@ -93,24 +98,24 @@ export default function EditCredentialModal(props) {
             project_id: projectId,
             environment: env === ENV_OPTIONS.DEV ? 'dev' : 'prod',
             request_data: newQuotaSelected,
-            grant_id: data.grant_id,
+            grant_id: currentCredential.grant_id,
         }
 
         const res = await actionGrantAPIKey({ payload })
         if (res && res.token) {
             const payload_apikey = {
                 "name": name,
-                "grant_id": data.grant_id,
+                "grant_id": currentCredential.grant_id,
                 end_time,
                 "project_id": projectId,
                 "token": res.token,
-                id: data.id,
+                id: currentCredential.id,
             }
             let update_res = await actionUpdateCredential({ payload: payload_apikey });
             update_res = get(update_res, 'updated_id')
             if (update_res) {
                 message.success(t('IDS_UPDATE_CREDENTIAL_SUCCESS'));
-                props.handleGetCredentials();
+                handleGetCredentials();
                 handleCancel();
             }
         }
@@ -121,7 +126,7 @@ export default function EditCredentialModal(props) {
     }
 
     const handleCopy = () => {
-        navigator.clipboard.writeText(data.token).then(function () {
+        navigator.clipboard.writeText(currentCredential.token).then(function () {
             message.success('Copied API key');
         }, function (err) {
             message.error('Could not copy API Key: ');
@@ -129,7 +134,7 @@ export default function EditCredentialModal(props) {
     }
 
     const handleRegenerageAPIKey = () => {
-        console.log('generate api key')
+        actionRegenerateAPIKey(currentCredential);
     }
 
     const onChangeEvironment = e => {
@@ -179,7 +184,7 @@ export default function EditCredentialModal(props) {
                             { type: 'string', min: 4 },
                         ]}
                     >
-                        <Input placeholder={t('IDS_PROJECT_NAME')} defaultValue={data.name} />
+                        <Input placeholder={t('IDS_PROJECT_NAME')} defaultValue={currentCredential.name} />
                     </Form.Item>
 
                     <Form.Item
@@ -187,28 +192,28 @@ export default function EditCredentialModal(props) {
                         label={t('End time')}
                     >
                         <div className="create-credential-subtitle"><Text type="secondary">Schedule expiration time for your API key</Text></div>
-                        <DatePicker showTime onOk={onOkEndTime} style={{ width: '40%' }} value={moment(data.end_time, 'YYYY-MM-DD HH:mm:ss')} />
+                        <DatePicker showTime onOk={onOkEndTime} style={{ width: '40%' }} value={moment(currentCredential.end_time, 'YYYY-MM-DD HH:mm:ss')} />
                     </Form.Item>
 
                     <div className="create-credential-apikey-section">
                         <Text>API Key</Text>
                         <div className="credential-key-input">
-                            <Input value={data.token} style={{ paddingRight: '40px' }} disabled />
+                            <Input value={currentCredential.token} style={{ paddingRight: '40px' }} disabled />
                             <CopyOutlined
                                 style={{ fontSize: '20px' }}
                                 className="copy-button"
                                 onClick={handleCopy}
                             />
                         </div>
-                        <Link onClick={handleRegenerageAPIKey}>
+                        {currentCredential.token && <Link onClick={handleRegenerageAPIKey}>
                             Regenerate new API Key
-                        </Link>
+                        </Link>}
                     </div>
 
                     <div className="create-credential-environment-section">
                         <Text strong>Environment</Text>
                         <Form.Item>
-                            <Radio.Group name={'rb1'} onChange={onChangeEvironment} value={ENV_OPTIONS[data.environment]} disabled={true}>
+                            <Radio.Group name={'rb1'} onChange={onChangeEvironment} value={ENV_OPTIONS[currentCredential.environment]} disabled={true}>
                                 <Space direction="vertical">
                                     <Radio value={ENV_OPTIONS.DEV}>
                                         Development <br />
@@ -255,7 +260,7 @@ export default function EditCredentialModal(props) {
                         </div>
                         <CredentialTableModule
                             moduleSelected={moduleSelected}
-                            env={ENV_OPTIONS[data.environment]}
+                            env={ENV_OPTIONS[currentCredential.environment]}
                             quotaSelected={quotaSelected}
                             setQuotaSelected={setQuotaSelected}
                         />

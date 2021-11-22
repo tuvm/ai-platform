@@ -23,6 +23,16 @@ export const actionGenerateAPIKey = async ({ payload }) => {
     }
 }
 
+export const actionRegenerateAPIKey = async ({ payload }) => {
+    const url = '/key/api-key-v2/regenerate';
+    try {
+        const res = await api({ url, method: 'POST', data: payload });
+        const data = get(res, 'data');
+        return data;
+    } catch (error) {
+    }
+}
+
 export const actionUpdateCredential = async ({ payload }) => {
     const url = `/key/api-key-v2/update/${payload.id}`;
     try {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Modal } from 'antd';
 import { useTranslation } from 'react-i18next';
 import {
@@ -19,7 +19,7 @@ import { useSelector } from 'react-redux';
 import get from 'lodash/get';
 import { useProjectsParams } from '../../../utils/hooks';
 import { actionGenerateAPIKey, actionGrantAPIKey } from './actions';
-
+import { CredentialContext } from './context';
 
 const { Option } = Select;
 
@@ -40,6 +40,7 @@ export default function CreateCredentialModal(props) {
     const vindrModules = get(resourceList, 'modules');
     const [token, setToken] = useState('')
     const { params } = useProjectsParams();
+    const { handleGetCredentials } = useContext(CredentialContext);
 
     const { Text, Link } = Typography;
 
@@ -98,7 +99,7 @@ export default function CreateCredentialModal(props) {
             if (token_res && token_res.token) {
                 setToken(token_res.token);
                 message.success(t('IDS_GENERATE_API_KEY_SUCCESS'));
-                props.handleGetCredentials();
+                handleGetCredentials();
                 handleCancel();
             }
         }
@@ -188,9 +189,9 @@ export default function CreateCredentialModal(props) {
                                 onClick={handleCopy}
                             />
                         </div>
-                        <Link onClick={handleRegenerageAPIKey}>
+                        {token && <Link onClick={handleRegenerageAPIKey}>
                             Regenerate new API Key
-                        </Link>
+                        </Link> }
                     </div>
 
                     <div className="create-credential-environment-section">
