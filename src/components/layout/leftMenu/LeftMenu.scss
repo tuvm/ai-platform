@@ -142,6 +142,9 @@
       @include setLeftMenuWidth($left-menu-collapsed-width);
     }
   }
+  .ant-menu-item {
+    margin: 0 !important;
+  }
 }
 
 .left-menu-download-project {
