@@ -139,11 +139,6 @@ const TableRowEditable = ({ row, handleUpdatePeriodAndQuota }) => {
                     filterOption={(inputValue, option) => option.value.toString().toUpperCase().indexOf(inputValue.toString().toUpperCase()) !== -1}
                     onChange={onChangeQuota}
                     placeholder="Quota"
-                    rules={[
-                        {
-                            required: true,
-                        }
-                    ]}
                 />
             </td>
             <td>

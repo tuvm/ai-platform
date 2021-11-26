@@ -54,7 +54,7 @@ export default function CreateCredentialModal(props) {
 
     const onFinish = async () => {
         const name = form.getFieldValue('Credential name');
-        let end_time = form.getFieldValue('end_time') || null;
+        let end_time = form.getFieldValue('end_time')
 
         if (!end_time) {
             var d = new Date();
@@ -64,7 +64,8 @@ export default function CreateCredentialModal(props) {
             var seconds = d.getSeconds();
             var minutes = d.getMinutes();
             var hour = d.getHours();
-            end_time = new Date(year + 1, month, day, hour + 7, minutes, seconds);
+            end_time = new Date(year + 1, month, day, hour, minutes, seconds);
+
             end_time = end_time.toISOString();
         }
 
@@ -95,6 +96,7 @@ export default function CreateCredentialModal(props) {
                 "token": res.token
             }
             let token_res = await actionGenerateAPIKey({ payload: payload_apikey });
+            // Endtime must greater than now
             token_res = get(token_res, 'data')
             if (token_res && token_res.token) {
                 setToken(token_res.token);
@@ -129,6 +131,10 @@ export default function CreateCredentialModal(props) {
     const handleModule = value => {
         const list = filterModules(vindrModules, value)
         setModuleSelected(list)
+    }
+
+    const disabledDate = (current) => {
+        return current && current.valueOf() < Date.now();
     }
 
     return (
@@ -168,7 +174,7 @@ export default function CreateCredentialModal(props) {
                             { type: 'string', min: 4 },
                         ]}
                     >
-                        <Input placeholder={t('IDS_PROJECT_NAME')} />
+                        <Input placeholder="Credential name" />
                     </Form.Item>
 
                     <Form.Item
@@ -176,7 +182,7 @@ export default function CreateCredentialModal(props) {
                         label={t('End time')}
                     >
                         <div className="create-credential-subtitle"><Text type="secondary">Schedule expiration time for your API key</Text></div>
-                        <DatePicker showTime onOk={onOkEndTime} style={{ width: '40%' }} />
+                        <DatePicker showNow={false} showTime onOk={onOkEndTime} style={{ width: '40%' }} disabledDate={disabledDate} />
                     </Form.Item>
 
                     <div className="create-credential-apikey-section">
