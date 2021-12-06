@@ -145,6 +145,7 @@
   "IDS_GENERATE_API_KEY_SUCCESS": "Tạo mới API key thành công.",
   "IDS_QUOTA_UNLIMITED_HINT": "Nhập <b>unlimited</b> để chứng chỉ này không bị giới hạn số request",
   "IDS_QUOTA_VALIDATE_ERROR": "Chỉ nhập 'unlimited', hoặc số nguyên dương",
+  "IDS_GENERATE_API_KEY_FAIL": "Không thể tạo quá 30 key cho mỗi project",
   "IDS_ACTIVE": "Kích hoạt",
   "IDS_DEACTIVE": "Không kích hoạt",
   "IDS_UPDATE_CREDENTIAL_SUCCESS": "Cập nhật chứng chỉ thành công.",

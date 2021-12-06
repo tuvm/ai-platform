@@ -145,6 +145,7 @@
   "IDS_GENERATE_API_KEY_SUCCESS": "Generate API key successfully.",
   "IDS_QUOTA_UNLIMITED_HINT": "Type <b>unlimited</b> if this credential could call unlimited requests",
   "IDS_QUOTA_VALIDATE_ERROR": "Only input value 'unlimited', or a positive integer",
+  "IDS_GENERATE_API_KEY_FAIL": "Cannot generate more than 30 keys for each project",
   "IDS_ACTIVE": "Active",
   "IDS_DEACTIVE": "Deactive",
   "IDS_UPDATE_CREDENTIAL_SUCCESS": "Update Credential successfully.",

@@ -108,8 +108,10 @@ export default function CreateCredentialModal(props) {
                 setToken(token_res.token);
                 message.success(t('IDS_GENERATE_API_KEY_SUCCESS'));
                 handleGetCredentials();
-                handleCancel();
+            }else{
+                message.error(t('IDS_GENERATE_API_KEY_FAIL'));
             }
+            handleCancel();
         }
     }
 
