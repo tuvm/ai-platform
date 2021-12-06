@@ -25,6 +25,9 @@ export default function Credentials() {
     const handleGetCredentials = async () => {
         const data = await actionGetCredentialList({ params: { project_id: projectId } })
         if (data) {
+            // sort activated credentitals first
+            data.sort((it1, it2) => it1.status < it2.status? 1: it1.status > it2.status? -1: it1.end_time < it2.end_time?1: it1.end_time > it2.end_time?-1:0);
+            console.log(data)
             setCredentialList(data);
             if (!get(currentCredential, 'id')) {
                 setCurrentCredential(data[0])

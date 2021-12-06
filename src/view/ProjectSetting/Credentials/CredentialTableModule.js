@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { AutoComplete, Select } from 'antd';
 import { ENV_OPTIONS, PERIOD_SELECTION } from '../../../utils/constants/config';
 import get from 'lodash/get';
@@ -12,6 +13,7 @@ const { Option } = Select;
 
 
 const EditableTable = (props) => {
+    const { t } = useTranslation();
     const resourceList = useSelector(state => state.system.resourceList);
     const quotaDev = get(resourceList, 'quota_dev');
     const vindrModules = get(resourceList, 'modules');
@@ -75,7 +77,7 @@ const EditableTable = (props) => {
                 <thead>
                     <tr>
                         <th style={{ width: '33%' }}>API name</th>
-                        <th style={{ width: '33%' }}>Quota</th>
+                        <th style={{ width: '33%' }}>Quota{env === ENV_OPTIONS.dev? "": "*"}</th>
                         <th style={{ width: '33%' }}>Period</th>
                     </tr>
 
@@ -94,12 +96,16 @@ const EditableTable = (props) => {
                 </tbody>
 
             </table>
+            {
+                (env === ENV_OPTIONS.prod && props.quotaSelected.length > 0)? <p class="hint" dangerouslySetInnerHTML={{ __html: '* ' + t('IDS_QUOTA_UNLIMITED_HINT') }}></p>: ""
+            }
         </div>
     );
 }
 
 
 const TableRowEditable = ({ row, handleUpdatePeriodAndQuota }) => {
+    const { t } = useTranslation();
     const [quotaValue, setQuotaValue] = useState('')
     const [periodValue, setPeriodValue] = useState('')
 
@@ -114,6 +120,7 @@ const TableRowEditable = ({ row, handleUpdatePeriodAndQuota }) => {
     }
 
     const onChangeQuota = value => {
+        row.error = value !== 'unlimited' && parseInt(value)+''!==value
         setQuotaValue(value);
         row.quota = value;
         handleUpdatePeriodAndQuota(row)
@@ -127,11 +134,11 @@ const TableRowEditable = ({ row, handleUpdatePeriodAndQuota }) => {
 
     return (
         <tr key={row.id}>
-            <td>{row.name}</td>
+            <td><span class="label">{row.name}</span></td>
             <td>
                 <AutoComplete
                     value={quotaValue}
-                    options={[{ value: 'unlimited', label: 'Unlimited' }]}
+                    options={[{ value: 'unlimited', label: 'unlimited' }]}
                     style={{
                         width: '100%',
                     }}
@@ -140,6 +147,9 @@ const TableRowEditable = ({ row, handleUpdatePeriodAndQuota }) => {
                     onChange={onChangeQuota}
                     placeholder="Quota"
                 />
+                {
+                    row.error ? <p class="error">* {t('IDS_QUOTA_VALIDATE_ERROR')}</p> : ""
+                }
             </td>
             <td>
                 <Select

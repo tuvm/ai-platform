@@ -55,7 +55,8 @@ export default function EditCredentialModal(props) {
     useEffect(() => {
         let selectedItem = get(currentCredential, 'request_data', []);
         selectedItem = cloneDeep(selectedItem);
-        form.setFieldsValue({ end_time: moment(currentCredential.end_time, 'YYYY-MM-DD HH:mm:ss') });
+        console.log(currentCredential.end_time);
+        form.setFieldsValue({ end_time: moment(currentCredential.end_time) });
         form.setFieldsValue({ credential_name: currentCredential.name });
 
         if (selectedItem.length > 0) {
@@ -84,6 +85,12 @@ export default function EditCredentialModal(props) {
         const end_time = form.getFieldValue('end_time');
 
         const projectId = get(params, 'projectId', '');
+
+        // validate quota first
+        var errors = quotaSelected.filter(item => item.error == true)
+        if(errors.length > 0){
+            return
+        }
 
         const newQuotaSelected = quotaSelected.map(item => {
             item.resource_id = item['id'];
@@ -122,7 +129,7 @@ export default function EditCredentialModal(props) {
     }
 
     function onOkEndTime(value) {
-        form.setFieldsValue({ end_time: value.toISOString() })
+        form.setFieldsValue({ end_time: value })
     }
 
     const handleCopy = () => {
@@ -151,9 +158,13 @@ export default function EditCredentialModal(props) {
         setModuleSelected(list)
     }
 
+    const disabledDate = (current) => {
+        return current && current.valueOf() < moment(currentCredential.create_time);
+    }
+
     return (
         <div>
-            <Modal title={t('IDS_CREATE_CREDENTIAL')}
+            <Modal title={t('IDS_EDIT_CREDENTIAL')}
                 visible={true}
                 onOk={handleOk}
                 maskClosable={false}
@@ -196,7 +207,9 @@ export default function EditCredentialModal(props) {
                         label={t('End time')}
                     >
                         <div className="create-credential-subtitle"><Text type="secondary">Schedule expiration time for your API key</Text></div>
-                        <DatePicker showTime onOk={onOkEndTime} style={{ width: '40%' }} value={moment(currentCredential.end_time, 'YYYY-MM-DD HH:mm:ss')} />
+                        <DatePicker format='MMMM, D YYYY, h:mm:ss A' showNow={false} showTime onOk={onOkEndTime} style={{ width: '40%' }} 
+                                defaultValue={moment(currentCredential.end_time)} 
+                                disabledDate={disabledDate}/>
                     </Form.Item>
 
                     <div className="create-credential-apikey-section">

@@ -56,6 +56,12 @@ export default function CreateCredentialModal(props) {
         const name = form.getFieldValue('Credential name');
         let end_time = form.getFieldValue('end_time')
 
+        // validate quota first
+        var errors = quotaSelected.filter(item => item.error == true)
+        if(errors.length > 0){
+            return
+        }
+
         if (!end_time) {
             var d = new Date();
             var year = d.getFullYear();
@@ -182,7 +188,7 @@ export default function CreateCredentialModal(props) {
                         label={t('End time')}
                     >
                         <div className="create-credential-subtitle"><Text type="secondary">Schedule expiration time for your API key</Text></div>
-                        <DatePicker showNow={false} showTime onOk={onOkEndTime} style={{ width: '40%' }} disabledDate={disabledDate} />
+                        <DatePicker format='MMMM, D YYYY, h:mm:ss A' showNow={false} showTime onOk={onOkEndTime} style={{ width: '40%' }} disabledDate={disabledDate} />
                     </Form.Item>
 
                     <div className="create-credential-apikey-section">

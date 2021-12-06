@@ -41,7 +41,7 @@
     "redux-thunk": "^2.3.0"
   },
   "scripts": {
-    "start": "set \"PORT=3001\" &&  env-cmd -f .env craco start local",
+    "start": "export \"PORT=3002\" &&  env-cmd -f .env craco start local",
     "build:dev": "set \"GENERATE_SOURCEMAP=true\" && craco build dev",
     "build:stg": "set \"GENERATE_SOURCEMAP=false\" && craco build stg",
     "build:prod": "set \"GENERATE_SOURCEMAP=false\" && craco build prod",
