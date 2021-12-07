@@ -39,7 +39,9 @@ const filterModules = (modules, ids) => {
 export default function EditCredentialModal(props) {
     const { t } = useTranslation();
     const [moduleSelected, setModuleSelected] = useState([]);
-    const [quotaSelected, setQuotaSelected] = useState([])
+    const [quotaSelected, setQuotaSelected] = useState([]);
+    const [currentStoredQuotas, setCurrentStoredQuotas] = useState([]);
+    const [currentStoredModules, setCurrentStoredModules] = useState([]);
     const [env, setEnv] = useState(ENV_OPTIONS.DEV);
     const [form] = Form.useForm();
     const resourceList = useSelector(state => state.system.resourceList);
@@ -55,9 +57,11 @@ export default function EditCredentialModal(props) {
     useEffect(() => {
         let selectedItem = get(currentCredential, 'request_data', []);
         selectedItem = cloneDeep(selectedItem);
-        console.log(currentCredential.end_time);
         form.setFieldsValue({ end_time: moment(currentCredential.end_time) });
         form.setFieldsValue({ credential_name: currentCredential.name });
+
+        let storedQuotas = selectedItem.map(item => item.resource_id);
+        setCurrentStoredQuotas(storedQuotas);
 
         if (selectedItem.length > 0) {
             selectedItem = selectedItem.map(item => {
@@ -71,6 +75,7 @@ export default function EditCredentialModal(props) {
 
             const selectedKeys = selectedItem.map(item => item.id);
             form.setFieldsValue({ "Modules": selectedKeys });
+            setCurrentStoredModules(selectedKeys);
         }
 
     }, [currentCredential, vindrModules])
@@ -89,6 +94,7 @@ export default function EditCredentialModal(props) {
         // validate quota first
         var errors = quotaSelected.filter(item => item.error == true)
         if(errors.length > 0){
+            message.error(t('IDS_VALIDATE_API_KEY_FAIL'));
             return
         }
 
@@ -154,7 +160,13 @@ export default function EditCredentialModal(props) {
     }
 
     const handleModule = value => {
-        const list = filterModules(vindrModules, value)
+        let addedValue = value.filter(item => !currentStoredModules.includes(item));
+        if(value.length + addedValue.length < currentStoredModules.length){
+            message.error(t('IDS_API_KEY_DELETE_MODULE_FAIL'));
+        }
+        let newVal = [...currentStoredModules, ...addedValue];
+        form.setFieldsValue({ "Modules": newVal });
+        const list = filterModules(vindrModules, newVal)
         setModuleSelected(list)
     }
 
@@ -280,6 +292,7 @@ export default function EditCredentialModal(props) {
                             env={ENV_OPTIONS[currentCredential.environment]}
                             quotaSelected={quotaSelected}
                             setQuotaSelected={setQuotaSelected}
+                            currentStoredQuotas={currentStoredQuotas}
                         />
                     </div>
                 </Form>

@@ -31,7 +31,6 @@ const EditableTable = (props) => {
             props.setQuotaSelected([]);
             return;
         }
-
         let moduleSelectedFormated;
         const moduleSelected = props.moduleSelected;
         moduleSelectedFormated = moduleSelected.map(item => {
@@ -85,7 +84,11 @@ const EditableTable = (props) => {
                 <tbody>
                     {
                         env === ENV_OPTIONS.prod && props.quotaSelected && props.quotaSelected.map((row, i) => (
-                            <TableRowEditable vindrModules={vindrModules} key={row.id} row={row} handleUpdatePeriodAndQuota={handleUpdatePeriodAndQuota} />
+                            <TableRowEditable vindrModules={vindrModules} 
+                                              key={row.id} 
+                                              row={row} 
+                                              currentStoredQuotas={props.currentStoredQuotas}
+                                              handleUpdatePeriodAndQuota={handleUpdatePeriodAndQuota} />
                         ))
                     }
                     {
@@ -104,7 +107,7 @@ const EditableTable = (props) => {
 }
 
 
-const TableRowEditable = ({ row, handleUpdatePeriodAndQuota }) => {
+const TableRowEditable = ({ row, handleUpdatePeriodAndQuota, currentStoredQuotas }) => {
     const { t } = useTranslation();
     const [quotaValue, setQuotaValue] = useState('')
     const [periodValue, setPeriodValue] = useState('')
@@ -132,6 +135,11 @@ const TableRowEditable = ({ row, handleUpdatePeriodAndQuota }) => {
         handleUpdatePeriodAndQuota(row)
     }
 
+    const periodDisabled = row => {
+        let include = (currentStoredQuotas || []).includes(row.id);
+        return include;
+    }
+
     return (
         <tr key={row.id}>
             <td><span class="label">{row.name}</span></td>
@@ -153,6 +161,7 @@ const TableRowEditable = ({ row, handleUpdatePeriodAndQuota }) => {
             </td>
             <td>
                 <Select
+                    disabled={periodDisabled(row)}
                     value={periodValue}
                     style={{ width: 120 }} onChange={handleSelectModule}
                 >
