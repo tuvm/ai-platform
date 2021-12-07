@@ -147,7 +147,7 @@
   "IDS_QUOTA_VALIDATE_ERROR": "Only input value 'unlimited', or a positive integer",
   "IDS_GENERATE_API_KEY_FAIL": "Only create a maximum of 30 credentials on each project",
   "IDS_VALIDATE_API_KEY_FAIL": "Credential validation fail, resolve all input errors then try again",
-  "IDS_API_KEY_DELETE_MODULE_FAIL": "Cannot remove current selected modules",
+  "IDS_API_KEY_DELETE_MODULE_FAIL": "Cannot remove selected modules",
   "IDS_ACTIVE": "Active",
   "IDS_DEACTIVE": "Deactive",
   "IDS_UPDATE_CREDENTIAL_SUCCESS": "Update Credential successfully.",
