@@ -190,7 +190,7 @@ export default function CreateCredentialModal(props) {
                         label={t('End time')}
                     >
                         <div className="create-credential-subtitle"><Text type="secondary">Schedule expiration time for your API key</Text></div>
-                        <DatePicker format='MMMM, D YYYY, h:mm:ss A' showNow={false} showTime onOk={onOkEndTime} style={{ width: '40%' }} disabledDate={disabledDate} />
+                        <DatePicker format='MMM, D YYYY, h:mm:ss A' showNow={false} showTime onOk={onOkEndTime} style={{ width: '40%' }} disabledDate={disabledDate} />
                     </Form.Item>
 
                     <div className="create-credential-apikey-section">

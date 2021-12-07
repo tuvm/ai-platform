@@ -93,8 +93,8 @@ export default function CredentialContent() {
                 <Space direction="vertical">
                     <Title level={5}>{currentCredential.name}</Title>
                     <Text>Evironment: {ENV_OPTIONS[currentCredential.environment]}</Text>
-                    <Text>Creation time: {moment(currentCredential.create_time).format('MMMM, D YYYY, h:mm:ss A')}</Text>
-                    <Text>End time: {moment(currentCredential.end_time).format('MMMM, D YYYY, h:mm:ss A')}</Text>
+                    <Text>Creation time: {moment(currentCredential.create_time).format('MMM, D YYYY, h:mm:ss A')}</Text>
+                    <Text>End time: {moment(currentCredential.end_time).format('MMM, D YYYY, h:mm:ss A')}</Text>
                     <Text>Status: <Text type={`${currentCredential.status === 1 ? 'success' : 'danger'}`}>
                         {currentCredential.status === 1 ? t('IDS_ACTIVE') : t('IDS_DEACTIVE')}
                     </Text>
