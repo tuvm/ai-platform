@@ -5,8 +5,10 @@ import moment from 'moment';
 
 import { FILTER_DAYS } from '../../../utils/constants/config';
 import { API_SCOPES } from '../../../utils/constants/config'
-import { APIContext } from './index';
+import { APIContext } from '../index';
 import "./Filter.scss";
+import { useSelector } from 'react-redux';
+import get from 'lodash/get';
 
 const { Option } = Select;
 
@@ -14,12 +16,14 @@ export default function Filter() {
   const { t } = useTranslation();
   const { setFilterType, setFilterDate } = useContext(APIContext);
   const [selected, setSelected] = useState('');
+  const resourceOptionsData = useSelector(state => state.system.resourceOptions);
+  const resourceOptions = get(resourceOptionsData, 'options');
 
   useEffect(() => {
     setFilterType([API_SCOPES[0].key]);
     setSelected([API_SCOPES[0].key]);
     handleChangeDate(7)
-  }, [])
+  }, [resourceOptions])
 
   function handleChange(value) {
     setFilterType(value);
@@ -41,7 +45,7 @@ export default function Filter() {
           style={{ minWidth: "300px" }}
           onChange={handleChange}
         >
-          {API_SCOPES.map(item => <Option key={item.key} value={item.key}>{item.name}</Option>)}
+          {(resourceOptions || []).map(item => <Option key={item.value} value={item.value}>{item.label}</Option>)}
         </Select>
 
         <Select

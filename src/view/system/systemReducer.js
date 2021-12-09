@@ -86,6 +86,26 @@ const system = (state = initialState, action) => {
         resourceLoading: false,
         resourceLoadError: true,
       };
+    case actions.FETCH_RESOURCE_OPS:
+      return {
+        ...state,
+        resourceOptionsLoading: true,
+        resourceOptionsLoadError: false
+      };
+    case actions.FETCH_RESOURCE_OPS_SUCCESS:
+      return {
+        ...state,
+        resourceOptionsLoading: false,
+        resourceOptionsLoadError: false,
+        resourceOptions: action.payload
+      };
+
+    case actions.FETCH_RESOURCE_OPS_ERROR:
+      return {
+        ...state,
+        resourceOptionsLoading: false,
+        resourceOptionsLoadError: true,
+      };
     default:
       return state;
   }

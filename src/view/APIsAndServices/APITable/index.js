@@ -1,25 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import get from 'lodash/get';
-import moment from 'moment';
-import { API_SCOPES } from '../../../utils/constants/config';
 import { actionQueryAPIUsage } from '../actions';
-import { getModelName } from '../APIGraph/RequestGraph';
 import { useProjectsParams } from '../../../utils/hooks';
+import { APIContext } from "../index";
+import { useSelector } from 'react-redux';
 
 export default function APITable() {
+  const context = useContext(APIContext);
+  const { filterDate, filterType } = context || {};
   const [tableData, setTableData] = useState([]);
   const { params: projectParams } = useProjectsParams();
+  const resourceOptionsData = useSelector(state => state.system.resourceOptions);
+  const resourceOptions = get(resourceOptionsData, 'options');
 
   useEffect(() => {
     handleFetchData();
-  }, []);
+  }, [filterDate, filterType, resourceOptions]);
 
   const handleFetchData = async () => {
     try {
-      const queryString = API_SCOPES.map((item) => `ai_model=${item.key}`);
-      const endDate = moment(new Date()).format('YYYYMMDD');
-      const startDate = moment().subtract(365, "days").format("YYYYMMDD")
+      const queryString = resourceOptions.map((item) => `ai_model=${item.value}`);
+      const endDate = filterDate.endDate || undefined;
+      const startDate = filterDate.startDate || undefined;
 
       const projectId = get(projectParams, 'projectId', '');
 
@@ -55,9 +58,10 @@ export default function APITable() {
           const volumnSum = volumeData[index].value_sum;
           const reqErrorSum = reqErrorData[index].value_sum;
 
+          const modelName = resourceOptions.filter(it => it.value == item.query_string.split("ai_model=")[1])[0].label;
           return {
             key: item.query_string,
-            name: getModelName(item.query_string),
+            name: modelName,
             reqSum: item.value_sum,
             reqErrorSum: reqErrorSum,
             volumeSum: (volumnSum / 1024 / 1024).toFixed(2),

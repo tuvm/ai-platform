@@ -24,11 +24,14 @@ const RequestGraph = (props) => {
         data,
         label: label,
         borderWidth: 3,
+        pointRadius: 20,
         backgroundColor: color,
         borderColor: color,
         pointRadius: 1,
         pointHoverRadius: 1,
         fill: false,
+        cubicInterpolationMode: 'monotone',
+        tension: 0.4,
       };
     });
   }
@@ -45,6 +48,11 @@ const RequestGraph = (props) => {
       <Line 
         data={data}
         options={{
+          layout: {
+            padding: {
+              left: 20,
+            },
+          },
           tooltips: {
             displayColors: true,
             callbacks: {
@@ -66,8 +74,19 @@ const RequestGraph = (props) => {
             yAxes: [
               {
                 ticks: {
-                  beginAtZero: true,
+                  beginAtZero: false,
                   min: 0,
+                },
+              },
+            ],
+            xAxes: [
+              {
+                ticks: {
+                  beginAtZero: false,
+                },
+                gridLines: {
+                  display: false,
+                  zeroLine: true,
                 },
               },
             ],

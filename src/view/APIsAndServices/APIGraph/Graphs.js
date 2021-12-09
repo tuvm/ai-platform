@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Row, Col } from "antd";
 import isEmpty from 'lodash/isEmpty';
 import RequestGraph from "./RequestGraph";
-import { APIContext } from "./index";
+import { APIContext } from "../index";
 import { actionQueryAPIUsage } from "../actions";
 import { useProjectsParams } from '../../../utils/hooks';
 import { mergeSeriesData } from './utils';
