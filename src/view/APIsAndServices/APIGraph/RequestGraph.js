@@ -1,8 +1,8 @@
 import React from "react";
-import { Bar } from "react-chartjs-2";
+import { Bar, Line } from "react-chartjs-2";
 import get from 'lodash/get';
 import { isDiff } from "../../../utils/helpers";
-import { CHART_COLORS, KEY_LIST } from "../../../utils/constants/config";
+import { CHART_TYPE_COLORS, KEY_LIST } from "../../../utils/constants/config";
 import { isEmpty } from "lodash";
 
 const RequestGraph = (props) => {
@@ -12,22 +12,23 @@ const RequestGraph = (props) => {
   let chartDatasets = [];
 
   if (!isEmpty(datasets)) {
-    chartDatasets = datasets.map((item) => {
+    chartDatasets = datasets.map((item, idx) => {
       let data = item.data;
-      const label = getModelName(item.query_string);
+      const label = item.label || getModelName(item.query_string);
       const model = item.query_string ? item.query_string.split('ai_model=')[1] : '';
       if (graphType === 'request-size') {
         data = data.map((item) => (item / 1024 / 1024).toFixed(2));
       }
+      let color = CHART_TYPE_COLORS[label] || CHART_TYPE_COLORS['Default']
       return {
         data,
         label: label,
-        borderWidth: 1,
-        backgroundColor: CHART_COLORS[model],
-        borderColor: CHART_COLORS[model],
+        borderWidth: 3,
+        backgroundColor: color,
+        borderColor: color,
         pointRadius: 1,
         pointHoverRadius: 1,
-        maxBarThickness: 30,
+        fill: false,
       };
     });
   }
@@ -41,12 +42,8 @@ const RequestGraph = (props) => {
 
   return (
     <div style={{ height: 320 }}>
-      <Bar
+      <Line 
         data={data}
-        type="bar"
-        width={50}
-        height={50}
-        base={50}
         options={{
           tooltips: {
             displayColors: true,
@@ -66,20 +63,15 @@ const RequestGraph = (props) => {
             },
           },
           scales: {
-            xAxes: [
+            yAxes: [
               {
-                gridLines: {
-                  display: false,
-                  zeroLine: true,
+                ticks: {
+                  beginAtZero: true,
+                  min: 0,
                 },
               },
             ],
-            yAxes: [
-              {
-                position: "right",
-              },
-            ],
-          },
+          }
         }}
       />
     </div>

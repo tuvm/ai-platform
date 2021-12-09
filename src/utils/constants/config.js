@@ -338,6 +338,12 @@ export const CHART_COLORS = {
   spinexr: '#C4B5FF'
 };
 
+export const CHART_TYPE_COLORS = {
+  Total: '#97DAFF',
+  Error: '#eb4c34',
+  Default: '#eb34b1',
+}
+
 
 export const PAGES_HAS_NO_LAYOUT = ['/', '/projects']
 

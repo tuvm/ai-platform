@@ -110,6 +110,7 @@
   "IDS_API_TABLE_NAME": "Name",
   "IDS_API_TABLE_TYPE": "Type",
   "IDS_API_TABLE_REQUEST": "Requests",
+  "IDS_API_TABLE_REQUEST_ERROR": "Error Requests",
   "IDS_API_TABLE_VOLUME": "Volume",
   "IDS_API_TABLE_TIME": "Time",
   "IDS_API_SELECT_NAME": "Type of API",

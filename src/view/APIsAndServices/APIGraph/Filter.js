@@ -37,7 +37,6 @@ export default function Filter() {
       <div className="left-filter">
         <span className="filter-name">{t("IDS_API_SELECT_NAME")}</span>
         <Select
-          mode="multiple"
           value={selected}
           style={{ minWidth: "300px" }}
           onChange={handleChange}

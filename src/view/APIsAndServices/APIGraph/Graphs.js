@@ -4,6 +4,9 @@ import isEmpty from 'lodash/isEmpty';
 import RequestGraph from "./RequestGraph";
 import { APIContext } from "./index";
 import { actionQueryAPIUsage } from "../actions";
+import { useProjectsParams } from '../../../utils/hooks';
+import { mergeSeriesData } from './utils';
+import get from 'lodash/get';
 
 import "./Graphs.scss";
 
@@ -12,6 +15,7 @@ export default function Graphs() {
   const { filterDate, filterType } = context || {};
   const [requestData, setRequestData] = useState({});
   const [volumeData, setVolumeData] = useState({});
+  const { params: projectParams } = useProjectsParams();
 
   useEffect(() => {
     if (filterDate && filterDate.startDate) {
@@ -27,13 +31,16 @@ export default function Graphs() {
       return;
     }
 
+    const projectId = get(projectParams, 'projectId', '');
+
     try {
-      const queryString = filterType.map((item) => `ai_model=${item}`);
+      const queryString = [filterType, ].map((item) => `ai_model=${item}`);
       const params = {
         query_string: queryString.join(";"),
         start_date: filterDate.startDate || undefined,
         end_date: filterDate.endDate || undefined,
         interval: "1d",
+        project_id: projectId,
       };
 
       const { data: rqData } = await actionQueryAPIUsage({
@@ -41,7 +48,16 @@ export default function Graphs() {
         metric: "requests",
       });
 
-      setRequestData(rqData || {});
+      const { data: rqErrorData } = await actionQueryAPIUsage({
+        ...params,
+        metric: "requests",
+        audit: "error",
+      });
+
+      const rqMergedData = mergeSeriesData([rqData, rqErrorData], ["Total", "Error"]);
+      console.log({rqMergedData})
+
+      setRequestData(rqMergedData || {});
 
       const { data: volData } = await actionQueryAPIUsage({
         ...params,
