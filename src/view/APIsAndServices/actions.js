@@ -1,9 +1,14 @@
 import api from '../../utils/service/api';
 import get from 'lodash/get';
 import * as actions from '../../utils/constants/actions';
+import moment from 'moment';
+import 'moment-timezone';
+
 
 export const actionQueryAPIUsage = (params = {}) => {
   const url = '/console/usage/visual';
+  const tz = moment.tz.guess();
+  params['tz'] = tz;
   return api({
     url,
     method: 'GET',
