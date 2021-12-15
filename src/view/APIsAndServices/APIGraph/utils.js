@@ -1,9 +1,13 @@
-export const mergeSeriesData = (listDatas, listDataLabels) => {
-    let mergedLabels = [];
-    for(let item of listDatas){
-        mergedLabels = [...mergedLabels, ...item.labels];
+import moment from 'moment';
+
+export const mergeSeriesData = (listDatas, listDataLabels, mergedLabels) => {
+    if(mergedLabels == null || mergedLabels == undefined){
+        mergedLabels = [];
+        for(let item of listDatas){
+            mergedLabels = [...mergedLabels, ...item.labels];
+        }
+        mergedLabels = Array.from(new Set(mergedLabels)).sort();
     }
-    mergedLabels = Array.from(new Set(mergedLabels)).sort();
     
     let datasets = [];
     let listIndex = 0;
@@ -31,3 +35,15 @@ export const mergeSeriesData = (listDatas, listDataLabels) => {
         labels: mergedLabels,
     }
 };
+
+
+export const getDateSeriesDuration1d = (startDate, endDate) => {
+    let s = [];
+    let sd = moment(startDate);
+    let ed = moment(endDate);
+    while(!sd.isAfter(ed)){
+        s.push(sd.format('DD-MM-YYYY'));
+        sd = sd.add(1, 'days');
+    }
+    return s;
+}

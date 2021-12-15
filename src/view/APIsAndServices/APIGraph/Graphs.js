@@ -5,7 +5,7 @@ import RequestGraph from "./RequestGraph";
 import { APIContext } from "../index";
 import { actionQueryAPIUsage } from "../actions";
 import { useProjectsParams } from '../../../utils/hooks';
-import { mergeSeriesData } from './utils';
+import { mergeSeriesData, getDateSeriesDuration1d } from './utils';
 import get from 'lodash/get';
 
 import "./Graphs.scss";
@@ -54,7 +54,8 @@ export default function Graphs() {
         audit: "error",
       });
 
-      const rqMergedData = mergeSeriesData([rqData, rqErrorData], ["Total", "Error"]);
+      const mergedLabels = getDateSeriesDuration1d(filterDate.startDate, filterDate.endDate);
+      const rqMergedData = mergeSeriesData([rqData, rqErrorData], ["Total", "Error"], mergedLabels);
       console.log({rqMergedData})
 
       setRequestData(rqMergedData || {});
@@ -64,7 +65,9 @@ export default function Graphs() {
         metric: "volume",
       });
 
-      setVolumeData(volData || {});
+      const volMergedData = mergeSeriesData([volData, ], ["Volume", ], mergedLabels);
+
+      setVolumeData(volMergedData || {});
     } catch (error) {
       console.log(error);
     }
