@@ -31,8 +31,8 @@ export default function Filter() {
   }
 
   const handleChangeDate = value => {
-    const endDate = moment(new Date()).format('YYYYMMDD');
-    const startDate = moment().subtract(value, "days").format("YYYYMMDD")
+    const endDate = moment(new Date()).utc().toISOString();
+    const startDate = moment().subtract(value, "days").utc().toISOString();
     setFilterDate({ startDate, endDate });
   }
 
