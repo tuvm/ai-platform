@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Row, Col } from 'antd';
 import { useTranslation } from 'react-i18next';
 import {
@@ -6,7 +6,7 @@ import {
 } from 'antd';
 import { Input } from 'antd';
 import get from 'lodash/get';
-import { apiError, actionAddProjectMember } from './actions';
+import { apiError, actionEditProjectMember } from './actions';
 import { RoleOptions } from './consts';
 
 import '../ProjectSetting.scss';
@@ -15,6 +15,8 @@ import '../ProjectSetting.scss';
 
 
 import Select, { components } from "react-select";
+
+
 
 const Option = props => {
     return (
@@ -45,12 +47,19 @@ const CustomStyle = {
 }
 
 
-export default function AddMemberModal(props) {
+export default function EditMemberModal(props) {
     const { t } = useTranslation();
     const [form] = Form.useForm();
-    const { projectId } = props;
+    const { projectId, model } = props;
 
     // const { Text, Link } = Typography;
+
+    useEffect(() => {
+        form.setFieldsValue({
+            "email": model.email,
+            "role": RoleOptions.filter(it => it.value === model.role)[0],
+        })
+    }, [model])
 
     const handleOk = () => {
     };
@@ -70,10 +79,9 @@ export default function AddMemberModal(props) {
         const email = get(values, 'email', '');
         const role = get(values, 'role.value', '');
         const data = {
-            "email": email,
             "role": role,
         }
-        const response = await actionAddProjectMember({project_id: projectId, payload: data});
+        const response = await actionEditProjectMember({project_id: projectId, member_id: model.id, payload: data});
         if(apiError(response)){
             message.error(apiError(response));
             handleCancel();
@@ -89,7 +97,7 @@ export default function AddMemberModal(props) {
 
     return (
         <div>
-            <Modal title={t('IDS_ADD_MEMBER')}
+            <Modal title={t('IDS_EDIT_MEMBER')}
                 visible={true}
                 onOk={handleOk}
                 onCancel={handleCancel}
@@ -119,15 +127,8 @@ export default function AddMemberModal(props) {
                             <Form.Item
                                 name="email"
                                 label={t('IDS_EMAIL_ADDRESS')}
-                                rules={[
-                                    {
-                                        required: true,
-                                        type: "email",
-                                        message: "Email address is invalid."
-                                    }
-                                ]}
                             >
-                                <Input placeholder={t('IDS_EMAIL_ADDRESS')} style={{ height: 38 }} />
+                                <Input disabled placeholder={t('IDS_EMAIL_ADDRESS')} style={{ height: 38 }} />
                             </Form.Item></Col>
                         <Col xs={{ span: 24 }} md={{ span: 12 }}>
                             <Form.Item
