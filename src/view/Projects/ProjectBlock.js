@@ -15,6 +15,9 @@ function ProjectBlock(props) {
     const dispatch = useDispatch();
 
     const handleActiveProject = () => {
+        if(loading){
+            return;
+        }
         props.history.push(`/projects/${props.data.project_id}/dashboard`)
         const payload = { projectId: props.data.project_id }
         actionGetProjectDetail({ payload });
@@ -25,14 +28,18 @@ function ProjectBlock(props) {
         return  <Skeleton active />
     }
 
+    const loading = props.data.provision_status === 'processing';
+
     return (
         <Card
-            hoverable
-            style={{ width: '100%', minWidth: 150 }}
+            hoverable={!loading}
+            style={{ width: '100%', minWidth: 150, minHeight: 224, }}
             onClick={handleActiveProject}
         >
             <div className="project-block">
-                <Meta title={props.data.name} description={props.data.project_id} />
+                <Skeleton loading={loading} title description>
+                    <Meta title={props.data.name} description={props.data.project_id} />
+                </Skeleton>
             </div>
             <CloudOutlined key="setting" style={{ fontSize: '20px' }} />
         </Card>

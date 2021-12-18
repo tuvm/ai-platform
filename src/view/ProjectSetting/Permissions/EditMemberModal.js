@@ -56,7 +56,7 @@ export default function EditMemberModal(props) {
 
     useEffect(() => {
         form.setFieldsValue({
-            "email": model.email,
+            "username": model.username,
             "role": RoleOptions.filter(it => it.value === model.role)[0],
         })
     }, [model])
@@ -76,7 +76,6 @@ export default function EditMemberModal(props) {
 
     const onFinish = async () => {
         const values = form.getFieldsValue();
-        const email = get(values, 'email', '');
         const role = get(values, 'role.value', '');
         const data = {
             "role": role,
@@ -125,7 +124,7 @@ export default function EditMemberModal(props) {
                     <Row gutter={[16]}>
                         <Col xs={{ span: 24 }} md={{ span: 12 }}>
                             <Form.Item
-                                name="email"
+                                name="username"
                                 label={t('IDS_EMAIL_ADDRESS')}
                             >
                                 <Input disabled placeholder={t('IDS_EMAIL_ADDRESS')} style={{ height: 38 }} />

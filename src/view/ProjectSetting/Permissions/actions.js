@@ -14,16 +14,6 @@ export const apiError = (response) => {
     return e;
 }
 
-export const actionGrantAPIKey = async ({ payload }) => {
-    const url = '/resource/resource-access/grant';
-    try {
-        const res = await api({ url, method: 'POST', data: payload });
-        const data = get(res, 'data');
-        return data;
-    } catch (error) {
-    }
-}
-
 export const actionAddProjectMember = async ({project_id, payload}) => {
     const url = `/console/project-members/${project_id}/members`;
     try {

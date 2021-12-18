@@ -97,8 +97,8 @@ export default function Credentials() {
     const columns = [
         {
             title: "User",
-            dataIndex: "email",
-            key: "email",
+            dataIndex: "username",
+            key: "username",
         },
         {
             title: "Role",

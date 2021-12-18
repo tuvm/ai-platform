@@ -67,10 +67,10 @@ export default function AddMemberModal(props) {
 
     const onFinish = async () => {
         const values = form.getFieldsValue();
-        const email = get(values, 'email', '');
+        const username = get(values, 'username', '');
         const role = get(values, 'role.value', '');
         const data = {
-            "email": email,
+            "username": username,
             "role": role,
         }
         const response = await actionAddProjectMember({project_id: projectId, payload: data});
@@ -117,7 +117,7 @@ export default function AddMemberModal(props) {
                     <Row gutter={[16]}>
                         <Col xs={{ span: 24 }} md={{ span: 12 }}>
                             <Form.Item
-                                name="email"
+                                name="username"
                                 label={t('IDS_EMAIL_ADDRESS')}
                                 rules={[
                                     {
