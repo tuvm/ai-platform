@@ -8,7 +8,11 @@ import {
 } from '@ant-design/icons';
 
 import find from 'lodash/find';
-import { PERM_CREDENTIAL_LIST, PERM_USER_PROJECT_LIST } from '../permission/perms';
+import { 
+  PERM_CREDENTIAL_LIST, 
+  PERM_USER_PROJECT_LIST,
+  PERM_PROJECT_DASHBOARD_GET,
+} from '../permission/perms';
 
 // common
 export const REFRESH_TOKEN = 'refresh_token';
@@ -101,6 +105,7 @@ export const APP_ROUTES = [
     name: "IDS_DASHBOARD",
     pathname: routes.DASHBOARD,
     isShow: true,
+    requiredPerms: [PERM_PROJECT_DASHBOARD_GET, ],
     hasSubmenu: false,
     submenu: [
       {

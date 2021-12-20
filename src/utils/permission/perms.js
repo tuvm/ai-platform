@@ -26,3 +26,6 @@ export const PERM_CREDENTIAL_DELETE = 'credential.project.delete';
 export const PERM_CREDENTIAL_REVOKE = 'credential.project.revoke';
 export const PERM_CREDENTIAL_LIST = 'credential.project.list';
 export const PERM_CREDENTIAL_GET = 'credential.project.get';
+
+// project dashboard
+export const PERM_PROJECT_DASHBOARD_GET = 'dashboard.project.get';
