@@ -43,7 +43,7 @@ const {
 export const BASE_FE_PREFIX = DASHBOARD_URL_PREFIX || '/dashboard';
 
 const REDIRECT_URI = OIDC_REDIRECT_URI || window.origin;
-const CLIENT_ID = OIDC_CLIENT_ID || 'console-ui';
+const CLIENT_ID = OIDC_CLIENT_ID || 'console';
 
 export let CONFIG_SERVER = {
   REACT_APP_BACKEND_URL: REACT_APP_BACKEND_URL || 'https://platform.vindr.ai',
@@ -51,9 +51,9 @@ export let CONFIG_SERVER = {
   REDIRECT_URI: REDIRECT_URI,
   CLIENT_ID: CLIENT_ID,
   RESPONSE_TYPE: 'code',
-  AUDIENCE: OIDC_AUDIENCE || 'console-api',
+  AUDIENCE: OIDC_AUDIENCE || 'cad-api',
   SCOPE: OIDC_SCOPE || '',
-  REALM_ID: OIDC_REALM_ID || 'ai-platform',
+  REALM_ID: OIDC_REALM_ID || 'cad',
   STATE: Math.random().toString(36).substring(2),
   OIDC_ACCESS_TOKEN_URI,
   OIDC_AUTHORIZATION_URI,

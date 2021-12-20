@@ -4,9 +4,10 @@ import * as actions from '../../utils/constants/actions';
 import moment from 'moment';
 import 'moment-timezone';
 
+const organization = 'cad';
 
 export const actionQueryAPIUsage = (params = {}) => {
-  const url = '/console/usage/visual';
+  const url = `/console/usage/orgs/${organization}/projects/${params.project_id}/visual`;
   const tz = moment.tz.guess();
   params['tz'] = tz;
   return api({

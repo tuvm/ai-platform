@@ -67,6 +67,7 @@ const authorization = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
     const sessionState = urlParams.get('session_state');
+    console.log({code, sessionState})
     if (code) {
       getToken(code, sessionState);
     } else {
@@ -108,14 +109,14 @@ request.interceptors.response.use(
     return response;
   },
   (error) => {
-    // const errorCode = get(error, 'response.status');
-    // if (errorCode === 401 || errorCode === 403) {
-    //   checkAuthorizationFlow();
-    // } else {
-    //   return Promise.reject(error);
-    // }
+    const errorCode = get(error, 'response.status');
+    if (errorCode === 401 || errorCode === 403) {
+      checkAuthorizationFlow();
+    } else {
+      return Promise.reject(error);
+    }
 
-    return Promise.reject(error);
+    // return Promise.reject(error);
   }
 );
 

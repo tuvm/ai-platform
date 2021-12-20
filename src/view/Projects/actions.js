@@ -2,8 +2,10 @@ import get from 'lodash/get';
 import api from '../../utils/service/api';
 import * as actions from '../../utils/constants/actions';
 
+const organization = 'cad';
+
 export const actionCreateProject = ({ params, payload }) => {
-    const url = '/console/projects/new';
+    const url = `/console/projects/orgs/${organization}/new`;
     return api({
         url,
         data: payload,
@@ -12,7 +14,7 @@ export const actionCreateProject = ({ params, payload }) => {
 }
 
 export const actionGetProjectDetail = ({ payload }) => {
-    const url = `/console/projects/detail/${payload.projectId}`;
+    const url = `/console/projects/orgs/${organization}/detail/${payload.projectId}`;
     return api({
         url,
         method: 'GET'
@@ -20,7 +22,7 @@ export const actionGetProjectDetail = ({ payload }) => {
 }
 
 export const actionGetProjectList = () => async dispatch => {
-    const url = '/console/projects/list';
+    const url = `/console/projects/orgs/${organization}/list`;
     dispatch(fetchProjectList());
     try {
         const data = await api({
