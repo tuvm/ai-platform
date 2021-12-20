@@ -7,10 +7,12 @@ import AddMemberModal from './AddMemberModal';
 import EditMemberModel from './EditMemberModal';
 import { useProjectsParams } from '../../../utils/hooks';
 import get from 'lodash/get';
+import { useSelector } from 'react-redux';
 import { Table } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 // import CredentialDev from './CredentialDev';
 import '../ProjectSetting.scss';
+import { PERM_USER_PROJECT_DELETE, PERM_USER_PROJECT_EDIT, PERM_USER_PROJECT_INVITE } from '../../../utils/permission/perms';
 
 const { Column } = Table;
 
@@ -37,9 +39,22 @@ export default function Credentials() {
     const [openEditModal, setOpenEditModal] = useState(false);
     const [currentSelectedMember, setCurrentSelectedMember] = useState({});
     const [users, setUsers] = useState([]);
+    const ticket = useSelector(state => state.system.ticket);
     const { t } = useTranslation();
     const { params } = useProjectsParams();
     const projectId = get(params, 'projectId', '');
+
+    const canInviteMember = () => {
+        return ticket && ticket.has([PERM_USER_PROJECT_INVITE, ]);
+    }
+
+    const canEditMember = () => {
+        return ticket && ticket.has([PERM_USER_PROJECT_EDIT, ]);
+    }
+
+    const canDeleteMember = () => {
+        return ticket && ticket.has([PERM_USER_PROJECT_DELETE, ]);
+    }
 
     const handleGetUserPermissions = async () => {
         const data = await actionListProjectMember({ params: { project_id: projectId } });
@@ -88,8 +103,8 @@ export default function Credentials() {
     const actionMenu = (item={}) => { 
         return (
             <Menu onClick={({key})=> onAction({key, item})}>
-                <Menu.Item key="edit">Edit</Menu.Item>
-                <Menu.Item key="delete">Delete</Menu.Item>
+                <Menu.Item key="edit" disabled={!canEditMember()}>Edit</Menu.Item>
+                <Menu.Item key="delete" disabled={!canDeleteMember()}>Delete</Menu.Item>
             </Menu>
         )
     }
@@ -126,12 +141,15 @@ export default function Credentials() {
         <div className="credential-page content-inner-center">
             <div className="credential-head">
                 <Title level={4}>User list</Title>
-                <Button type="primary"
-                    icon={<UserAddOutlined />}
-                    onClick={handleOpenCreateModal}
-                >
-                    {t('IDS_ADD_MEMBER')}
-                </Button>
+                {
+                    canInviteMember() && <Button type="primary"
+                        icon={<UserAddOutlined />}
+                        onClick={handleOpenCreateModal}
+                    >
+                        {t('IDS_ADD_MEMBER')}
+                    </Button>
+                }
+                
             </div>
             <Table dataSource={users} className="app-table quotation-table" pagination={false} columns={columns}>
                     {/* <Column title="Member" dataIndex="email" key="email" />

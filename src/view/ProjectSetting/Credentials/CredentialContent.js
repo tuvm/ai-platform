@@ -15,6 +15,7 @@ import './Credentials.scss';
 import {
     CopyOutlined
 } from '@ant-design/icons';
+import { PERM_CREDENTIAL_DELETE, PERM_CREDENTIAL_EDIT, PERM_CREDENTIAL_REVOKE } from '../../../utils/permission/perms';
 
 const { Column } = Table;
 
@@ -26,12 +27,25 @@ export default function CredentialContent() {
     const [openEditCredentialModal, setOpenEditCredentialModal] = useState(false);
     const [openConfirmDeleteModal, setOpenConfirmDeleteModal] = useState(false);
     const [openConfirmRevokeModal, setOpenConfirmRevokeModal] = useState(false);
+    const ticket = useSelector(state => state.system.ticket);
     const resourceList = useSelector(state => state.system.resourceList);
     const vindrModules = get(resourceList, 'modules');
     const {
         handleGetCredentials,
         currentCredential,
     } = useContext(CredentialContext);
+
+    const canEdit = () => {
+        return ticket && ticket.has([PERM_CREDENTIAL_EDIT, ]);
+    }
+
+    const canRevoke = () => {
+        return ticket && ticket.has([PERM_CREDENTIAL_REVOKE, ]);
+    }
+
+    const canDelete = () => {
+        return ticket && ticket.has([PERM_CREDENTIAL_DELETE, ]);
+    }
 
     const handleCopy = () => {
         navigator.clipboard.writeText(currentCredential.token).then(function () {
@@ -129,9 +143,15 @@ export default function CredentialContent() {
 
             <div className="credential-footer">
                 <Space size={16}>
-                    <Button type="" danger onClick={handleDeleteModal}>Delete</Button>
-                    <Button type="" onClick={handleRevokeModal} disabled={!Boolean(currentCredential.status)}>Revoke</Button>
-                    <Button type="primary" onClick={handleOpenEditCredential} disabled={!Boolean(currentCredential.status)}>Edit</Button>
+                    {
+                        canDelete() && <Button type="" danger onClick={handleDeleteModal}>Delete</Button>
+                    }
+                    {
+                        canRevoke() && <Button type="" onClick={handleRevokeModal} disabled={!Boolean(currentCredential.status)}>Revoke</Button>
+                    }
+                    {
+                        canEdit() && <Button type="primary" onClick={handleOpenEditCredential} disabled={!Boolean(currentCredential.status)}>Edit</Button>
+                    }
                 </Space>
             </div>
 

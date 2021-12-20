@@ -8,6 +8,7 @@ import {
 } from '@ant-design/icons';
 
 import find from 'lodash/find';
+import { PERM_CREDENTIAL_LIST, PERM_USER_PROJECT_LIST } from '../permission/perms';
 
 // common
 export const REFRESH_TOKEN = 'refresh_token';
@@ -127,6 +128,7 @@ export const APP_ROUTES = [
     name: 'IDS_PROJECT_SETTING',
     pathname: routes.PROJECT_SETTING,
     isShow: true,
+    requiredPerms: [PERM_USER_PROJECT_LIST, PERM_CREDENTIAL_LIST],
   },
   {
     icon: <FileTextOutlined />,

@@ -2,6 +2,7 @@ import api from '../../utils/service/api';
 import get from 'lodash/get';
 import axios from 'axios';
 import * as actionType from '../../utils/constants/actions';
+import { Ticket } from '../../utils/permission/ticket';
 
 import {
   CONFIG_SERVER,
@@ -81,8 +82,8 @@ export const actionGetPermissionToken = async (token) => {
       'urn:ietf:params:oauth:grant-type:uma-ticket'
     );
     requestBody.append("audience", AUDIENCE);
-    requestBody.append('permission', 'api_key#all');
-    requestBody.append('permission', 'usage#all');
+    // requestBody.append('permission', 'api_key#all');
+    // requestBody.append('permission', 'usage#all');
 
     const res = await api(
       {
@@ -187,3 +188,34 @@ export const actionChangeLanguage = (lang) => {
     payload: lang,
   };
 };
+
+
+export const actionInspectTicket = ({project_id}) => async dispatch => {
+  const url = '/console/tickets/inspect';
+  dispatch({
+    type: actionType.FETCH_TICKET
+  });
+  try {
+      const params = {
+        'project_id': project_id || undefined,
+      }
+      const data = await api({
+          url,
+          method: 'GET',
+          params
+      });
+      const payload = get(data, 'data.data.0.perms') || [];
+      console.log({payload});
+      dispatch({
+        type: actionType.FETCH_TICKET_SUCCESS,
+        payload: new Ticket(payload, 'cad'),
+      })
+      return payload;
+  } catch (error) {
+      console.log(error);
+      dispatch({
+        type: actionType.FETCH_TICKET_ERROR,
+        payload: error,
+      })
+  }
+}

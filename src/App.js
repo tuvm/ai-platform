@@ -17,7 +17,8 @@ import { PAGES_HAS_NO_LAYOUT } from './utils/constants/config'
 import { withRouter } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { actionGetProjectList } from './view/Projects/actions';
-
+import { actionInspectTicket } from './view/system/systemAction';
+import { useProjectsParams } from './utils/hooks';
 
 
 const initialRequest = async () => {
@@ -28,9 +29,15 @@ const initialRequest = async () => {
 };
 
 const App = (props) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const { params: projectParams } = useProjectsParams();
+
   useEffect(() => {
     initialRequest();
+
+    const projectId = get(projectParams, 'projectId', '');
+    dispatch(actionInspectTicket({project_id: projectId}))
+
     dispatch(actionGetProjectList())
   }, [dispatch]);
 

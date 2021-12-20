@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from 'antd';
 import { PlusOutlined } from '@ant-design/icons'
 import { useTranslation } from "react-i18next";
@@ -19,12 +19,15 @@ export default function ProjectBlock() {
         setIsModalVisible(false);
     };
 
+    // useEffect(() => {
+    //     console.log(ticket);
+    // }, [ticket])
 
     return (
         <>
             <Card
                 hoverable
-                style={{ width: '100%', height: '100%', minHeight: 180, minWidth: 150, position: 'relative' }}
+                style={{ width: '100%', height: '100%', minHeight: 180, minWidth: 150, position: 'relative', }}
                 onClick={showModal}
             >
                 <div className="add-new-project">

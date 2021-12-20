@@ -3,24 +3,31 @@ import { Button, Typography, Row, Col, Empty } from 'antd';
 import { KeyOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import get from 'lodash/get';
+import { useSelector } from 'react-redux';
 import CreateCredentialModal from './CreateCredentialModal';
 import CredentialContent from './CredentialContent';
 import { useProjectsParams } from '../../../utils/hooks';
 import { actionGetCredentialList } from './actions';
 import { CredentialContext } from './context';
 import './Credentials.scss';
+import { PERM_CREDENTIAL_CREATE } from '../../../utils/permission/perms';
 
 
 const { Title } = Typography;
 
 export default function Credentials() {
     const [openCreateCredentialModal, setOpenCreateCredentialModal] = useState(false);
+    const ticket = useSelector(state => state.system.ticket);
     const { t } = useTranslation();
     const [credentialList, setCredentialList] = useState([]);
     const [currentCredential, setCurrentCredential] = useState({});
     const { params } = useProjectsParams();
 
     const projectId = get(params, 'projectId', '');
+
+    const canCreateCredentials = () => {
+        return ticket && ticket.has([PERM_CREDENTIAL_CREATE, ]);
+    }
 
     const handleGetCredentials = async () => {
         const data = await actionGetCredentialList({ params: { project_id: projectId } })
@@ -70,12 +77,15 @@ export default function Credentials() {
             <CredentialContext.Provider value={contextValues}>
                 <div className="credential-head">
                     <Title level={4}>Your API keys</Title>
-                    <Button type="primary"
-                        icon={<KeyOutlined />}
-                        onClick={handleCreateCredentialModal}
-                    >
-                        {t('IDS_CREATE_CREDENTIAL')}
-                    </Button>
+                    {
+                        canCreateCredentials() && <Button type="primary"
+                            icon={<KeyOutlined />}
+                            onClick={handleCreateCredentialModal}
+                        >
+                            {t('IDS_CREATE_CREDENTIAL')}
+                        </Button>
+                    }
+                    
                 </div>
 
                 {!credentialList || credentialList.length === 0 ? <div className="empty-list"><Empty /></div> : <div className="credential-tabs">

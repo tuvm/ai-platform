@@ -106,6 +106,26 @@ const system = (state = initialState, action) => {
         resourceOptionsLoading: false,
         resourceOptionsLoadError: true,
       };
+    case actions.FETCH_TICKET:
+      return {
+        ...state,
+        ticketLoading: true,
+        ticketLoadError: false
+      };
+    case actions.FETCH_TICKET_SUCCESS:
+      return {
+        ...state,
+        ticketLoading: false,
+        ticketLoadError: false,
+        ticket: action.payload
+      };
+
+    case actions.FETCH_TICKET_ERROR:
+      return {
+        ...state,
+        ticketLoading: false,
+        ticketLoadError: true,
+      };
     default:
       return state;
   }

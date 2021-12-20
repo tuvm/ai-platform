@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
 import { connect } from 'react-redux';
 import get from 'lodash/get';
+import { useSelector } from 'react-redux';
 import { APP_ROUTES } from '../../../utils/constants/config';
 import {
   IconCollapse,
@@ -22,6 +23,7 @@ const LeftMenu = (props) => {
   const { userInfo } = props;
   const [collapsed, setCollapsed] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState();
+  const ticket = useSelector(state => state.system.ticket);
   const { t } = useTranslation();
   const { params } = useProjectsParams();
 
@@ -29,6 +31,10 @@ const LeftMenu = (props) => {
     const page = get(params, 'page', '/');
     setSelectedKeys('/' + page);
   }, [params]);
+
+  const isShowMenu = (el) => {
+    return !el.requiredPerms || (ticket && ticket.has(el.requiredPerms));
+  }
 
   const onCollapse = (isCollapse) => {
     setCollapsed(isCollapse);
@@ -58,7 +64,7 @@ const LeftMenu = (props) => {
             theme="light"
           >
             {APP_ROUTES.map((el) => {
-              if (el.isShow) {
+              if (el.isShow && isShowMenu(el)) {
                 if (!el.hasSubmenu) {
                   return (
                     <Menu.Item
