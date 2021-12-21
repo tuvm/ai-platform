@@ -19,6 +19,7 @@ import { useDispatch } from 'react-redux';
 import { actionGetProjectList } from './view/Projects/actions';
 import { actionInspectTicket } from './view/system/systemAction';
 import { useProjectsParams } from './utils/hooks';
+import { GlobalRouteState } from './utils/globals';
 
 
 const initialRequest = async () => {
@@ -31,15 +32,16 @@ const initialRequest = async () => {
 const App = (props) => {
   const dispatch = useDispatch();
   const { params: projectParams } = useProjectsParams();
+  const projectId = get(projectParams, 'projectId', '');
 
   useEffect(() => {
     initialRequest();
-
-    const projectId = get(projectParams, 'projectId', '');
+    console.log(`Change project to ${projectId}`);
+    GlobalRouteState.projectId = projectId;
     dispatch(actionInspectTicket({project_id: projectId}))
-
     dispatch(actionGetProjectList())
-  }, [dispatch]);
+    console.log('project change')
+  }, [dispatch, projectId]);
 
   // if (isEmpty(props.profile)) {
   //   return <Loading />;

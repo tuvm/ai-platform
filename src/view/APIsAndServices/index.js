@@ -26,7 +26,7 @@ export default function APIsAndServices() {
   };
 
   useEffect(() => {
-    dispatch(actionInspectTicket({project_id: projectId}));
+    // dispatch(actionInspectTicket({project_id: projectId}));
     dispatch(actionGetResourceOptions({ params: { project_id: projectId} }));
   },[dispatch, projectId]);
 

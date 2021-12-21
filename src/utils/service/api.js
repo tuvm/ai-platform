@@ -17,6 +17,7 @@ import {
 } from '../../view/system/systemAction';
 import cookie from 'js-cookie';
 
+
 const request = axios.create();
 
 const getToken = async (code, sessionState) => {
@@ -91,6 +92,8 @@ const api = (options = {}, authAPI) => {
       ...options.headers,
     },
   };
+  console.log(`api token ${cookie.get(TOKEN)}`);
+  console.log(`api token cookie ${JSON.stringify(cookie.cookieData)}`);
   if (cookie.get(TOKEN) && cookie.get(REFRESH_TOKEN)) {
     config.headers.Authorization = `Bearer ${cookie.get(TOKEN)}`;
   }
@@ -109,7 +112,7 @@ request.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.log("error")
+    console.log({error})
     const errorCode = get(error, 'response.status');
     if (errorCode === 401 || errorCode === 403) {
       checkAuthorizationFlow();

@@ -3,6 +3,8 @@ import get from 'lodash/get';
 import axios from 'axios';
 import * as actionType from '../../utils/constants/actions';
 import { Ticket } from '../../utils/permission/ticket';
+import { GlobalRouteState } from '../../utils/globals';
+
 
 import {
   CONFIG_SERVER,
@@ -82,6 +84,25 @@ export const actionGetPermissionToken = async (token) => {
       'urn:ietf:params:oauth:grant-type:uma-ticket'
     );
     requestBody.append("audience", AUDIENCE);
+    // requestBody.append('permission', '#project.org.get');
+
+    // const projectId = GlobalRouteState.projectId;
+    // const org = GlobalRouteState.organization;
+    // if(projectId){
+    //   requestBody.append('permission', `${GlobalRouteState.org}/${GlobalRouteState.projectId}`);
+    // }
+
+    // const location = window.location;
+    // const match = matchPath(location, {
+    //   path: '/projects/:projectId/:page',
+    //   exact: true,
+    //   strict: false
+    // });
+    // const projectId = get(match, 'params.projectId');
+    // console.log({projectId})
+
+    // requestBody.append('permission', '#project.org.get');
+    // requestBody.append('permission', 'cad/pending3-l9at');
     // requestBody.append('permission', 'api_key#all');
     // requestBody.append('permission', 'usage#all');
 
@@ -97,12 +118,9 @@ export const actionGetPermissionToken = async (token) => {
       true
     );
 
-    console.log({res})
-
     if (res && res.data && res.data.access_token) {
       const { data } = res;
-      window.location.href =
-        sessionStorage.getItem('redirect_uri') || window.location.hostname;
+      console.log({'data': data.access_token})
       cookie.set(TOKEN, data.access_token, {
         expires: new Date((res.data.expires_in || 1800) * 1000 + Date.now()),
       });
@@ -111,8 +129,9 @@ export const actionGetPermissionToken = async (token) => {
           (res.data.refresh_expires_in || 1800) * 1000 + Date.now()
         ),
       });
-      debugger
       getAccountInfo();
+      window.location.href =
+        sessionStorage.getItem('redirect_uri') || window.location.hostname;
       return res;
     }
   } catch (error) {
@@ -140,17 +159,17 @@ export const actionGetToken = (code = '', sessionState = '') => {
 };
 
 export const actionGetTenantSetting = async () => {
-  // const res = await axios({
-  //   method: 'GET',
-  //   url: REACT_APP_BACKEND_URL + '/settings',
-  // });
+  const res = await axios({
+    method: 'GET',
+    url: REACT_APP_BACKEND_URL + '/console/settings',
+  });
 
   // if (res && res.data && res.data.realm_id) {
   //   localStorage.setItem(LOCAL_STORAGE_REALM_ID, res.data.realm_id);
   // }
   localStorage.setItem(LOCAL_STORAGE_REALM_ID, CONFIG_SERVER.REALM_ID);
 
-  // return res;
+  return res;
 };
 
 export const getAccountInfo = () => {

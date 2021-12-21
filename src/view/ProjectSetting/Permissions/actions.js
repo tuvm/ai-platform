@@ -2,6 +2,8 @@ import get from 'lodash/get';
 import api from "../../../utils/service/api";
 import * as actions from '../../../utils/constants/actions';
 
+const organization = "cad";
+
 const getError = ({error}) => {
     return {error: get(error, 'response.data.detail')};
 }
@@ -15,7 +17,7 @@ export const apiError = (response) => {
 }
 
 export const actionAddProjectMember = async ({project_id, payload}) => {
-    const url = `/console/project-members/${project_id}/members`;
+    const url = `/console/project-members/orgs/${organization}/projects/${project_id}/members`;
     try {
         const res = await api({ url, method: 'POST', data: payload });
         const data = get(res, 'data');
@@ -26,7 +28,7 @@ export const actionAddProjectMember = async ({project_id, payload}) => {
 }
 
 export const actionListProjectMember = async ({params}) => {
-    const url = `/console/project-members/${params.project_id}/members`;
+    const url = `/console/project-members/orgs/${organization}/projects/${params.project_id}/members`;
     try {
         const res = await api({ url, method: 'GET'});
         const data = get(res, 'data');
@@ -37,7 +39,7 @@ export const actionListProjectMember = async ({params}) => {
 }
 
 export const actionDeleteProjectMember = async ({project_id, member_id}) => {
-    const url = `/console/project-members/${project_id}/member/${member_id}`;
+    const url = `/console/project-members/orgs/${organization}/projects/${project_id}/member/${member_id}`;
     try {
         const res = await api({ url, method: 'DELETE'});
         const data = get(res, 'data');
@@ -48,7 +50,7 @@ export const actionDeleteProjectMember = async ({project_id, member_id}) => {
 }
 
 export const actionEditProjectMember = async ({project_id, member_id, payload}) => {
-    const url = `/console/project-members/${project_id}/member/${member_id}`;
+    const url = `/console/project-members/orgs/${organization}/projects/${project_id}/member/${member_id}`;
     try {
         const res = await api({ url, method: 'PUT', data: payload});
         const data = get(res, 'data');
