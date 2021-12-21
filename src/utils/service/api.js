@@ -67,7 +67,7 @@ const authorization = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
     const sessionState = urlParams.get('session_state');
-    console.log({code, sessionState})
+    // console.log({code, sessionState})
     if (code) {
       getToken(code, sessionState);
     } else {
@@ -109,6 +109,7 @@ request.interceptors.response.use(
     return response;
   },
   (error) => {
+    console.log("error")
     const errorCode = get(error, 'response.status');
     if (errorCode === 401 || errorCode === 403) {
       checkAuthorizationFlow();

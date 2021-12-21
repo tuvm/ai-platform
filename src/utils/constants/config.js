@@ -43,7 +43,7 @@ const {
 export const BASE_FE_PREFIX = DASHBOARD_URL_PREFIX || '/dashboard';
 
 const REDIRECT_URI = OIDC_REDIRECT_URI || window.origin;
-const CLIENT_ID = OIDC_CLIENT_ID || 'console';
+const CLIENT_ID = OIDC_CLIENT_ID || 'console-ui';
 
 export let CONFIG_SERVER = {
   REACT_APP_BACKEND_URL: REACT_APP_BACKEND_URL || 'https://platform.vindr.ai',

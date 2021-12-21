@@ -97,6 +97,8 @@ export const actionGetPermissionToken = async (token) => {
       true
     );
 
+    console.log({res})
+
     if (res && res.data && res.data.access_token) {
       const { data } = res;
       window.location.href =
@@ -109,11 +111,13 @@ export const actionGetPermissionToken = async (token) => {
           (res.data.refresh_expires_in || 1800) * 1000 + Date.now()
         ),
       });
+      debugger
       getAccountInfo();
       return res;
     }
   } catch (error) {
-    console.log(error);
+    debugger
+    console.log({error});
   }
 };
 
@@ -136,24 +140,24 @@ export const actionGetToken = (code = '', sessionState = '') => {
 };
 
 export const actionGetTenantSetting = async () => {
-  const res = await axios({
-    method: 'GET',
-    url: REACT_APP_BACKEND_URL + '/settings',
-  });
+  // const res = await axios({
+  //   method: 'GET',
+  //   url: REACT_APP_BACKEND_URL + '/settings',
+  // });
 
   // if (res && res.data && res.data.realm_id) {
   //   localStorage.setItem(LOCAL_STORAGE_REALM_ID, res.data.realm_id);
   // }
   localStorage.setItem(LOCAL_STORAGE_REALM_ID, CONFIG_SERVER.REALM_ID);
 
-  return res;
+  // return res;
 };
 
 export const getAccountInfo = () => {
   window.store.dispatch(actionShowLoading());
 
   return api({
-    url: '/user/userinfo',
+    url: '/console/user/userinfo',
     method: 'GET',
   }).then((result) => {
     window.store.dispatch(actionHideLoading());
