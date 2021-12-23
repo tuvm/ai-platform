@@ -12,6 +12,7 @@
   "IDS_BILLING": "Billing",
   "IDS_SETTING": "Setting",
   "IDS_HOME": "Home",
+  "IDS_USER": "User management",
   "IDS_RECENT": "Recent",
   "IDS_LABEL_MANAGEMENT": "Label management",
   "IDS_SEARCH": "Search",
@@ -161,6 +162,6 @@
   "IDS_COPY_API_KEY": "Copied API key",
   "IDS_CREDENTIAL_CANNOT_COPY_API_KEY": "Cannot copy API key",
   "IDS_CREDENTIAL_DELETE_SUCCESS": "Delete credential successfully.",
-  "IDS_CREDENTIAL_REVOKE_SUCCESS":"Revoke credential successfully.",
+  "IDS_CREDENTIAL_REVOKE_SUCCESS": "Revoke credential successfully.",
   "IDS_REGENERATE_KEY_SUCCESS": "Regenerate API key sucessfully."
 }

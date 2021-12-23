@@ -13,16 +13,15 @@ const initialState = {
   projectList: {
     all: {
       data: [],
-      count: 0
+      count: 0,
     },
     recent: {
       data: [],
-      count: 0
-    }
+      count: 0,
+    },
   },
-  resourceList: {
-    
-  }
+  resourceList: {},
+  userList: {},
 };
 
 const system = (state = initialState, action) => {
@@ -41,43 +40,61 @@ const system = (state = initialState, action) => {
       return { ...state, isFetchingUser: action.payload };
     case actions.FETCH_API_KEY_LIST:
       return { ...state, apikeys: action.payload };
+    case actions.FETCH_USER_LIST:
+      return {
+        ...state,
+        userListLoading: true,
+        userListError: false,
+      };
+    case actions.FETCH_USER_LIST_SUCCESS:
+      return {
+        ...state,
+        userListLoading: false,
+        userListLoaded: true,
+        userList: action.payload,
+      };
+    case actions.FETCH_USER_LIST_ERROR:
+      return {
+        ...state,
+        userListLoading: false,
+        userListError: true,
+      };
     case actions.FETCH_PROJECT_LIST:
       return {
         ...state,
         projectListLoading: true,
-        projectListError: false
+        projectListError: false,
       };
     case actions.FETCH_PROJECT_LIST_SUCCESS:
       return {
         ...state,
         projectListLoading: false,
         projectListLoaded: true,
-        projectList: action.payload
+        projectList: action.payload,
       };
-
     case actions.FETCH_PROJECT_LIST_ERROR:
       return {
         ...state,
         projectListLoading: false,
-        projectListError: true
+        projectListError: true,
       };
     case actions.SET_ACTIVE_PROJECT:
       return {
         ...state,
-        activeProject: action.payload
-      }
+        activeProject: action.payload,
+      };
     case actions.FETCH_RESOURCE:
       return {
         ...state,
         resourceLoading: true,
-        resourceLoadError: false
+        resourceLoadError: false,
       };
     case actions.FETCH_RESOURCE_SUCCESS:
       return {
         ...state,
         resourceLoading: false,
         resourceLoadError: false,
-        resourceList: action.payload
+        resourceList: action.payload,
       };
 
     case actions.FETCH_RESOURCE_ERROR:
@@ -90,14 +107,14 @@ const system = (state = initialState, action) => {
       return {
         ...state,
         resourceOptionsLoading: true,
-        resourceOptionsLoadError: false
+        resourceOptionsLoadError: false,
       };
     case actions.FETCH_RESOURCE_OPS_SUCCESS:
       return {
         ...state,
         resourceOptionsLoading: false,
         resourceOptionsLoadError: false,
-        resourceOptions: action.payload
+        resourceOptions: action.payload,
       };
 
     case actions.FETCH_RESOURCE_OPS_ERROR:
@@ -110,14 +127,14 @@ const system = (state = initialState, action) => {
       return {
         ...state,
         ticketLoading: true,
-        ticketLoadError: false
+        ticketLoadError: false,
       };
     case actions.FETCH_TICKET_SUCCESS:
       return {
         ...state,
         ticketLoading: false,
         ticketLoadError: false,
-        ticket: action.payload
+        ticket: action.payload,
       };
 
     case actions.FETCH_TICKET_ERROR:

@@ -101,6 +101,8 @@ export const routes = {
     // ANALYSIS: '/dashboard/analysis'
   },
   PROJECT_SETTING: '/project-setting',
+  USERS: '/users',
+  JOBS: '/jobs',
 };
 
 export const APP_ROUTES = [
@@ -108,7 +110,13 @@ export const APP_ROUTES = [
     icon: <HomeOutlined />,
     name: 'IDS_HOME',
     pathname: routes.HOME,
-    isShow: false,
+    isShow: true,
+  },
+  {
+    icon: <HomeOutlined />,
+    name: 'IDS_USER',
+    pathname: routes.USERS,
+    isShow: true,
   },
   // {
   //   icon: <ApiOutlined />,
