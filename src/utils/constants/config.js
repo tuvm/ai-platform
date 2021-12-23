@@ -4,12 +4,12 @@ import {
   KeyOutlined,
   FileTextOutlined,
   SettingOutlined,
-  DashboardOutlined
+  DashboardOutlined,
 } from '@ant-design/icons';
 
 import find from 'lodash/find';
-import { 
-  PERM_CREDENTIAL_LIST, 
+import {
+  PERM_CREDENTIAL_LIST,
   PERM_USER_PROJECT_LIST,
   PERM_PROJECT_DASHBOARD_GET,
 } from '../permission/perms';
@@ -36,9 +36,11 @@ const {
   OIDC_AUDIENCE,
   REACT_APP_BACKEND_URL,
   REACT_APP_AUTH_URL,
-  OIDC_REALM_ID
+  REACT_APP_CONSOLE_API_URL,
+  REACT_APP_RESOURCE_SERVICE_URL,
+  REACT_APP_KEY_SERVICE_URL,
+  OIDC_REALM_ID,
 } = process.env || {};
-
 
 export const BASE_FE_PREFIX = DASHBOARD_URL_PREFIX || '/dashboard';
 
@@ -48,6 +50,12 @@ const CLIENT_ID = OIDC_CLIENT_ID || 'console-ui';
 export let CONFIG_SERVER = {
   REACT_APP_BACKEND_URL: REACT_APP_BACKEND_URL || 'https://platform.vindr.ai',
   REACT_APP_AUTH_URL: REACT_APP_AUTH_URL || window.origin,
+  REACT_APP_CONSOLE_API_URL:
+    REACT_APP_CONSOLE_API_URL || REACT_APP_BACKEND_URL + '/console',
+  REACT_APP_RESOURCE_SERVICE_URL:
+    REACT_APP_RESOURCE_SERVICE_URL || REACT_APP_BACKEND_URL + '/resource',
+  REACT_APP_KEY_SERVICE_URL:
+    REACT_APP_KEY_SERVICE_URL || REACT_APP_BACKEND_URL + '/key',
   REDIRECT_URI: REDIRECT_URI,
   CLIENT_ID: CLIENT_ID,
   RESPONSE_TYPE: 'code',
@@ -60,6 +68,14 @@ export let CONFIG_SERVER = {
   OIDC_LOGOUT_URI,
   OIDC_USERINFO_ENDPOINT,
   TOKEN_PERMISSION: ['api#all'],
+};
+
+export const API_ENV = {
+  BACKEND: CONFIG_SERVER.REACT_APP_BACKEND_URL,
+  AUTH: CONFIG_SERVER.REACT_APP_AUTH_URL,
+  CONSOLE: CONFIG_SERVER.REACT_APP_CONSOLE_API_URL,
+  RESOURCE: CONFIG_SERVER.REACT_APP_RESOURCE_SERVICE_URL,
+  KEY: CONFIG_SERVER.REACT_APP_KEY_SERVICE_URL,
 };
 
 export const OIDC_SETTINGS = 'OIDC_SETTINGS';
@@ -84,7 +100,7 @@ export const routes = {
     PROJECTS: '/dashboard/projects',
     // ANALYSIS: '/dashboard/analysis'
   },
-  PROJECT_SETTING: '/project-setting'
+  PROJECT_SETTING: '/project-setting',
 };
 
 export const APP_ROUTES = [
@@ -102,19 +118,19 @@ export const APP_ROUTES = [
   // },
   {
     icon: <DashboardOutlined />,
-    name: "IDS_DASHBOARD",
+    name: 'IDS_DASHBOARD',
     pathname: routes.DASHBOARD,
     isShow: true,
-    requiredPerms: [PERM_PROJECT_DASHBOARD_GET, ],
+    requiredPerms: [PERM_PROJECT_DASHBOARD_GET],
     hasSubmenu: false,
     submenu: [
       {
         icon: <ApiOutlined />,
-        name: "IDS_DASHBOARD_PROJECTS",
+        name: 'IDS_DASHBOARD_PROJECTS',
         pathname: routes.DASHBOARD_MENU.PROJECTS,
         isShow: true,
-      }
-    ]
+      },
+    ],
   },
   {
     icon: <ApiOutlined />,
@@ -307,33 +323,33 @@ export const API_SCOPES = [
 export const VINDR_MODULES = [
   {
     name: 'Vindr ChestXray',
-    key: 'vindr-chestxray'
+    key: 'vindr-chestxray',
   },
   {
     name: 'Vindr Mammo',
-    key: 'vindr-mammo'
+    key: 'vindr-mammo',
   },
   {
     name: 'Vindr SpineXR',
-    key: 'vindr-spinexr'
+    key: 'vindr-spinexr',
   },
   {
     name: 'Vindr LungCT',
-    key: 'vindr-lungct'
+    key: 'vindr-lungct',
   },
   {
     name: 'Vindr LiverCT',
-    key: 'vindr-liverct'
+    key: 'vindr-liverct',
   },
   {
     name: 'Vindr BrainCT',
-    key: 'vindr-brainct'
+    key: 'vindr-brainct',
   },
   {
     name: 'Vindr BrainMRI',
-    key: 'vindr-brainmri'
-  }
-]
+    key: 'vindr-brainmri',
+  },
+];
 
 export const CHART_COLORS = {
   lungct: '#97DAFF',
@@ -342,50 +358,47 @@ export const CHART_COLORS = {
   liverct: '#FFC552',
   brainct: '#eb4c34',
   brainmri: '#344feb',
-  spinexr: '#C4B5FF'
+  spinexr: '#C4B5FF',
 };
 
 export const CHART_TYPE_COLORS = {
   Total: '#97DAFF',
   Error: '#eb4c34',
   Default: '#eb34b1',
-}
+};
 
-
-export const PAGES_HAS_NO_LAYOUT = ['/', '/projects']
-
+export const PAGES_HAS_NO_LAYOUT = ['/', '/projects'];
 
 export const QUOTA_DEV_TEMPLATE = {
   chestxray: {
     quota: '100',
-    period: 'daily'
+    period: 'daily',
   },
   mammo: {
     quota: '100',
-    period: 'daily'
+    period: 'daily',
   },
   lungct: {
     quota: '100',
-    period: 'daily'
+    period: 'daily',
   },
   brainct: {
     quota: '100',
-    period: 'daily'
+    period: 'daily',
   },
   brainmri: {
     quota: '100',
-    period: 'daily'
+    period: 'daily',
   },
   liverct: {
     quota: '100',
-    period: 'daily'
+    period: 'daily',
   },
   spinexr: {
     quota: '100',
-    period: 'daily'
-  }
-}
-
+    period: 'daily',
+  },
+};
 
 export const ENV_OPTIONS = {
   PRO: 'Production',
@@ -393,21 +406,20 @@ export const ENV_OPTIONS = {
   1: 'Development',
   2: 'Production',
   dev: 'Development',
-  prod: 'Production'
-}
-
+  prod: 'Production',
+};
 
 export const regex_name = new RegExp(
   /^[0-9a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s -]+$/i
-)
+);
 
 export const getModuleName = (modules, slug) => {
-  let finder = {}
+  let finder = {};
   if (modules && slug) {
-    finder = find(modules, { slug: slug }) || {}
+    finder = find(modules, { slug: slug }) || {};
   }
   return finder;
-}
+};
 
 export const PERIOD_SELECTION = [
   {
@@ -425,13 +437,13 @@ export const PERIOD_SELECTION = [
   {
     label: 'Not reset',
     value: 'not_reset',
-  }
-]
+  },
+];
 
 export const getPeriodSelected = (key) => {
-  let time = {}
+  let time = {};
   if (key) {
-    time = find(PERIOD_SELECTION, { value: key }) || {}
+    time = find(PERIOD_SELECTION, { value: key }) || {};
   }
   return time;
-}
+};

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Layout } from 'antd';
 import { connect } from 'react-redux';
-import isEmpty from 'lodash/isEmpty';
+// import isEmpty from 'lodash/isEmpty';
 import Routes from './Routes';
 import { LeftMenu, Header } from './components/layout';
 import Loading from './components/loading/Loading';
@@ -13,14 +13,13 @@ import {
 import BreadCrumb from './components/breadcrumb/BreadCrumb';
 import AppHelmet from './components/Helmet';
 import './App.scss';
-import { PAGES_HAS_NO_LAYOUT } from './utils/constants/config'
-import { withRouter } from "react-router-dom";
+import { PAGES_HAS_NO_LAYOUT } from './utils/constants/config';
+import { withRouter } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { actionGetProjectList } from './view/Projects/actions';
 import { actionInspectTicket } from './view/system/systemAction';
 import { useProjectsParams } from './utils/hooks';
 import { GlobalRouteState } from './utils/globals';
-
 
 const initialRequest = async () => {
   const res = await actionGetTenantSetting();
@@ -38,16 +37,16 @@ const App = (props) => {
     initialRequest();
     console.log(`Change project to ${projectId}`);
     GlobalRouteState.projectId = projectId;
-    dispatch(actionInspectTicket({project_id: projectId}))
-    dispatch(actionGetProjectList())
-    console.log('project change')
+    dispatch(actionInspectTicket({ project_id: projectId }));
+    dispatch(actionGetProjectList());
+    console.log('project change');
   }, [dispatch, projectId]);
 
   // if (isEmpty(props.profile)) {
   //   return <Loading />;
   // }
 
-  const pathname = get(props, 'location.pathname')
+  const pathname = get(props, 'location.pathname');
 
   return (
     <div className="app-container">
@@ -59,7 +58,7 @@ const App = (props) => {
           {PAGES_HAS_NO_LAYOUT.includes(pathname) ? null : <LeftMenu />}
 
           <Layout.Content className="content-container">
-            { PAGES_HAS_NO_LAYOUT.includes(pathname) ? null : <BreadCrumb /> }
+            {PAGES_HAS_NO_LAYOUT.includes(pathname) ? null : <BreadCrumb />}
             <div className="content-inner">
               <Routes />
             </div>

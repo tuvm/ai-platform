@@ -3,8 +3,7 @@ import get from 'lodash/get';
 import axios from 'axios';
 import * as actionType from '../../utils/constants/actions';
 import { Ticket } from '../../utils/permission/ticket';
-import { GlobalRouteState } from '../../utils/globals';
-
+// import { GlobalRouteState } from '../../utils/globals';
 
 import {
   CONFIG_SERVER,
@@ -12,18 +11,13 @@ import {
   REFRESH_TOKEN,
   LOCAL_STORAGE_REALM_ID,
   AI_PLATFORM_LOCALE,
+  API_ENV,
   // OIDC_SETTINGS,
 } from '../../utils/constants/config';
 import cookie from 'js-cookie';
 
-const {
-  CLIENT_ID,
-  RESPONSE_TYPE,
-  STATE,
-  AUDIENCE,
-  REACT_APP_BACKEND_URL,
-  REACT_APP_AUTH_URL,
-} = CONFIG_SERVER;
+const { CLIENT_ID, RESPONSE_TYPE, STATE, AUDIENCE, REACT_APP_AUTH_URL } =
+  CONFIG_SERVER;
 
 export const getAuthUrl = () => {
   const realmId = localStorage.getItem(LOCAL_STORAGE_REALM_ID);
@@ -67,12 +61,10 @@ export const actionRefreshToken = (refreshToken = '') => {
   return api(
     {
       method: 'post',
-      url:
-        REACT_APP_AUTH_URL +
-        `/auth/realms/${realmId}/protocol/openid-connect/token`,
+      url: `/auth/realms/${realmId}/protocol/openid-connect/token`,
       data: requestBody,
     },
-    true
+    API_ENV.AUTH
   );
 };
 
@@ -83,7 +75,7 @@ export const actionGetPermissionToken = async (token) => {
       'grant_type',
       'urn:ietf:params:oauth:grant-type:uma-ticket'
     );
-    requestBody.append("audience", AUDIENCE);
+    requestBody.append('audience', AUDIENCE);
     // requestBody.append('permission', '#project.org.get');
 
     // const projectId = GlobalRouteState.projectId;
@@ -115,12 +107,12 @@ export const actionGetPermissionToken = async (token) => {
           Authorization: `Bearer ${token}`,
         },
       },
-      true
+      API_ENV.AUTH
     );
 
     if (res && res.data && res.data.access_token) {
       const { data } = res;
-      console.log({'data': data.access_token})
+      console.log({ data: data.access_token });
       cookie.set(TOKEN, data.access_token, {
         expires: new Date((res.data.expires_in || 1800) * 1000 + Date.now()),
       });
@@ -135,8 +127,8 @@ export const actionGetPermissionToken = async (token) => {
       return res;
     }
   } catch (error) {
-    debugger
-    console.log({error});
+    debugger;
+    console.log({ error });
   }
 };
 
@@ -154,14 +146,14 @@ export const actionGetToken = (code = '', sessionState = '') => {
       url: getAuthUrl(),
       data: requestBody,
     },
-    true
+    API_ENV.AUTH
   );
 };
 
 export const actionGetTenantSetting = async () => {
   const res = await axios({
     method: 'GET',
-    url: REACT_APP_BACKEND_URL + '/console/settings',
+    url: API_ENV.CONSOLE + '/settings',
   });
 
   // if (res && res.data && res.data.realm_id) {
@@ -175,10 +167,13 @@ export const actionGetTenantSetting = async () => {
 export const getAccountInfo = () => {
   window.store.dispatch(actionShowLoading());
 
-  return api({
-    url: '/console/user/userinfo',
-    method: 'GET',
-  }).then((result) => {
+  return api(
+    {
+      url: '/user/userinfo',
+      method: 'GET',
+    },
+    API_ENV.CONSOLE
+  ).then((result) => {
     window.store.dispatch(actionHideLoading());
     const data = get(result, 'data.data');
     window.store.dispatch({ type: actionType.FETCHING_PROFILE, payload: data });
@@ -212,33 +207,37 @@ export const actionChangeLanguage = (lang) => {
   };
 };
 
-
-export const actionInspectTicket = ({project_id}) => async dispatch => {
-  const url = '/console/tickets/inspect';
-  dispatch({
-    type: actionType.FETCH_TICKET
-  });
-  try {
+export const actionInspectTicket =
+  ({ project_id }) =>
+  async (dispatch) => {
+    const url = '/tickets/inspect';
+    dispatch({
+      type: actionType.FETCH_TICKET,
+    });
+    try {
       const params = {
-        'project_id': project_id || undefined,
-      }
-      const data = await api({
+        project_id: project_id || undefined,
+      };
+      const data = await api(
+        {
           url,
           method: 'GET',
-          params
-      });
+          params,
+        },
+        API_ENV.CONSOLE
+      );
       const payload = get(data, 'data.data.0.perms') || [];
-      console.log({payload});
+      console.log({ payload });
       dispatch({
         type: actionType.FETCH_TICKET_SUCCESS,
         payload: new Ticket(payload, 'cad'),
-      })
+      });
       return payload;
-  } catch (error) {
+    } catch (error) {
       console.log(error);
       dispatch({
         type: actionType.FETCH_TICKET_ERROR,
         payload: error,
-      })
-  }
-}
+      });
+    }
+  };

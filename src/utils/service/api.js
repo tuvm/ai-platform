@@ -2,10 +2,10 @@ import axios from 'axios';
 import Qs from 'qs';
 import get from 'lodash/get';
 import {
-  CONFIG_SERVER,
   TOKEN,
   REFRESH_TOKEN,
   LOCAL_STORAGE_REALM_ID,
+  API_ENV,
 } from '../constants/config';
 import {
   actionGetPermissionToken,
@@ -16,7 +16,6 @@ import {
   requestLogin,
 } from '../../view/system/systemAction';
 import cookie from 'js-cookie';
-
 
 const request = axios.create();
 
@@ -79,11 +78,9 @@ const authorization = () => {
   }
 };
 
-const api = (options = {}, authAPI) => {
+const api = (options = {}, apiEnv = API_ENV.BACKEND) => {
   let config = {
-    baseURL: authAPI
-      ? CONFIG_SERVER.REACT_APP_AUTH_URL
-      : CONFIG_SERVER.REACT_APP_BACKEND_URL,
+    baseURL: apiEnv,
     ...options,
     paramsSerializer: (params) =>
       Qs.stringify(params, { arrayFormat: 'repeat' }),
@@ -112,7 +109,7 @@ request.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.log({error})
+    console.log({ error });
     const errorCode = get(error, 'response.status');
     if (errorCode === 401 || errorCode === 403) {
       checkAuthorizationFlow();
