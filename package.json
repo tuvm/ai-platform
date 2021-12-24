@@ -39,7 +39,8 @@
     "react-select": "^5.2.1",
     "react-virtualized": "^9.22.2",
     "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "searchable-react-json-view": "^0.0.8"
   },
   "scripts": {
     "start": "export \"PORT=3002\" &&  env-cmd -f .env craco start local",

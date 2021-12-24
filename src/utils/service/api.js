@@ -89,8 +89,8 @@ const api = (options = {}, apiEnv = API_ENV.BACKEND) => {
       ...options.headers,
     },
   };
-  console.log(`api token ${cookie.get(TOKEN)}`);
-  console.log(`api token cookie ${JSON.stringify(cookie.cookieData)}`);
+  // console.log(`api token ${cookie.get(TOKEN)}`);
+  // console.log(`api token cookie ${JSON.stringify(cookie.cookieData)}`);
   if (cookie.get(TOKEN) && cookie.get(REFRESH_TOKEN)) {
     config.headers.Authorization = `Bearer ${cookie.get(TOKEN)}`;
   }

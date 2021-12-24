@@ -1,5 +1,6 @@
 import React from 'react';
 import { Row, Table } from 'antd';
+import { useSelector } from 'react-redux';
 
 const columns = [
   {
@@ -24,7 +25,9 @@ const columns = [
   },
 ];
 
-export default function UserList({ data }) {
+export default function UserList() {
+  const data = useSelector((state) => state.system.userList);
+  const loading = useSelector((state) => state.system.userListLoading);
   return (
     <Row gutter={[16, 16]} style={{ marginBottom: 8 }}>
       <Table
@@ -32,6 +35,7 @@ export default function UserList({ data }) {
         dataSource={data.data}
         rowKey="preferred_username"
         bordered
+        loading={loading}
         style={{ width: '100%' }}
       />
     </Row>

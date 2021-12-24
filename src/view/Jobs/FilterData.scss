@@ -1,0 +1,48 @@
+.filter-data {
+  padding: 12px 0 8px;
+  .filter-items {
+    margin-right: 8px;
+    margin-bottom: 12px;
+    &:last-child {
+      margin-right: 0;
+    }
+    .filter-item {
+      margin-right: 8px;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+    .select-item {
+      width: 109px;
+    }
+    .search-item {
+      width: 150px;
+    }
+    .filter-btn {
+      width: 90px;
+    }
+    .picker-date {
+      height: 24px;
+      font-size: 12px;
+      max-width: 250px;
+    }
+  }
+
+  .filter-title {
+    margin-bottom: 5px;
+  }
+
+  .select-dropdown-light {
+    &.no-border {
+      .ant-select-selector {
+        border: none !important;
+        padding-left: 0;
+        box-shadow: none !important;
+      }
+    }
+    .ant-select-item {
+      max-height: 24px;
+      line-height: 20px;
+    }
+  }
+}

@@ -22,6 +22,7 @@ const initialState = {
   },
   resourceList: {},
   userList: {},
+  jobList: {},
 };
 
 const system = (state = initialState, action) => {
@@ -40,6 +41,25 @@ const system = (state = initialState, action) => {
       return { ...state, isFetchingUser: action.payload };
     case actions.FETCH_API_KEY_LIST:
       return { ...state, apikeys: action.payload };
+    case actions.FETCH_JOB_LIST:
+      return {
+        ...state,
+        jobListLoading: true,
+        jobListError: false,
+      };
+    case actions.FETCH_JOB_LIST_SUCCESS:
+      return {
+        ...state,
+        jobListLoading: false,
+        jobListLoaded: true,
+        jobList: action.payload,
+      };
+    case actions.FETCH_JOB_LIST_ERROR:
+      return {
+        ...state,
+        jobListLoading: false,
+        jobListError: true,
+      };
     case actions.FETCH_USER_LIST:
       return {
         ...state,

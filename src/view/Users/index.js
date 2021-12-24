@@ -11,9 +11,7 @@ import UserList from './UserList';
 import './User.scss';
 
 export default function Users() {
-  const data = useSelector((state) => state.system.userList);
   const dispatch = useDispatch();
-  const loading = useSelector((state) => state.system.userListLoading);
 
   useEffect(() => {
     dispatch(fetchUserList());
@@ -27,13 +25,9 @@ export default function Users() {
       });
   }, [dispatch]);
 
-  if (loading || !data) {
-    return <Loading />;
-  }
-
   return (
     <div className="project-page-inner">
-      <UserList data={data} />
+      <UserList />
     </div>
   );
 }

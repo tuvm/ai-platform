@@ -2,6 +2,7 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { routes } from './utils/constants/config';
 import APIsAndServices from './view/APIsAndServices';
+import { Jobs } from './view/Jobs';
 import Projects from './view/Projects';
 // import APIKeys from './view/APIKeys';
 import ProjectSetting from './view/ProjectSetting';
@@ -24,6 +25,7 @@ const Routes = (props) => {
       />
       <Route exact path="/projects" component={Projects} />
       <Route exact path="/users" component={Users} />
+      <Route exact path="/jobs" component={Jobs} />
       {/* <Route exact path={routes.API_KEYS} component={APIKeys} /> */}
     </Switch>
   );

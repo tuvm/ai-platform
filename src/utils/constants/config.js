@@ -118,6 +118,12 @@ export const APP_ROUTES = [
     pathname: routes.USERS,
     isShow: true,
   },
+  {
+    icon: <HomeOutlined />,
+    name: 'Job management',
+    pathname: routes.JOBS,
+    isShow: true,
+  },
   // {
   //   icon: <ApiOutlined />,
   //   name: "IDS_PROJECTS",
