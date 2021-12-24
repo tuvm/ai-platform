@@ -23,6 +23,7 @@ const initialState = {
   resourceList: {},
   userList: {},
   jobList: {},
+  modelList: {},
 };
 
 const system = (state = initialState, action) => {
@@ -41,6 +42,25 @@ const system = (state = initialState, action) => {
       return { ...state, isFetchingUser: action.payload };
     case actions.FETCH_API_KEY_LIST:
       return { ...state, apikeys: action.payload };
+    case actions.FETCH_MODEL_LIST:
+      return {
+        ...state,
+        modelListLoading: true,
+        modelListError: false,
+      };
+    case actions.FETCH_MODEL_LIST_SUCCESS:
+      return {
+        ...state,
+        modelListLoading: false,
+        modelListLoaded: true,
+        modelList: action.payload,
+      };
+    case actions.FETCH_MODEL_LIST_ERROR:
+      return {
+        ...state,
+        modelListLoading: false,
+        modelListError: true,
+      };
     case actions.FETCH_JOB_LIST:
       return {
         ...state,

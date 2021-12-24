@@ -7,6 +7,7 @@ import Projects from './view/Projects';
 // import APIKeys from './view/APIKeys';
 import ProjectSetting from './view/ProjectSetting';
 import Users from './view/Users';
+import Models from './view/Models';
 
 const Routes = (props) => {
   return (
@@ -26,6 +27,7 @@ const Routes = (props) => {
       <Route exact path="/projects" component={Projects} />
       <Route exact path="/users" component={Users} />
       <Route exact path="/jobs" component={Jobs} />
+      <Route exact path="/models" component={Models} />
       {/* <Route exact path={routes.API_KEYS} component={APIKeys} /> */}
     </Switch>
   );

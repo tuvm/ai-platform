@@ -190,7 +190,7 @@ export const actionLogout = async () => {
 
     cookie.remove(REFRESH_TOKEN);
     cookie.remove(TOKEN);
-    localStorage.removeItem(LOCAL_STORAGE_REALM_ID);
+    // localStorage.removeItem(LOCAL_STORAGE_REALM_ID);
     window.location.href = url;
   } catch (error) {}
 };
