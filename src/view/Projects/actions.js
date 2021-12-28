@@ -1,5 +1,5 @@
 import get from 'lodash/get';
-import api from '../../utils/service/api';
+import api from '../system/api';
 import * as actions from '../../utils/constants/actions';
 import { API_ENV } from '../../utils/constants/config';
 
@@ -50,6 +50,21 @@ export const actionGetProjectList = () => async (dispatch) => {
     dispatch(fetchProjectListError(error));
   }
 };
+
+// export const actionGetProjectList = () => {
+//   return {
+//     types: [
+//       actions.FETCH_PROJECT_LIST,
+//       actions.FETCH_PROJECT_LIST_SUCCESS,
+//       actions.FETCH_PROJECT_LIST_ERROR,
+//     ],
+//     payload: {
+//       request: {
+//         url: `/projects/orgs/${organization}/list`,
+//       },
+//     },
+//   };
+// };
 
 export const fetchProjectList = () => {
   return {

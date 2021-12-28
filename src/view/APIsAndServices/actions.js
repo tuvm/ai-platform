@@ -1,4 +1,4 @@
-import api from '../../utils/service/api';
+import api from '../system/api';
 import get from 'lodash/get';
 import * as actions from '../../utils/constants/actions';
 import moment from 'moment';
@@ -17,7 +17,8 @@ export const actionQueryAPIUsage = (params = {}) => {
       method: 'GET',
       params,
     },
-    API_ENV.CONSOLE
+    API_ENV.CONSOLE,
+    params.project_id
   );
 };
 
@@ -26,8 +27,13 @@ export const actionGetResourceOptions =
   async (dispatch) => {
     const url = '/resources/list';
     dispatch({ type: actions.FETCH_RESOURCE_OPS });
+    console.log(params);
     try {
-      const res = await api({ url, method: 'GET', params }, API_ENV.RESOURCE);
+      const res = await api(
+        { url, method: 'GET', params },
+        API_ENV.RESOURCE,
+        params.project_id
+      );
       const data = get(res, 'data');
       const options = (data.modules || []).map((it) => {
         return { value: it.slug, label: it.name };

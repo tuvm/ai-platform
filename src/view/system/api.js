@@ -6,7 +6,7 @@ import {
   REFRESH_TOKEN,
   LOCAL_STORAGE_REALM_ID,
   API_ENV,
-} from '../constants/config';
+} from '../../utils/constants/config';
 import {
   actionGetPermissionToken,
   actionGetTenantSetting,
@@ -14,8 +14,9 @@ import {
   actionLogout,
   actionRefreshToken,
   requestLogin,
-} from '../../view/system/systemAction';
+} from './systemAction';
 import cookie from 'js-cookie';
+import UserService from './userService';
 
 const request = axios.create();
 
@@ -78,7 +79,7 @@ const authorization = () => {
   }
 };
 
-const api = (options = {}, apiEnv = API_ENV.BACKEND) => {
+const api = (options = {}, apiEnv = API_ENV.BACKEND, scope = 'global') => {
   let config = {
     baseURL: apiEnv,
     ...options,
@@ -89,16 +90,67 @@ const api = (options = {}, apiEnv = API_ENV.BACKEND) => {
       ...options.headers,
     },
   };
+
+  console.log(scope);
   // console.log(`api token ${cookie.get(TOKEN)}`);
   // console.log(`api token cookie ${JSON.stringify(cookie.cookieData)}`);
-  if (cookie.get(TOKEN) && cookie.get(REFRESH_TOKEN)) {
-    config.headers.Authorization = `Bearer ${cookie.get(TOKEN)}`;
+  // if (cookie.get(TOKEN) && cookie.get(REFRESH_TOKEN)) {
+  if (scope === 'global') {
+    if (
+      !(
+        UserService &&
+        UserService.isLoggedIn &&
+        UserService.getPermissionToken()
+      )
+    ) {
+      return UserService.updateToken(() =>
+        request({
+          ...config,
+          headers: {
+            ...config.headers,
+            Authorization: `Bearer ${UserService.getPermissionToken()}`,
+          },
+        })
+      );
+    }
+    return request({
+      ...config,
+      headers: {
+        ...config.headers,
+        Authorization: `Bearer ${UserService.getPermissionToken()}`,
+      },
+    });
+  } else {
+    if (
+      !(
+        UserService &&
+        UserService.isLoggedIn &&
+        UserService.getProjectToken(scope)
+      )
+    ) {
+      return UserService.updateProjectToken(scope, () =>
+        request({
+          ...config,
+          headers: {
+            ...config.headers,
+            Authorization: `Bearer ${UserService.getProjectToken(scope)}`,
+          },
+        })
+      );
+    }
+    return request({
+      ...config,
+      headers: {
+        ...config.headers,
+        Authorization: `Bearer ${UserService.getProjectToken(scope)}`,
+      },
+    });
   }
-  return request(config);
 };
 
 request.interceptors.request.use(
   (config) => {
+    console.log(config);
     return config;
   },
   (error) => Promise.reject(error)
@@ -112,7 +164,8 @@ request.interceptors.response.use(
     console.log({ error });
     const errorCode = get(error, 'response.status');
     if (errorCode === 401 || errorCode === 403) {
-      checkAuthorizationFlow();
+      // checkAuthorizationFlow();
+      // UserService.upda
     } else {
       return Promise.reject(error);
     }

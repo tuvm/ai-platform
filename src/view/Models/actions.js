@@ -100,7 +100,7 @@ export const serviceGetModelList = () => {
         ],
         count: 7,
       });
-    }, 1000)
+    }, 0)
   );
 };
 

@@ -1,5 +1,5 @@
 import get from 'lodash/get';
-import api from '../../../utils/service/api';
+import api from '../../system/api';
 import * as actions from '../../../utils/constants/actions';
 import { API_ENV } from '../../../utils/constants/config';
 

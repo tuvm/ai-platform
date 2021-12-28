@@ -24,10 +24,10 @@ const Routes = (props) => {
         path="/projects/:projectId/project-setting"
         component={ProjectSetting}
       />
+      <Route exact path="/projects/:projectId/users" component={Users} />
+      <Route exact path="/projects/:projectId/jobs" component={Jobs} />
+      <Route exact path="/projects/:projectId/models" component={Models} />
       <Route exact path="/projects" component={Projects} />
-      <Route exact path="/users" component={Users} />
-      <Route exact path="/jobs" component={Jobs} />
-      <Route exact path="/models" component={Models} />
       {/* <Route exact path={routes.API_KEYS} component={APIKeys} /> */}
     </Switch>
   );

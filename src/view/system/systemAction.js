@@ -1,4 +1,4 @@
-import api from '../../utils/service/api';
+import api from './api';
 import get from 'lodash/get';
 import axios from 'axios';
 import * as actionType from '../../utils/constants/actions';
@@ -112,7 +112,7 @@ export const actionGetPermissionToken = async (token) => {
 
     if (res && res.data && res.data.access_token) {
       const { data } = res;
-      console.log({ data: data.access_token });
+      // console.log({ data: data.access_token });
       cookie.set(TOKEN, data.access_token, {
         expires: new Date((res.data.expires_in || 1800) * 1000 + Date.now()),
       });

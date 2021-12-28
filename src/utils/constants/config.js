@@ -5,6 +5,9 @@ import {
   FileTextOutlined,
   SettingOutlined,
   DashboardOutlined,
+  CodeOutlined,
+  UserOutlined,
+  RocketOutlined,
 } from '@ant-design/icons';
 
 import find from 'lodash/find';
@@ -103,27 +106,16 @@ export const routes = {
   PROJECT_SETTING: '/project-setting',
   USERS: '/users',
   JOBS: '/jobs',
+  MODELS: '/models',
 };
 
 export const APP_ROUTES = [
-  {
-    icon: <HomeOutlined />,
-    name: 'IDS_HOME',
-    pathname: routes.HOME,
-    isShow: true,
-  },
-  {
-    icon: <HomeOutlined />,
-    name: 'IDS_USER',
-    pathname: routes.USERS,
-    isShow: true,
-  },
-  {
-    icon: <HomeOutlined />,
-    name: 'Job management',
-    pathname: routes.JOBS,
-    isShow: true,
-  },
+  // {
+  //   icon: <HomeOutlined />,
+  //   name: 'IDS_HOME',
+  //   pathname: routes.HOME,
+  //   isShow: true,
+  // },
   // {
   //   icon: <ApiOutlined />,
   //   name: "IDS_PROJECTS",
@@ -135,7 +127,7 @@ export const APP_ROUTES = [
     name: 'IDS_DASHBOARD',
     pathname: routes.DASHBOARD,
     isShow: true,
-    requiredPerms: [PERM_PROJECT_DASHBOARD_GET],
+    // requiredPerms: [PERM_PROJECT_DASHBOARD_GET],
     hasSubmenu: false,
     submenu: [
       {
@@ -145,6 +137,24 @@ export const APP_ROUTES = [
         isShow: true,
       },
     ],
+  },
+  {
+    icon: <UserOutlined />,
+    name: 'IDS_USER',
+    pathname: routes.USERS,
+    isShow: true,
+  },
+  {
+    icon: <CodeOutlined />,
+    name: 'Job management',
+    pathname: routes.JOBS,
+    isShow: true,
+  },
+  {
+    icon: <RocketOutlined />,
+    name: 'Model management',
+    pathname: routes.MODELS,
+    isShow: true,
   },
   {
     icon: <ApiOutlined />,

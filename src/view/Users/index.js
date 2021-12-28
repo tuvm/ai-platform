@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import Loading from '../../components/loading/Loading';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   actionGetUserList,
   fetchUserList,
@@ -17,7 +16,6 @@ export default function Users() {
     dispatch(fetchUserList());
     actionGetUserList()
       .then((res) => {
-        console.log(res);
         dispatch(fetchUserListSuccess(res));
       })
       .catch((err) => {

@@ -1,6 +1,6 @@
 import get from 'lodash/get';
-import api from '../../../utils/service/api';
-import * as actions from '../../../utils/constants/actions';
+import api from '../../system/api';
+// import * as actions from '../../../utils/constants/actions';
 import { API_ENV } from '../../../utils/constants/config';
 
 const organization = 'cad';
@@ -11,7 +11,7 @@ const getError = ({ error }) => {
 
 export const apiError = (response) => {
   const e = get(response, 'error');
-  if (e == null || e == undefined) {
+  if (e == null || e === undefined) {
     return false;
   }
   return e;
