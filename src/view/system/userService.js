@@ -1,11 +1,10 @@
 import Axios from 'axios';
 import Keycloak from 'keycloak-js';
 import { API_ENV, TOKEN } from '../../utils/constants/config';
-import { getAuthUrl } from './systemAction';
 import { CONFIG_SERVER } from '../../utils/constants/config';
 import cookie from 'js-cookie';
 
-const { AUDIENCE } = CONFIG_SERVER;
+const { AUDIENCE, REACT_APP_AUTH_URL } = CONFIG_SERVER;
 
 const _kc = new Keycloak({
   realm: process.env.REACT_APP_KEYCLOAK_REALM || 'cad',
@@ -47,7 +46,9 @@ const _requestProjectToken = (token, projectId, callback) => {
 
   Axios(
     {
-      url: getAuthUrl(),
+      url:
+        REACT_APP_AUTH_URL +
+        `/auth/realms/${_kc.realm}/protocol/openid-connect/token`,
       method: 'post',
       data: requestBody,
       headers: {
@@ -79,7 +80,9 @@ const _requestPermissionToken = (token, callback) => {
 
   Axios(
     {
-      url: getAuthUrl(),
+      url:
+        REACT_APP_AUTH_URL +
+        `/auth/realms/${_kc.realm}/protocol/openid-connect/token`,
       method: 'post',
       data: requestBody,
       headers: {

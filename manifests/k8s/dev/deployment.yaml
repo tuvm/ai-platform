@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ai-platform-fe
+  namespace: dev-app
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 80
+      name: tcp
+  selector:
+    app: ai-platform-fe
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-platform-fe
+  labels:
+    app: ai-platform-fe
+  namespace: dev-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ai-platform-fe
+  template:
+    metadata:
+      labels:
+        app: ai-platform-fe
+    spec:
+      containers:
+        - name: ai-platform-fe
+          image: ai-platform-fe
+          env:
+            - name: REACT_APP_CONSOLE_API_URL
+              value: 'http://console.dev.ai:8190/console'
+            - name: REACT_APP_RESOURCE_SERVICE_URL
+              value: 'http://console.dev.ai:8190/resource'
+            - name: REACT_APP_KEY_SERVICE_URL
+              value: 'http://console.dev.ai:8190/key'
+            - name: REACT_APP_DIAGNOSE_API_URL
+              value: 'http://console.dev.ai:8190/diagnose'
+            - name: REACT_APP_AUTH_URL
+              value: 'http://console.dev.ai:8190'
+            - name: REACT_APP_KEYCLOAK_REALM
+              value: 'cad'

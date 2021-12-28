@@ -1,0 +1,45 @@
+apiVersion: skaffold/v2beta25
+kind: Config
+metadata:
+  name: app-config
+build:
+  artifacts:
+    - image: ai-platform-fe
+      sync:
+        infer:
+          - '**/*.js'
+          - '**/*.jsx'
+          - '**/*.css'
+
+deploy:
+  kubectl:
+    manifests:
+      - manifests/k8s/dev/deployment.yaml
+
+# portForward:
+#   - resourceType: deployment
+#     resourceName: ai-platform-fe
+#     namespace: dev-app
+#     address: 0.0.0.0
+#     port: 80
+#     localPort: 80
+
+profiles:
+  - name: dev
+    # activation:
+    #   - command: dev
+    build:
+      artifacts:
+        - image: ai-platform-fe
+          sync:
+            manual:
+              - src: '**/*.py'
+                dest: '/app'
+  - name: staging
+    # activation:
+    #   - command: run
+    deploy:
+      kubectl:
+        manifests:
+          - manifests/k8s/staging/deployment.yaml
+          - manifests/k8s/staging/worker.yaml
