@@ -1,6 +1,7 @@
 // import get from 'lodash/get';
 // import api from '../../utils/service/api';
 import * as actions from '../../utils/constants/actions';
+import api from '../system/api';
 // import { API_ENV } from '../../utils/constants/config';
 
 // const organization = 'cad';
@@ -16,6 +17,7 @@ export const getJoblist = () => async (dispatch) => {
 };
 
 export const serviceGetJobList = () => {
+  // api({ url, method: 'POST', data: payload }, API_ENV.RESOURCE);
   return new Promise((resolve) =>
     setTimeout(() => {
       resolve({

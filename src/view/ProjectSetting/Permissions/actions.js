@@ -22,7 +22,8 @@ export const actionAddProjectMember = async ({ project_id, payload }) => {
   try {
     const res = await api(
       { url, method: 'POST', data: payload },
-      API_ENV.CONSOLE
+      API_ENV.CONSOLE,
+      project_id
     );
     const data = get(res, 'data');
     return data;
@@ -34,7 +35,11 @@ export const actionAddProjectMember = async ({ project_id, payload }) => {
 export const actionListProjectMember = async ({ params }) => {
   const url = `/project-members/orgs/${organization}/projects/${params.project_id}/members`;
   try {
-    const res = await api({ url, method: 'GET' }, API_ENV.CONSOLE);
+    const res = await api(
+      { url, method: 'GET' },
+      API_ENV.CONSOLE,
+      params.project_id
+    );
     const data = get(res, 'data');
     return data;
   } catch (error) {

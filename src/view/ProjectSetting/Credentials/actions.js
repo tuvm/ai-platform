@@ -8,7 +8,8 @@ export const actionGrantAPIKey = async ({ payload }) => {
   try {
     const res = await api(
       { url, method: 'POST', data: payload },
-      API_ENV.RESOURCE
+      API_ENV.RESOURCE,
+      payload.project_id
     );
     const data = get(res, 'data');
     return data;
