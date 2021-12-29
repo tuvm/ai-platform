@@ -76,7 +76,7 @@ export const actionGetUserList = () => {
         ],
         count: 3,
       });
-    }, 1000)
+    }, 200)
   );
 };
 

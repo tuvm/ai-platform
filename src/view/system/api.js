@@ -2,82 +2,82 @@ import axios from 'axios';
 import Qs from 'qs';
 import get from 'lodash/get';
 import {
-  TOKEN,
-  REFRESH_TOKEN,
-  LOCAL_STORAGE_REALM_ID,
+  // TOKEN,
+  // REFRESH_TOKEN,
+  // LOCAL_STORAGE_REALM_ID,
   API_ENV,
 } from '../../utils/constants/config';
-import {
-  actionGetPermissionToken,
-  actionGetTenantSetting,
-  actionGetToken,
-  actionLogout,
-  actionRefreshToken,
-  requestLogin,
-} from './systemAction';
-import cookie from 'js-cookie';
+// import {
+//   actionGetPermissionToken,
+//   actionGetTenantSetting,
+//   actionGetToken,
+//   actionLogout,
+//   actionRefreshToken,
+//   requestLogin,
+// } from './systemAction';
+// import cookie from 'js-cookie';
 import UserService from './userService';
 
 const request = axios.create();
 
-const getToken = async (code, sessionState) => {
-  try {
-    const res = await actionGetToken(code, sessionState);
-    if (res && res.data && res.data.access_token) {
-      actionGetPermissionToken(res.data.access_token);
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
+// const getToken = async (code, sessionState) => {
+//   try {
+//     const res = await actionGetToken(code, sessionState);
+//     if (res && res.data && res.data.access_token) {
+//       actionGetPermissionToken(res.data.access_token);
+//     }
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
-async function callRefreshToken(refreshToken) {
-  try {
-    const res = await actionRefreshToken(refreshToken);
+// async function callRefreshToken(refreshToken) {
+//   try {
+//     const res = await actionRefreshToken(refreshToken);
 
-    if (res && res.data && res.data.access_token) {
-      const accessToken = res.data.access_token;
-      cookie.remove(TOKEN);
-      actionGetPermissionToken(accessToken);
-    }
-  } catch (error) {
-    actionLogout();
-  }
-}
+//     if (res && res.data && res.data.access_token) {
+//       const accessToken = res.data.access_token;
+//       cookie.remove(TOKEN);
+//       actionGetPermissionToken(accessToken);
+//     }
+//   } catch (error) {
+//     actionLogout();
+//   }
+// }
 
-const checkAuthorizationFlow = async () => {
-  let reamId = localStorage.getItem(LOCAL_STORAGE_REALM_ID);
+// const checkAuthorizationFlow = async () => {
+//   let reamId = localStorage.getItem(LOCAL_STORAGE_REALM_ID);
 
-  if (!reamId) {
-    const res = await actionGetTenantSetting();
-    if (res && res.data && res.data.realm_id) {
-      reamId = res.data.realm_id;
-    }
-  }
+//   if (!reamId) {
+//     const res = await actionGetTenantSetting();
+//     if (res && res.data && res.data.realm_id) {
+//       reamId = res.data.realm_id;
+//     }
+//   }
 
-  if (reamId) {
-    authorization();
-  }
-};
+//   if (reamId) {
+//     authorization();
+//   }
+// };
 
-const authorization = () => {
-  const refreshToken = cookie.get(REFRESH_TOKEN);
+// const authorization = () => {
+//   const refreshToken = cookie.get(REFRESH_TOKEN);
 
-  // no refresh token
-  if (!refreshToken) {
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
-    const sessionState = urlParams.get('session_state');
-    // console.log({code, sessionState})
-    if (code) {
-      getToken(code, sessionState);
-    } else {
-      requestLogin(true);
-    }
-  } else {
-    callRefreshToken(refreshToken);
-  }
-};
+//   // no refresh token
+//   if (!refreshToken) {
+//     const urlParams = new URLSearchParams(window.location.search);
+//     const code = urlParams.get('code');
+//     const sessionState = urlParams.get('session_state');
+//     // console.log({code, sessionState})
+//     if (code) {
+//       getToken(code, sessionState);
+//     } else {
+//       requestLogin(true);
+//     }
+//   } else {
+//     callRefreshToken(refreshToken);
+//   }
+// };
 
 const api = (options = {}, apiEnv = API_ENV.BACKEND, scope = 'global') => {
   let config = {
@@ -91,7 +91,7 @@ const api = (options = {}, apiEnv = API_ENV.BACKEND, scope = 'global') => {
     },
   };
 
-  console.log(scope);
+  console.log(UserService.getPermissionToken());
   // console.log(`api token ${cookie.get(TOKEN)}`);
   // console.log(`api token cookie ${JSON.stringify(cookie.cookieData)}`);
   // if (cookie.get(TOKEN) && cookie.get(REFRESH_TOKEN)) {

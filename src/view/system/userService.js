@@ -3,6 +3,7 @@ import Keycloak from 'keycloak-js';
 import { API_ENV, TOKEN } from '../../utils/constants/config';
 import { CONFIG_SERVER } from '../../utils/constants/config';
 import cookie from 'js-cookie';
+import { actionInspectTicket } from './systemAction';
 
 const { AUDIENCE, REACT_APP_AUTH_URL } = CONFIG_SERVER;
 
@@ -13,6 +14,19 @@ const _kc = new Keycloak({
     'http://console.local.ai:8088/auth',
   clientId: process.env.REACT_APP_KEYCLOAK_CLIENT_ID || 'console-ui',
 });
+
+const hasPerm = (tickets, perm_list) => {
+  // const tickets = window.store.getState().system.ticket;
+  if (!tickets) return false;
+  for (let scope of Object.keys(tickets)) {
+    for (let perm of perm_list) {
+      if (tickets[scope].perms.includes(perm)) {
+        return true;
+      }
+    }
+  }
+  return false;
+};
 
 /**
  * Initializes Keycloak instance and calls the provided callback function if successfully authenticated.
@@ -29,6 +43,11 @@ const initKeycloak = (onAuthenticatedCallback) => {
         console.log('user is not authenticated..!');
       }
       _requestPermissionToken(_kc.token, onAuthenticatedCallback);
+      const path = window.location.pathname;
+      const projectId = path.split('projects/')[1].split('/')[0];
+      if (projectId) {
+        _requestProjectToken(_kc.token, projectId, () => {});
+      }
     })
     .catch(console.error);
 };
@@ -63,6 +82,7 @@ const _requestProjectToken = (token, projectId, callback) => {
       cookie.set(`${TOKEN}_${projectId}`, data.access_token, {
         expires: new Date((res.data.expires_in || 1800) * 1000 + Date.now()),
       });
+      window.store.dispatch(actionInspectTicket({ scope: projectId }));
       callback();
     }
   });
@@ -97,6 +117,7 @@ const _requestPermissionToken = (token, callback) => {
       cookie.set(TOKEN, data.access_token, {
         expires: new Date((res.data.expires_in || 1800) * 1000 + Date.now()),
       });
+      window.store.dispatch(actionInspectTicket({ scope: 'global' }));
       callback();
     }
   });
@@ -154,6 +175,7 @@ const UserService = {
   hasRole,
   loadUserProfile,
   loadUserInfo,
+  hasPerm,
 };
 
 export default UserService;

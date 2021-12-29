@@ -2,28 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { Menu, Layout } from 'antd';
 // import { UserOutlined } from '@ant-design/icons';
 import { withRouter } from 'react-router-dom';
-import { useTranslation } from "react-i18next";
-import { connect } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import get from 'lodash/get';
-import { useSelector } from 'react-redux';
 import { APP_ROUTES } from '../../../utils/constants/config';
-import {
-  IconCollapse,
-} from '../../../assets';
+import { IconCollapse } from '../../../assets';
 import './LeftMenu.scss';
-import {
-  SettingOutlined,
-} from '@ant-design/icons';
+import { SettingOutlined } from '@ant-design/icons';
 import ProjectSelect from './ProjectSelect';
 import { useProjectsParams } from '../../../utils/hooks';
+import UserService from '../../../view/system/userService';
+import { useSelector } from 'react-redux';
 
 const { SubMenu } = Menu;
 
 const LeftMenu = (props) => {
-  const { userInfo } = props;
   const [collapsed, setCollapsed] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState();
-  const ticket = useSelector(state => state.system.ticket);
+  const ticket = useSelector((state) => state.system.ticket);
   const { t } = useTranslation();
   const { params } = useProjectsParams();
 
@@ -33,8 +28,8 @@ const LeftMenu = (props) => {
   }, [params]);
 
   const isShowMenu = (el) => {
-    return !el.requiredPerms || (ticket && ticket.has(el.requiredPerms));
-  }
+    return !el.requiredPerms || UserService.hasPerm(ticket, el.requiredPerms);
+  };
 
   const onCollapse = (isCollapse) => {
     setCollapsed(isCollapse);
@@ -55,7 +50,7 @@ const LeftMenu = (props) => {
     >
       <div className="sider-container">
         <div className="left-menu-wrapper">
-          <ProjectSelect collapsed={collapsed}/>
+          <ProjectSelect collapsed={collapsed} />
           <Menu
             onClick={handleMenuClick}
             selectedKeys={[selectedKeys]}
@@ -67,21 +62,23 @@ const LeftMenu = (props) => {
               if (el.isShow && isShowMenu(el)) {
                 if (!el.hasSubmenu) {
                   return (
-                    <Menu.Item
-                      key={el.pathname}
-                      icon={el.icon}
-                    >
+                    <Menu.Item key={el.pathname} icon={el.icon}>
                       {t(el.name)}
                     </Menu.Item>
                   );
                 }
                 return (
-                  <SubMenu key={el.pathname} icon={<SettingOutlined />} title={t(el.name)}>
-                    {el.submenu && el.submenu.map(sub => (
-                      <Menu.Item key={sub.pathname}>{t(sub.name)}</Menu.Item>
-                    ))}
+                  <SubMenu
+                    key={el.pathname}
+                    icon={<SettingOutlined />}
+                    title={t(el.name)}
+                  >
+                    {el.submenu &&
+                      el.submenu.map((sub) => (
+                        <Menu.Item key={sub.pathname}>{t(sub.name)}</Menu.Item>
+                      ))}
                   </SubMenu>
-                )
+                );
               }
               return null;
             })}
@@ -92,7 +89,4 @@ const LeftMenu = (props) => {
   );
 };
 
-export default connect(
-  (state) => ({ userInfo: state.system.profile }),
-  null
-)(withRouter(LeftMenu));
+export default withRouter(LeftMenu);

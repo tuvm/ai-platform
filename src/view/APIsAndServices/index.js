@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { actionGetResourceOptions } from './actions';
 import { useProjectsParams } from '../../utils/hooks';
 import get from 'lodash/get';
-import { actionInspectTicket } from '../system/systemAction';
+// import { actionInspectTicket } from '../system/systemAction';
 
 export const APIContext = React.createContext();
 
@@ -27,8 +27,8 @@ export default function APIsAndServices() {
 
   useEffect(() => {
     // dispatch(actionInspectTicket({project_id: projectId}));
-    dispatch(actionGetResourceOptions({ params: { project_id: projectId} }));
-  },[dispatch, projectId]);
+    dispatch(actionGetResourceOptions({ params: { project_id: projectId } }));
+  }, [dispatch, projectId]);
 
   return (
     <APIContext.Provider value={store}>
@@ -37,7 +37,7 @@ export default function APIsAndServices() {
         <Devider />
         <Graphs />
         <Devider />
-        <APITable/>
+        <APITable />
       </div>
     </APIContext.Provider>
   );

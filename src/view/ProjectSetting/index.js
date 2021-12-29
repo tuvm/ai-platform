@@ -4,37 +4,36 @@ import Credentials from './Credentials';
 import Permissions from './Permissions';
 import { actionGetResourceList } from './Credentials/actions';
 import { useDispatch, useSelector } from 'react-redux';
-import { actionInspectTicket } from '../system/systemAction';
-import { 
+// import { actionInspectTicket } from '../system/systemAction';
+import {
   PERM_USER_PROJECT_LIST,
   PERM_CREDENTIAL_LIST,
 } from '../../utils/permission/perms';
 import { useProjectsParams } from '../../utils/hooks';
 import get from 'lodash/get';
+import UserService from '../system/userService';
 
 const { TabPane } = Tabs;
 
 export default function Analysis() {
-  const callback = () => { }
+  const callback = () => {};
   const dispatch = useDispatch();
-  const ticket = useSelector(state => state.system.ticket);
+  const ticket = useSelector((state) => state.system.ticket);
   const { params: projectParams } = useProjectsParams();
   const projectId = get(projectParams, 'projectId', '');
-  
+
   useEffect(() => {
-    dispatch(actionInspectTicket({project_id: projectId}));
-    dispatch(actionGetResourceList({ params: { project_id: projectId} }))
-  },[dispatch, projectId]);
+    // dispatch(actionInspectTicket({ project_id: projectId }));
+    dispatch(actionGetResourceList({ params: { project_id: projectId } }));
+  }, [dispatch, projectId]);
 
   const canViewUsers = () => {
-    ticket &&  console.log('ticket', ticket.perms)
-    return ticket && ticket.has([PERM_USER_PROJECT_LIST, ]);
-  }
+    return UserService.hasPerm(ticket, [PERM_USER_PROJECT_LIST]);
+  };
 
   const canViewCredentials = () => {
-    ticket &&  console.log('ticket', ticket.perms)
-    return ticket && ticket.has([PERM_CREDENTIAL_LIST, ]);
-  }
+    return UserService.hasPerm(ticket, [PERM_CREDENTIAL_LIST]);
+  };
 
   return (
     <>
@@ -43,18 +42,17 @@ export default function Analysis() {
           General
         </TabPane> */}
 
-        {
-          canViewCredentials() && <TabPane tab="Credentials" key="2">
+        {canViewCredentials() && (
+          <TabPane tab="Credentials" key="2">
             <Credentials />
           </TabPane>
-        }
-        
-        {
-          canViewUsers() && <TabPane tab="Users and permissions" key="3">
+        )}
+
+        {canViewUsers() && (
+          <TabPane tab="Users and permissions" key="3">
             <Permissions />
           </TabPane>
-        }
-        
+        )}
       </Tabs>
     </>
   );

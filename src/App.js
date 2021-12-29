@@ -17,9 +17,7 @@ import { PAGES_HAS_NO_LAYOUT } from './utils/constants/config';
 import { withRouter } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { actionGetProjectList } from './view/Projects/actions';
-import { actionInspectTicket } from './view/system/systemAction';
 import { useProjectsParams } from './utils/hooks';
-import { GlobalRouteState } from './utils/globals';
 
 const initialRequest = async () => {
   const res = await actionGetTenantSetting();
@@ -36,8 +34,6 @@ const App = (props) => {
   useEffect(() => {
     initialRequest();
     console.log(`Change project to ${projectId}`);
-    GlobalRouteState.projectId = projectId;
-    dispatch(actionInspectTicket({ project_id: projectId }));
     dispatch(actionGetProjectList());
     console.log('project change');
   }, [dispatch, projectId]);

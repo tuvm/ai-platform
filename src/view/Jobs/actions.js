@@ -56,7 +56,7 @@ export const serviceGetJobList = () => {
         ],
         count: 3,
       });
-    }, 1000)
+    }, 200)
   );
 };
 

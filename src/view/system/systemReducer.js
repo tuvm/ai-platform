@@ -174,7 +174,7 @@ const system = (state = initialState, action) => {
         ...state,
         ticketLoading: false,
         ticketLoadError: false,
-        ticket: action.payload,
+        ticket: { ...state.ticket, ...action.payload },
       };
 
     case actions.FETCH_TICKET_ERROR:

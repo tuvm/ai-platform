@@ -208,29 +208,40 @@ export const actionChangeLanguage = (lang) => {
 };
 
 export const actionInspectTicket =
-  ({ project_id }) =>
+  ({ scope }) =>
   async (dispatch) => {
     const url = '/tickets/inspect';
     dispatch({
       type: actionType.FETCH_TICKET,
     });
     try {
-      const params = {
-        project_id: project_id || undefined,
-      };
-      const data = await api(
-        {
-          url,
-          method: 'GET',
-          params,
-        },
-        API_ENV.CONSOLE
-      );
+      let data;
+      if (scope === 'global') {
+        data = await api(
+          {
+            url,
+            method: 'GET',
+          },
+          API_ENV.CONSOLE,
+          scope
+        );
+      } else {
+        data = await api(
+          {
+            url,
+            method: 'GET',
+            params: { project_id: scope },
+          },
+          API_ENV.CONSOLE,
+          scope
+        );
+      }
       const payload = get(data, 'data.data.0.perms') || [];
+      const resource = get(data, 'data.data.0.resource') || 'cad';
       console.log({ payload });
       dispatch({
         type: actionType.FETCH_TICKET_SUCCESS,
-        payload: new Ticket(payload, 'cad'),
+        payload: { [resource]: new Ticket(payload, 'cad') },
       });
       return payload;
     } catch (error) {
