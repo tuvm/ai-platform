@@ -91,7 +91,6 @@ const api = (options = {}, apiEnv = API_ENV.BACKEND, scope = 'global') => {
     },
   };
 
-  console.log(UserService.getPermissionToken());
   // console.log(`api token ${cookie.get(TOKEN)}`);
   // console.log(`api token cookie ${JSON.stringify(cookie.cookieData)}`);
   // if (cookie.get(TOKEN) && cookie.get(REFRESH_TOKEN)) {
@@ -150,7 +149,6 @@ const api = (options = {}, apiEnv = API_ENV.BACKEND, scope = 'global') => {
 
 request.interceptors.request.use(
   (config) => {
-    console.log(config);
     return config;
   },
   (error) => Promise.reject(error)

@@ -238,7 +238,6 @@ export const actionInspectTicket =
       }
       const payload = get(data, 'data.data.0.perms') || [];
       const resource = get(data, 'data.data.0.resource') || 'cad';
-      console.log({ payload });
       dispatch({
         type: actionType.FETCH_TICKET_SUCCESS,
         payload: { [resource]: new Ticket(payload, 'cad') },

@@ -16,6 +16,7 @@ import { getModuleName } from '../../../utils/constants/config';
 import './Credentials.scss';
 
 import { CopyOutlined } from '@ant-design/icons';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import {
   PERM_CREDENTIAL_DELETE,
   PERM_CREDENTIAL_EDIT,
@@ -48,17 +49,6 @@ export default function CredentialContent() {
 
   const canDelete = () => {
     return UserService.hasPerm(ticket, [PERM_CREDENTIAL_DELETE]);
-  };
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(currentCredential.token).then(
-      function () {
-        message.success(t('IDS_COPY_API_KEY'));
-      },
-      function (err) {
-        message.error('IDS_CREDENTIAL_CANNOT_COPY_API_KEY');
-      }
-    );
   };
 
   const handleCloseEditCredential = () => {
@@ -143,11 +133,22 @@ export default function CredentialContent() {
           style={{ paddingRight: '40px' }}
           disabled
         />
-        <CopyOutlined
-          style={{ fontSize: '20px' }}
-          className="copy-button"
-          onClick={handleCopy}
-        />
+        <CopyToClipboard
+          text={currentCredential.token}
+          onCopy={(_text, result) => {
+            if (result) {
+              message.success(t('IDS_COPY_API_KEY'));
+            } else {
+              message.error('IDS_CREDENTIAL_CANNOT_COPY_API_KEY');
+            }
+          }}
+        >
+          <CopyOutlined
+            style={{ fontSize: '20px' }}
+            className="copy-button"
+            // onClick={handleCopy}
+          />
+        </CopyToClipboard>
       </div>
 
       <div className="credential-quotations-table">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Button, Typography, Row, Col, Empty } from 'antd';
 import { KeyOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
@@ -30,7 +30,7 @@ export default function Credentials() {
     return UserService.hasPerm(ticket, [PERM_CREDENTIAL_CREATE]);
   };
 
-  const handleGetCredentials = async () => {
+  const handleGetCredentials = useCallback(async () => {
     const data = await actionGetCredentialList({
       params: { project_id: projectId },
     });
@@ -47,7 +47,6 @@ export default function Credentials() {
           ? -1
           : 0
       );
-      console.log(data);
       setCredentialList(data);
       if (!get(currentCredential, 'id')) {
         setCurrentCredential(data[0]);
@@ -60,11 +59,11 @@ export default function Credentials() {
         }
       }
     }
-  };
+  }, [currentCredential, projectId]);
 
   useEffect(() => {
     handleGetCredentials();
-  }, []);
+  }, [handleGetCredentials]);
 
   const handleCreateCredentialModal = () => {
     setOpenCreateCredentialModal(true);
