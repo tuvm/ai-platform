@@ -6,12 +6,20 @@ import styles from './Jobs.module.scss';
 import JsonView from './JsonView';
 
 const STATUS_COLOR = {
-  Initial: '#000',
-  Validating: '#000',
-  Diagnosing: '#F59A23',
-  Done: '#95F204',
-  Fail: '#D9001B',
+  INITIAL: '#000',
+  VALIDATING: '#000',
+  DIAGNOSING: '#F59A23',
+  DONE: '#95F204',
+  FAIL: '#D9001B',
 };
+
+// const STATUS_MAP = {
+//   INITIAL: 'Initial',
+//   VALIDATING: 'Validating',
+//   DIAGNOSING: 'Diagnosing',
+//   DONE: 'Done',
+//   FAIL: 'Fail',
+// };
 
 const INITIAL_FILTERS = {
   startDate: moment().subtract(30, 'days').format('YYYYMMDD'),
@@ -27,6 +35,7 @@ let params = {
 
 const JobList = () => {
   const data = useSelector((state) => state.system.jobList);
+  console.log(data);
   const loading = useSelector((state) => state.system.jobListLoading);
   // const [isViewResult, setIsViewResult] = useState(false);
 
@@ -45,23 +54,26 @@ const JobList = () => {
       width: 100,
       dataIndex: 'StudyInstanceUID',
       key: 'StudyInstanceUID',
+      ellipsis: true,
     },
     {
       title: 'JobID',
-      width: 50,
-      dataIndex: 'JobID',
+      width: 100,
+      dataIndex: ['_source', 'job_id'],
       key: 'JobID',
+      ellipsis: true,
     },
     {
       title: 'Priority',
       width: 50,
       dataIndex: 'Priority',
       key: 'Priority',
+      sorter: true,
     },
     {
       title: 'Status',
       width: 50,
-      dataIndex: 'Status',
+      dataIndex: ['_source', 'status'],
       key: 'Status',
       ellipsis: true,
       sorter: true,
@@ -70,7 +82,7 @@ const JobList = () => {
     {
       title: 'Model',
       width: 50,
-      dataIndex: 'Model',
+      dataIndex: ['_source', 'ai_model'],
       key: 'Model',
       ellipsis: true,
       sorter: true,
@@ -91,28 +103,28 @@ const JobList = () => {
     },
     {
       title: 'Result',
-      dataIndex: 'Result',
+      dataIndex: ['_source', 'ai_result'],
       key: 'Result',
       width: 30,
-      render: () => (
-        <Button type="link" onClick={() => JsonView.open('Result', data.data)}>
+      render: (text) => (
+        <Button type="link" onClick={() => JsonView.open('Result', text)}>
           View
         </Button>
       ),
     },
     {
       title: 'Created time',
-      dataIndex: 'CreatedTime',
+      dataIndex: ['_source', 'start_time'],
       key: 'CreatedTime',
       width: 80,
-      render: (text) => moment(text * 1000).toLocaleString(),
+      render: (text) => moment(text).format('MMM DD, YYYY, HH:mm.ss.SSS'),
     },
     {
       title: 'Updated time',
-      dataIndex: 'UpdatedTime',
+      dataIndex: ['_source', 'finish_time'],
       key: 'UpdatedTime',
       width: 80,
-      render: (text) => moment(text * 1000).toLocaleString(),
+      render: (text) => moment(text).format('MMM DD, YYYY, HH:mm.ss.SSS'),
     },
   ];
 
@@ -131,7 +143,7 @@ const JobList = () => {
       <Table
         size="small"
         columns={columns}
-        dataSource={data.data || []}
+        dataSource={data?.records || []}
         rowKey={(record) => record.JobID}
         pagination={true}
         loading={loading}

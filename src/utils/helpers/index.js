@@ -1,3 +1,5 @@
+import { map, join } from 'lodash';
+
 const has = Object.prototype.hasOwnProperty;
 
 export const isDiff = (A, B) => JSON.stringify(A) !== JSON.stringify(B);
@@ -51,4 +53,19 @@ export const makeID = (length) => {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
   return result;
+};
+
+export const toLuceneQueryString = (
+  queryObject,
+  separated = '&',
+  mapKey = '='
+) => {
+  return join(
+    map(queryObject, (value, field) => {
+      if (value) {
+        return `${field}${mapKey}${value}`;
+      }
+    }).filter((it) => !isEmpty(it)),
+    separated
+  );
 };

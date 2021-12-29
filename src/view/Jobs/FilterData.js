@@ -12,8 +12,16 @@ const { RangePicker } = DatePicker;
 
 const FILTER_TYPE = {
   RANGE_DATE: 1,
-  MODALITIES: 2,
-  MATCHED: 3,
+  PRIORITY: 2,
+  MODEL: 3,
+  STATUS: 4,
+  SEARCH: 5,
+};
+
+const INITIAL_FILTERS = {
+  startDate: moment().subtract(30, 'days').format('YYYYMMDD'),
+  endDate: moment().format('YYYYMMDD'),
+  search: '',
 };
 
 function FilterData(props) {
@@ -24,9 +32,10 @@ function FilterData(props) {
     initSearchFields,
   } = props;
   const { t } = useTranslation(['Vindoc']);
-  const [filterData, setFilterData] = useState({});
+  const [filterData, setFilterData] = useState(INITIAL_FILTERS);
   const [searchFields, setSearchFields] = useState([]);
   const [isFiltered, setIsFiltered] = useState(false);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     if (initFilter) {
@@ -61,16 +70,29 @@ function FilterData(props) {
           endDate: values[1],
         };
         break;
-      case FILTER_TYPE.MODALITIES:
+      case FILTER_TYPE.MODEL:
         tempFilterData = {
           ...filterData,
-          ModalitiesInStudy: values && values.length ? values : '*',
+          ai_model: values || '*',
         };
         break;
-      case FILTER_TYPE.MATCHED:
+      case FILTER_TYPE.PRIORITY:
         tempFilterData = {
           ...filterData,
-          matched: values,
+          priority: values || '*',
+        };
+        break;
+      case FILTER_TYPE.STATUS:
+        tempFilterData = {
+          ...filterData,
+          status: values || '*',
+        };
+        break;
+      case FILTER_TYPE.SEARCH:
+        console.log(values);
+        tempFilterData = {
+          ...filterData,
+          search: values === '*' ? '' : values,
         };
         break;
       default:
@@ -105,9 +127,9 @@ function FilterData(props) {
   // };
 
   const handleClearAllFilters = () => {
-    let init = initSearchFields.map((it) => ({ ...it, value: '' }));
-    setSearchFields([...init]);
-    onSearch({ ...initFilter, search: [] });
+    setFilterData(INITIAL_FILTERS);
+    setSearch('');
+    onSearch(INITIAL_FILTERS);
     setIsFiltered(false);
   };
 
@@ -135,10 +157,11 @@ function FilterData(props) {
               className="select-dropdown-light"
               dropdownClassName="dropdown-options-dark"
               onChange={(value) => {
-                handleOnChangeFilter(FILTER_TYPE.STATUS, value);
+                handleOnChangeFilter(FILTER_TYPE.PRIORITY, value);
               }}
-              value={filterData?.VindocStatus || null}
+              value={filterData?.priority || null}
             >
+              <Option value="*">{t('All')}</Option>
               <Option value="High">{t('High')}</Option>
               <Option value="Medium">{t('Medium')}</Option>
               <Option value="Low">{t('Low')}</Option>
@@ -153,15 +176,39 @@ function FilterData(props) {
               className="select-dropdown-light"
               dropdownClassName="dropdown-options-dark"
               onChange={(value) => {
-                handleOnChangeFilter(FILTER_TYPE.MATCHED, value);
+                handleOnChangeFilter(FILTER_TYPE.STATUS, value);
               }}
-              value={filterData?.matched || null}
+              value={filterData?.status || null}
             >
-              <Option value="Initial">{t('Initial')}</Option>
-              <Option value="Diagnosing">{t('Diagnosing')}</Option>
-              <Option value="Fail">{t('Fail')}</Option>
-              <Option value="Validating">{t('Validating')}</Option>
-              <Option value="Done">{t('Done')}</Option>
+              <Option value="*">{t('All')}</Option>
+              <Option value="INITIAL">{t('Initial')}</Option>
+              <Option value="DIAGNOSING">{t('Diagnosing')}</Option>
+              <Option value="FAIL">{t('Fail')}</Option>
+              <Option value="VALIDATING">{t('Validating')}</Option>
+              <Option value="DONE">{t('Done')}</Option>
+            </Select>
+          </div>
+          <div className="filter-item select-item">
+            <Select
+              size="small"
+              style={{ width: '100%' }}
+              suffixIcon={<CaretDownOutlined />}
+              placeholder={t('Model')}
+              className="select-dropdown-light"
+              dropdownClassName="dropdown-options-dark"
+              onChange={(value) => {
+                handleOnChangeFilter(FILTER_TYPE.MODEL, value);
+              }}
+              value={filterData?.ai_model || null}
+            >
+              <Option value="*">{t('All')}</Option>
+              <Option value="chestxray">{t('Chestxray')}</Option>
+              <Option value="spinexray">{t('Spinexray')}</Option>
+              <Option value="mamography">{t('Mamography')}</Option>
+              <Option value="brainct">{t('Brainct')}</Option>
+              <Option value="brainmri">{t('Brainmri')}</Option>
+              <Option value="lungct">{t('Lungct')}</Option>
+              <Option value="liverct">{t('Liverct')}</Option>
             </Select>
           </div>
         </Row>
@@ -172,8 +219,12 @@ function FilterData(props) {
             <Input
               size="small"
               placeholder={t('Keyword')}
-              onChange={(event) => console.log(event)}
-              onPressEnter={() => handleOnSearch()}
+              onChange={(event) => setSearch(event?.target?.value)}
+              onPressEnter={() => {
+                console.log(search);
+                handleOnChangeFilter(FILTER_TYPE.SEARCH, search || '*');
+              }}
+              value={search}
             />
           </div>
         </Row>
@@ -186,7 +237,9 @@ function FilterData(props) {
               size="small"
               type="primary"
               icon={<SearchOutlined />}
-              onClick={() => handleOnSearch()}
+              onClick={() =>
+                handleOnChangeFilter(FILTER_TYPE.SEARCH, search || '*')
+              }
             >
               {t('Search')}
             </Button>
@@ -195,7 +248,6 @@ function FilterData(props) {
             <Button
               className="filter-btn"
               size="small"
-              ghost
               disabled={!isFiltered}
               // icon={<ReloadOutlined />}
               onClick={() => handleClearAllFilters()}
@@ -226,8 +278,8 @@ function FilterData(props) {
             dropdownClassName="date-picker-light"
             onChange={(values) => {
               handleOnChangeFilter(FILTER_TYPE.RANGE_DATE, [
-                values[0].startOf('days').format(formatDate),
-                values[1].endOf('days').format(formatDate),
+                values[0].startOf('day').format(formatDate),
+                values[1].endOf('day').format(formatDate),
               ]);
             }}
             disabledDate={disabledDate}
