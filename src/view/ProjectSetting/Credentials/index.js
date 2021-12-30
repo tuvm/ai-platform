@@ -30,7 +30,7 @@ export default function Credentials() {
     return UserService.hasPerm(ticket, [PERM_CREDENTIAL_CREATE]);
   };
 
-  const handleGetCredentials = useCallback(async () => {
+  const handleGetCredentials = async () => {
     const data = await actionGetCredentialList({
       params: { project_id: projectId },
     });
@@ -59,11 +59,11 @@ export default function Credentials() {
         }
       }
     }
-  }, [currentCredential, projectId]);
+  };
 
   useEffect(() => {
     handleGetCredentials();
-  }, [handleGetCredentials]);
+  }, []);
 
   const handleCreateCredentialModal = () => {
     setOpenCreateCredentialModal(true);
