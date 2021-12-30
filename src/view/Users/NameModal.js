@@ -9,7 +9,7 @@ import { actionUpdateUser } from './actions';
 export default function NameModal(props) {
   const { t } = useTranslation();
   const [form] = Form.useForm();
-  const { projectId, open, profile } = props;
+  const { open, profile } = props;
 
   // const { Text, Link } = Typography;
 

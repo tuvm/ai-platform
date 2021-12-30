@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Descriptions, message, Space, Upload } from 'antd';
+import { Button, Descriptions, message, Space, Upload, Typography } from 'antd';
 import {
   EditOutlined,
   DeleteOutlined,
@@ -13,6 +13,7 @@ import PasswordModal from './PasswordModal';
 import { getAccountInfo } from '../system/systemAction';
 import { actionUpdateUser } from './actions';
 // import avatar from '../../assets/images/avatar.svg';
+const { Title } = Typography;
 
 const Profile = () => {
   const profile = useSelector((state) => state.system.profile);
@@ -37,8 +38,8 @@ const Profile = () => {
   };
 
   return (
-    <div className="profile">
-      <Descriptions title="Your Profile" column={1}>
+    <div className="profile content-inner-center">
+      <Descriptions title={<Title level={4}>Your Profile</Title>} column={1}>
         <Descriptions.Item label="Full Name" style={{ alignItems: 'center' }}>
           {profile.full_name}
           <Button type="link" onClick={() => setNameModal(true)}>

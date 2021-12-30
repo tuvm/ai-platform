@@ -1,6 +1,5 @@
 import React from 'react';
 import { Tabs } from 'antd';
-import UserList from './UserList';
 import Profile from './Profile';
 import UserManagement from './UserManagement';
 
@@ -17,7 +16,7 @@ export default function Users() {
         </TabPane>
 
         <TabPane tab="Users Management" key="2">
-          <UserList />
+          <UserManagement />
         </TabPane>
       </Tabs>
     </>

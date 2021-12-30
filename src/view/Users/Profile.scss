@@ -1,4 +1,10 @@
+@import '../../variables.scss';
+
 .profile {
+  &.content-inner-center {
+    max-width: $content-width;
+    margin: auto;
+  }
   display: flex;
   justify-content: space-between;
   align-items: center;

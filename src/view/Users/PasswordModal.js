@@ -80,13 +80,14 @@ export default function PasswordModal(props) {
               rules={[
                 {
                   required: true,
-                  type: '',
+                  type: 'string',
                   message: 'Name is invalid.',
                 },
               ]}
               style={{ width: '100%' }}
             >
               <Input
+                type="password"
                 placeholder={t('Enter old password')}
                 style={{ height: 38 }}
               />
@@ -97,13 +98,14 @@ export default function PasswordModal(props) {
               rules={[
                 {
                   required: true,
-                  type: 'password',
+                  type: 'string',
                   message: 'Name is invalid.',
                 },
               ]}
               style={{ width: '100%' }}
             >
               <Input
+                type="password"
                 placeholder={t('Enter new password')}
                 style={{ height: 38 }}
               />
@@ -114,13 +116,25 @@ export default function PasswordModal(props) {
               rules={[
                 {
                   required: true,
-                  type: 'password',
-                  message: 'Name is invalid.',
+                  message: 'Please confirm your password!',
                 },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue('newPassword') === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(
+                      new Error(
+                        'The two passwords that you entered do not match!'
+                      )
+                    );
+                  },
+                }),
               ]}
               style={{ width: '100%' }}
             >
               <Input
+                type="password"
                 placeholder={t('Enter password again')}
                 style={{ height: 38 }}
               />
