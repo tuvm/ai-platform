@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Typography, Menu, Dropdown, message } from 'antd';
+import { Button, Typography, Menu, Dropdown, message, Modal } from 'antd';
 import { UserAddOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import {
@@ -45,6 +45,7 @@ const { Title } = Typography;
 export default function Credentials() {
   const [openCreateModal, setOpenCreateModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
+  const [openConfirmDeleteMemberModal, setOpenConfirmDeleteMemberModal] = useState(false);
   const [currentSelectedMember, setCurrentSelectedMember] = useState({});
   const [users, setUsers] = useState([]);
   const { t } = useTranslation();
@@ -100,14 +101,23 @@ export default function Credentials() {
   };
 
   const onAction = ({ key, item }) => {
-    console.log(item);
     if (key === 'delete') {
-      handleDeleteItem({ item });
+      setCurrentSelectedMember(item);
+      setOpenConfirmDeleteMemberModal(true);
     } else if (key === 'edit') {
       setCurrentSelectedMember(item);
       handleOpenEditModel();
     }
   };
+
+  const handleCancelDeleteMember = () => {
+    setOpenConfirmDeleteMemberModal(false);
+  }
+
+  const handleDeleteMember = () => {
+    handleDeleteItem({ item: currentSelectedMember });
+    setOpenConfirmDeleteMemberModal(false);
+  }
 
   useEffect(() => {
     handleGetUserPermissions();
@@ -194,6 +204,16 @@ export default function Credentials() {
           onCancel={() => handleModelClose(false)}
           onSave={(success) => handleModelClose(success)}
         />
+      )}
+      {openConfirmDeleteMemberModal && (
+        <Modal
+          title={t('IDS_CONFIRMATION')}
+          visible={true}
+          onOk={handleDeleteMember}
+          onCancel={handleCancelDeleteMember}
+        >
+          <p>{t('IDS_CONFIRM_DELETE_PROJECT_MEMBER_MESSAGE')}</p>
+        </Modal>
       )}
     </div>
   );

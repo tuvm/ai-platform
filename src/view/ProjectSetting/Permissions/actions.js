@@ -18,12 +18,12 @@ export const apiError = (response) => {
 };
 
 export const actionAddProjectMember = async ({ project_id, payload }) => {
-  const url = `/project-members/orgs/${organization}/projects/${project_id}/members`;
+  const url = `/project-members/g/${organization}/${project_id}/members`;
   try {
     const res = await api(
       { url, method: 'POST', data: payload },
       API_ENV.CONSOLE,
-      project_id
+      project_id,
     );
     const data = get(res, 'data');
     return data;
@@ -33,12 +33,12 @@ export const actionAddProjectMember = async ({ project_id, payload }) => {
 };
 
 export const actionListProjectMember = async ({ params }) => {
-  const url = `/project-members/orgs/${organization}/projects/${params.project_id}/members`;
+  const url = `/project-members/g/${organization}/${params.project_id}/members`;
   try {
     const res = await api(
       { url, method: 'GET' },
       API_ENV.CONSOLE,
-      params.project_id
+      params.project_id,
     );
     const data = get(res, 'data');
     return data;
@@ -48,9 +48,13 @@ export const actionListProjectMember = async ({ params }) => {
 };
 
 export const actionDeleteProjectMember = async ({ project_id, member_id }) => {
-  const url = `/project-members/orgs/${organization}/projects/${project_id}/member/${member_id}`;
+  const url = `/project-members/g/${organization}/${project_id}/member/${member_id}`;
   try {
-    const res = await api({ url, method: 'DELETE' }, API_ENV.CONSOLE);
+    const res = await api(
+      { url, method: 'DELETE' }, 
+      API_ENV.CONSOLE,
+      project_id,
+    );
     const data = get(res, 'data');
     return data;
   } catch (error) {
@@ -63,11 +67,12 @@ export const actionEditProjectMember = async ({
   member_id,
   payload,
 }) => {
-  const url = `/project-members/orgs/${organization}/projects/${project_id}/member/${member_id}`;
+  const url = `/project-members/g/${organization}/${project_id}/member/${member_id}`;
   try {
     const res = await api(
       { url, method: 'PUT', data: payload },
-      API_ENV.CONSOLE
+      API_ENV.CONSOLE,
+      project_id,
     );
     const data = get(res, 'data');
     return data;

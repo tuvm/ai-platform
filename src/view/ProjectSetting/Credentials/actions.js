@@ -3,6 +3,8 @@ import api from '../../system/api';
 import * as actions from '../../../utils/constants/actions';
 import { API_ENV } from '../../../utils/constants/config';
 
+const organization = 'cad';
+
 export const actionGrantAPIKey = async ({ payload }) => {
   const url = '/resource-access/grant';
   try {
@@ -60,10 +62,15 @@ export const actionRevokeCredential = ({ payload }) => {
 export const actionGetResourceList =
   ({ params }) =>
   async (dispatch) => {
-    const url = '/resources/list';
+    const projectId = params.project_id;
+    const url = `/project-resource/g/${organization}/${projectId}/list`;
     dispatch({ type: actions.FETCH_RESOURCE });
     try {
-      const res = await api({ url, method: 'GET', params }, API_ENV.RESOURCE);
+      const res = await api(
+        { url, method: 'GET', params: {status: "on"}}, 
+        API_ENV.RESOURCE,
+        projectId,
+      );
       const data = get(res, 'data');
       dispatch({ type: actions.FETCH_RESOURCE_SUCCESS, payload: data });
     } catch (error) {

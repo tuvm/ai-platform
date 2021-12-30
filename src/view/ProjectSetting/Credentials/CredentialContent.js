@@ -39,6 +39,13 @@ export default function CredentialContent() {
   const { handleGetCredentials, currentCredential } =
     useContext(CredentialContext);
 
+  const filterRequestData = (requestData) => {
+    if(!requestData){
+      return requestData;
+    }
+    return requestData.filter(it => getModuleName(vindrModules, it.name).name != undefined);
+  }
+
   const canEdit = () => {
     return UserService.hasPerm(ticket, [PERM_CREDENTIAL_EDIT]);
   };
@@ -160,7 +167,7 @@ export default function CredentialContent() {
         </Space>
 
         <Table
-          dataSource={currentCredential.request_data}
+          dataSource={filterRequestData(currentCredential.request_data)}
           className="app-table quotation-table"
           pagination={false}
         >

@@ -13,6 +13,7 @@ import CredentialTableModule from './CredentialTableModule';
 import { useSelector } from 'react-redux';
 import get from 'lodash/get';
 import { useProjectsParams } from '../../../utils/hooks';
+import { getModuleName } from '../../../utils/constants/config';
 import moment from 'moment';
 import {
   actionUpdateCredential,
@@ -51,6 +52,7 @@ export default function EditCredentialModal(props) {
 
   useEffect(() => {
     let selectedItem = get(currentCredential, 'request_data', []);
+    selectedItem = filterRequestData(selectedItem);
     selectedItem = cloneDeep(selectedItem);
     form.setFieldsValue({ end_time: moment(currentCredential.end_time) });
     form.setFieldsValue({ credential_name: currentCredential.name });
@@ -73,6 +75,10 @@ export default function EditCredentialModal(props) {
       setCurrentStoredModules(selectedKeys);
     }
   }, [currentCredential, vindrModules, form]);
+
+  const filterRequestData = (requestData) => {
+    return requestData.filter(it => getModuleName(vindrModules, it.name).name != undefined);
+  }
 
   const handleCancel = () => {
     props.onCancel();
@@ -100,6 +106,16 @@ export default function EditCredentialModal(props) {
       item.period = item.period.toString().toLowerCase();
       return item;
     });
+
+    // merge old quota
+    const currentRequestData = get(currentCredential, 'request_data', []);
+    console.log({currentRequestData})
+    for(let d of currentRequestData){
+      const exists = newQuotaSelected.find(it => it.resource_id == d.resource_id);
+      if(!exists){
+        newQuotaSelected.push(d);
+      }
+    }
 
     const payload = {
       project_id: projectId,
