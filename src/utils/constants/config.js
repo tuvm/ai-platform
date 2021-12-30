@@ -108,7 +108,7 @@ export const routes = {
     // ANALYSIS: '/dashboard/analysis'
   },
   PROJECT_SETTING: '/project-setting',
-  USERS: '/users',
+  USERS: '/user',
   JOBS: '/jobs',
   MODELS: '/models',
 };
@@ -142,12 +142,12 @@ export const APP_ROUTES = [
       },
     ],
   },
-  {
-    icon: <UserOutlined />,
-    name: 'IDS_USER',
-    pathname: routes.USERS,
-    isShow: true,
-  },
+  // {
+  //   icon: <UserOutlined />,
+  //   name: 'IDS_USER',
+  //   pathname: routes.USERS,
+  //   isShow: true,
+  // },
   {
     icon: <CodeOutlined />,
     name: 'Job management',
@@ -395,7 +395,7 @@ export const CHART_TYPE_COLORS = {
   Default: '#eb34b1',
 };
 
-export const PAGES_HAS_NO_LAYOUT = ['/', '/projects'];
+export const PAGES_HAS_NO_LAYOUT = ['/', '/projects', '/user'];
 
 export const QUOTA_DEV_TEMPLATE = {
   chestxray: {

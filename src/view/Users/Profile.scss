@@ -1,0 +1,38 @@
+.profile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .ant-descriptions-item-container {
+    align-items: center;
+  }
+  .ant-upload.ant-upload-select-picture-card {
+    width: 200px;
+    height: 200px;
+  }
+  .ant-upload-picture-card-wrapper {
+    width: auto;
+  }
+
+  .ant-upload {
+    position: relative;
+  }
+
+  .ant-upload:hover {
+    .overlay {
+      display: flex !important;
+    }
+  }
+
+  .image-action {
+    color: rgba(255, 255, 255, 0.85);
+    transition: all 0.3s;
+    &:hover {
+      transition: all 0.3s;
+      color: rgba(255, 255, 255, 1);
+    }
+  }
+
+  .ant-upload.ant-upload-select-picture-card {
+    background: transparent;
+  }
+}

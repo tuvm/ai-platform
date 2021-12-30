@@ -2,11 +2,10 @@ import React from 'react';
 import { Menu, Dropdown, Layout, Modal, Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
-import { useTranslation } from "react-i18next";
-import cookie from 'js-cookie';
+import { useTranslation } from 'react-i18next';
 import { withRouter } from 'react-router-dom';
-import { routes, TOKEN, REFRESH_TOKEN } from '../../../utils/constants/config';
-import { actionLogout, requestLogin } from '../../../view/system/systemAction';
+import { routes } from '../../../utils/constants/config';
+import { actionLogout } from '../../../view/system/systemAction';
 import './Header.scss';
 
 const Header = (props) => {
@@ -14,7 +13,7 @@ const Header = (props) => {
   const { t } = useTranslation();
   // const { pathname = '' } = location;
 
-  const handleClickAvatar = async (item) => {
+  const handleClickLogout = async (item) => {
     if (item.key === routes.LOGIN) {
       Modal.confirm({
         title: 'Are you sure?',
@@ -27,12 +26,17 @@ const Header = (props) => {
     }
   };
 
+  const handleClickAvatar = () => {
+    console.log('user');
+    props.history.push(routes.USERS);
+  };
+
   const goHomePage = () => {
     props.history.push(routes.HOME);
   };
 
   const menu = (
-    <Menu onClick={handleClickAvatar}>
+    <Menu onClick={handleClickLogout}>
       <Menu.Item key={routes.LOGIN}>{t('IDS_COMMON_LOGOUT')}</Menu.Item>
     </Menu>
   );
@@ -50,9 +54,9 @@ const Header = (props) => {
 
         <div className="header-right-content">
           <Dropdown overlay={menu}>
-            <div className="user-info">
-              <Avatar size={30} icon={<UserOutlined />} />
-              <span className="user-name">{profile?.preferred_username}</span>
+            <div className="user-info" onClick={handleClickAvatar}>
+              <Avatar size={30} src={profile?.avatar || <UserOutlined />} />
+              <span className="user-name">{profile?.username}</span>
             </div>
           </Dropdown>
         </div>
