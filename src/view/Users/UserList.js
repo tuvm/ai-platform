@@ -1,6 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Row, Table } from 'antd';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  actionGetUserList,
+  fetchUserList,
+  fetchUserListError,
+  fetchUserListSuccess,
+} from './actions';
 
 const columns = [
   {
@@ -28,6 +34,20 @@ const columns = [
 export default function UserList() {
   const data = useSelector((state) => state.system.userList);
   const loading = useSelector((state) => state.system.userListLoading);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchUserList());
+    actionGetUserList()
+      .then((res) => {
+        console.log(res);
+        dispatch(fetchUserListSuccess(res.data));
+      })
+      .catch((err) => {
+        dispatch(fetchUserListError(err));
+      });
+  }, [dispatch]);
+
   return (
     <Row gutter={[16, 16]} style={{ marginBottom: 8 }}>
       <Table

@@ -24,7 +24,7 @@ const Routes = (props) => {
         path="/projects/:projectId/project-setting"
         component={ProjectSetting}
       />
-      <Route exact path="/projects/:projectId/users" component={Users} />
+      <Route exact path="/user" component={Users} />
       <Route exact path="/projects/:projectId/jobs" component={Jobs} />
       <Route exact path="/projects/:projectId/models" component={Models} />
       <Route exact path="/projects" component={Projects} />

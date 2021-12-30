@@ -1,31 +1,24 @@
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import {
-  actionGetUserList,
-  fetchUserList,
-  fetchUserListError,
-  fetchUserListSuccess,
-} from './actions';
-import UserList from './UserList';
-import './User.scss';
+import React from 'react';
+import { Tabs } from 'antd';
+import Profile from './Profile';
+import UserManagement from './UserManagement';
+
+const { TabPane } = Tabs;
 
 export default function Users() {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchUserList());
-    actionGetUserList()
-      .then((res) => {
-        dispatch(fetchUserListSuccess(res));
-      })
-      .catch((err) => {
-        dispatch(fetchUserListError());
-      });
-  }, [dispatch]);
+  // const callback = () => {};
 
   return (
-    <div className="project-page-inner">
-      <UserList />
-    </div>
+    <>
+      <Tabs defaultActiveKey="1">
+        <TabPane tab="User Profile" key="1">
+          <Profile />
+        </TabPane>
+
+        <TabPane tab="Users Management" key="2">
+          <UserManagement />
+        </TabPane>
+      </Tabs>
+    </>
   );
 }

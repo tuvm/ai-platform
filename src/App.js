@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Layout } from 'antd';
-import { connect } from 'react-redux';
 // import isEmpty from 'lodash/isEmpty';
 import Routes from './Routes';
 import { LeftMenu, Header } from './components/layout';
@@ -65,9 +64,4 @@ const App = (props) => {
   );
 };
 
-export default connect(
-  (state) => ({
-    profile: state.system.profile,
-  }),
-  {}
-)(withRouter(App));
+export default withRouter(App);
