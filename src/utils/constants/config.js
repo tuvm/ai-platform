@@ -12,8 +12,8 @@ import {
 
 import find from 'lodash/find';
 import {
-  PERM_CREDENTIAL_LIST,
-  PERM_USER_PROJECT_LIST,
+  PERM_CREDENTIAL_GET,
+  PERM_USER_PROJECT_GET,
   PERM_PROJECT_DASHBOARD_GET,
 } from '../permission/perms';
 
@@ -177,7 +177,7 @@ export const APP_ROUTES = [
     name: 'IDS_PROJECT_SETTING',
     pathname: routes.PROJECT_SETTING,
     isShow: true,
-    requiredPerms: [PERM_USER_PROJECT_LIST, PERM_CREDENTIAL_LIST],
+    requiredPerms: [PERM_USER_PROJECT_GET, PERM_CREDENTIAL_GET],
   },
   {
     icon: <FileTextOutlined />,

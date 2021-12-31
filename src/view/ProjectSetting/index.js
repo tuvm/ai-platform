@@ -6,8 +6,8 @@ import { actionGetResourceList } from './Credentials/actions';
 import { useDispatch, useSelector } from 'react-redux';
 // import { actionInspectTicket } from '../system/systemAction';
 import {
-  PERM_USER_PROJECT_LIST,
-  PERM_CREDENTIAL_LIST,
+  PERM_USER_PROJECT_GET,
+  PERM_CREDENTIAL_GET,
 } from '../../utils/permission/perms';
 import { useProjectsParams } from '../../utils/hooks';
 import get from 'lodash/get';
@@ -28,11 +28,11 @@ export default function Analysis() {
   }, [dispatch, projectId]);
 
   const canViewUsers = () => {
-    return UserService.hasPerm(ticket, [PERM_USER_PROJECT_LIST]);
+    return UserService.hasPerm(ticket, [PERM_USER_PROJECT_GET]);
   };
 
   const canViewCredentials = () => {
-    return UserService.hasPerm(ticket, [PERM_CREDENTIAL_LIST]);
+    return UserService.hasPerm(ticket, [PERM_CREDENTIAL_GET]);
   };
 
   return (

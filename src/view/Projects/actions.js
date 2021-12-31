@@ -24,7 +24,8 @@ export const actionGetProjectDetail = ({ payload }) => {
       url,
       method: 'GET',
     },
-    API_ENV.CONSOLE
+    API_ENV.CONSOLE,
+    payload.projectId,
   );
 };
 

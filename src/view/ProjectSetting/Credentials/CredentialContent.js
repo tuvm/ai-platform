@@ -23,6 +23,7 @@ import {
   PERM_CREDENTIAL_REVOKE,
 } from '../../../utils/permission/perms';
 import UserService from '../../system/userService';
+import { useProjectsParams } from '../../../utils/hooks';
 
 const { Column } = Table;
 
@@ -36,6 +37,7 @@ export default function CredentialContent() {
   const ticket = useSelector((state) => state.system.ticket);
   const resourceList = useSelector((state) => state.system.resourceList);
   const vindrModules = get(resourceList, 'modules');
+  const { params } = useProjectsParams();
   const { handleGetCredentials, currentCredential } =
     useContext(CredentialContext);
 
@@ -75,7 +77,8 @@ export default function CredentialContent() {
   };
 
   const handleDelete = async () => {
-    const res = await actionDeleteCredential({ payload: currentCredential });
+    const project_id = get(params, 'projectId', '');
+    const res = await actionDeleteCredential({ payload: currentCredential, project_id });
     if (res.status === 200) {
       message.success(t('IDS_CREDENTIAL_DELETE_SUCCESS'));
       setOpenConfirmDeleteModal(false);
@@ -88,7 +91,8 @@ export default function CredentialContent() {
   };
 
   const handleRevoke = async () => {
-    const res = await actionRevokeCredential({ payload: currentCredential });
+    const project_id = get(params, 'projectId', '');
+    const res = await actionRevokeCredential({ payload: currentCredential, project_id });
     if (res.status === 200) {
       message.success(t('IDS_CREDENTIAL_REVOKE_SUCCESS'));
       setOpenConfirmRevokeModal(false);

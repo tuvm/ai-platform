@@ -5,8 +5,8 @@ import { API_ENV } from '../../../utils/constants/config';
 
 const organization = 'cad';
 
-export const actionGrantAPIKey = async ({ payload }) => {
-  const url = '/resource-access/grant';
+export const actionGrantAPIKey = async ({ project_id, payload }) => {
+  const url = `/resource-access/g/${organization}/${project_id}/grant`;
   try {
     const res = await api(
       { url, method: 'POST', data: payload },
@@ -18,44 +18,60 @@ export const actionGrantAPIKey = async ({ payload }) => {
   } catch (error) {}
 };
 
-export const actionGenerateAPIKey = async ({ payload }) => {
-  const url = '/api-key-v2/generate';
+export const actionGenerateAPIKey = async ({ project_id, payload }) => {
+  const url = `/api-key-v2/g/${organization}/${project_id}/generate`;
   try {
-    const res = await api({ url, method: 'POST', data: payload }, API_ENV.KEY);
+    const res = await api(
+      { url, method: 'POST', data: payload }, 
+      API_ENV.KEY,
+      project_id,
+      );
     const data = get(res, 'data');
     return data;
   } catch (error) {}
 };
 
-export const actionRegenerateAPIKey = async ({ payload }) => {
-  const url = `/api-key-v2/regenerate/${payload.id}`;
+export const actionRegenerateAPIKey = async ({ project_id, payload }) => {
+  const url = `/api-key-v2/g/${organization}/${project_id}/regenerate/${payload.id}`;
   try {
-    const res = await api({ url, method: 'PUT' }, API_ENV.KEY);
+    const res = await api(
+      { url, method: 'PUT' }, 
+      API_ENV.KEY,
+      project_id,);
     const data = get(res, 'data');
     return data;
   } catch (error) {}
 };
 
-export const actionUpdateCredential = async ({ payload }) => {
-  const url = `/api-key-v2/update/${payload.id}`;
+export const actionUpdateCredential = async ({ project_id, payload }) => {
+  const url = `/api-key-v2/g/${organization}/${project_id}/update/${payload.id}`;
   try {
-    const res = await api({ url, method: 'PUT', data: payload }, API_ENV.KEY);
+    const res = await api(
+      { url, method: 'PUT', data: payload }, 
+      API_ENV.KEY,
+      project_id,);
     const data = get(res, 'data');
     return data;
   } catch (error) {}
 };
 
-export const actionDeleteCredential = ({ payload }) => {
-  const url = `/api-key-v2/${payload.id}`;
+export const actionDeleteCredential = ({ project_id, payload }) => {
+  const url = `/api-key-v2/g/${organization}/${project_id}/key/${payload.id}`;
   try {
-    return api({ url, method: 'DELETE' }, API_ENV.KEY);
+    return api(
+      { url, method: 'DELETE' }, 
+      API_ENV.KEY,
+      project_id,);
   } catch (error) {}
 };
 
-export const actionRevokeCredential = ({ payload }) => {
-  const url = `/api-key-v2/revoke/${payload.id}`;
+export const actionRevokeCredential = ({ project_id, payload }) => {
+  const url = `/api-key-v2/g/${organization}/${project_id}/revoke/${payload.id}`;
   try {
-    return api({ url, method: 'POST' }, API_ENV.KEY);
+    return api(
+      { url, method: 'POST' }, 
+      API_ENV.KEY,
+      project_id,);
   } catch (error) {}
 };
 
@@ -79,9 +95,13 @@ export const actionGetResourceList =
   };
 
 export const actionGetCredentialList = async ({ params }) => {
-  const url = '/api-key-v2/list';
+  const project_id = params.project_id;
+  const url = `/api-key-v2/g/${organization}/${project_id}/list`;
   try {
-    const res = await api({ url, method: 'GET', params }, API_ENV.KEY);
+    const res = await api(
+      { url, method: 'GET', params }, 
+      API_ENV.KEY,
+      project_id,);
     const data = get(res, 'data.data');
     return data;
   } catch (error) {}

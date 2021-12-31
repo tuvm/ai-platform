@@ -124,7 +124,8 @@ export default function EditCredentialModal(props) {
       grant_id: currentCredential.grant_id,
     };
 
-    const res = await actionGrantAPIKey({ payload });
+    const project_id = projectId;
+    const res = await actionGrantAPIKey({ project_id, payload });
     if (res && res.token) {
       const payload_apikey = {
         name: name,
@@ -136,6 +137,7 @@ export default function EditCredentialModal(props) {
       };
       let update_res = await actionUpdateCredential({
         payload: payload_apikey,
+        project_id,
       });
       update_res = get(update_res, 'updated_id');
       if (update_res) {
@@ -151,7 +153,8 @@ export default function EditCredentialModal(props) {
   }
 
   const handleRegenerageAPIKey = async () => {
-    const token = await actionRegenerateAPIKey({ payload: currentCredential });
+    const project_id = get(params, 'projectId', '');
+    const token = await actionRegenerateAPIKey({ payload: currentCredential, project_id });
     if (token) {
       message.success(t('IDS_REGENERATE_KEY_SUCCESS'));
       handleGetCredentials();

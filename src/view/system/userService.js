@@ -95,7 +95,6 @@ const _requestPermissionToken = (token, callback) => {
     'urn:ietf:params:oauth:grant-type:uma-ticket'
   );
   requestBody.append('audience', AUDIENCE);
-  requestBody.append('permission', '#project.org.get');
   requestBody.append('permission', 'cad');
 
   Axios(
