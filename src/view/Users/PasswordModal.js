@@ -4,12 +4,12 @@ import { useTranslation } from 'react-i18next';
 import { Form, message, Button } from 'antd';
 import { Input } from 'antd';
 import get from 'lodash/get';
-import { actionUpdateUser } from './actions';
+import { actionChangePassword } from '../system/systemAction';
 
 export default function PasswordModal(props) {
   const { t } = useTranslation();
   const [form] = Form.useForm();
-  const { projectId, open, userId } = props;
+  const { open } = props;
 
   // const { Text, Link } = Typography;
 
@@ -27,16 +27,22 @@ export default function PasswordModal(props) {
 
   const onFinish = async () => {
     const values = form.getFieldsValue();
-    const fullname = get(values, 'fullname', '');
-    // actionUpdateUser(userId, { full_name: fullname })
-    //   .then((res) => {
-    //     message.success('Updated Profile');
-    //     closeAndReload();
-    //   })
-    //   .catch((err) => {
-    //     message.error('Updated failed');
-    //   });
-    message.error('Updated failed');
+    const oldPassword = get(values, 'oldPassword', '');
+    const newPassword = get(values, 'newPassword', '');
+    const confirmPassword = get(values, 'confirmPassword', '');
+
+    actionChangePassword({
+      currentPassword: oldPassword,
+      newPassword: newPassword,
+      confirmation: confirmPassword,
+    })
+      .then((res) => {
+        message.success('Your password has been changed');
+        closeAndReload();
+      })
+      .catch((err) => {
+        message.error('Invalid password');
+      });
   };
 
   const onFinishFailed = () => {
@@ -75,7 +81,7 @@ export default function PasswordModal(props) {
         >
           <Row gutter={[16]}>
             <Form.Item
-              name="currentPassword"
+              name="oldPassword"
               label="Old password"
               rules={[
                 {
@@ -99,7 +105,11 @@ export default function PasswordModal(props) {
                 {
                   required: true,
                   type: 'string',
-                  message: 'Name is invalid.',
+                  message: 'Password is invalid.',
+                },
+                {
+                  min: 8,
+                  message: ' Must be at least 8 characters',
                 },
               ]}
               style={{ width: '100%' }}
@@ -116,7 +126,7 @@ export default function PasswordModal(props) {
               rules={[
                 {
                   required: true,
-                  message: 'Please confirm your password!',
+                  message: 'Please confirm your password',
                 },
                 ({ getFieldValue }) => ({
                   validator(_, value) {
@@ -124,9 +134,7 @@ export default function PasswordModal(props) {
                       return Promise.resolve();
                     }
                     return Promise.reject(
-                      new Error(
-                        'The two passwords that you entered do not match!'
-                      )
+                      new Error('Both passwotds must match')
                     );
                   },
                 }),

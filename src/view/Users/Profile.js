@@ -39,7 +39,11 @@ const Profile = () => {
 
   return (
     <div className="profile content-inner-center">
-      <Descriptions title={<Title level={4}>Your Profile</Title>} column={1}>
+      <Descriptions
+        title={<Title level={4}>Your Profile</Title>}
+        column={1}
+        style={{ maxWidth: 350 }}
+      >
         <Descriptions.Item label="Full Name" style={{ alignItems: 'center' }}>
           {profile.full_name}
           <Button type="link" onClick={() => setNameModal(true)}>
@@ -120,29 +124,29 @@ const Profile = () => {
             </div>
           )}
         </Upload>
+        {nameModal && (
+          <NameModal
+            profile={profile}
+            open={nameModal}
+            onSave={() => {
+              setNameModal(false);
+              getAccountInfo();
+            }}
+            onCancel={() => setNameModal(false)}
+          />
+        )}
+        {passwordModal && (
+          <PasswordModal
+            userId={profile.id_}
+            open={passwordModal}
+            onSave={() => {
+              setPasswordModal(false);
+              // getAccountInfo();
+            }}
+            onCancel={() => setPasswordModal(false)}
+          />
+        )}
       </div>
-      {nameModal && (
-        <NameModal
-          profile={profile}
-          open={nameModal}
-          onSave={() => {
-            setNameModal(false);
-            getAccountInfo();
-          }}
-          onCancel={() => setNameModal(false)}
-        />
-      )}
-      {passwordModal && (
-        <PasswordModal
-          userId={profile.id_}
-          open={passwordModal}
-          onSave={() => {
-            setPasswordModal(false);
-            // getAccountInfo();
-          }}
-          onCancel={() => setPasswordModal(false)}
-        />
-      )}
     </div>
   );
 };

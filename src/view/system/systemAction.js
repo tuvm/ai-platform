@@ -180,6 +180,19 @@ export const getAccountInfo = () => {
   });
 };
 
+export const actionChangePassword = (data) => {
+  const realmId = localStorage.getItem(LOCAL_STORAGE_REALM_ID);
+  return api(
+    {
+      url: `/auth/realms/${realmId}/account/credentials/password`,
+      method: 'POST',
+      data: JSON.stringify(data),
+      headers: { 'Content-Type': 'application/json' },
+    },
+    API_ENV.AUTH
+  );
+};
+
 export const actionLogout = async () => {
   try {
     const realmId = localStorage.getItem(LOCAL_STORAGE_REALM_ID);
