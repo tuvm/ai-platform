@@ -1,38 +1,59 @@
 import React from 'react';
-import { Button, Card, Typography } from 'antd';
+import { Button, Card, message, Typography } from 'antd';
 import modelImage from '../../assets/images/modelImage.svg';
 import styles from './Models.module.scss';
+import { serviceUpdateModel } from './actions';
 
 const { Text } = Typography;
 const { Meta } = Card;
 
-function ModelBlock({ data }) {
-  const handleActiveProject = () => {};
+function ModelBlock({ data, projectId, onUpdate }) {
+  const { name, description, vendor, status, id } = data;
 
-  const { title, description, vendor, status } = data;
+  const handleChangeStatus = (status) => {
+    serviceUpdateModel(projectId, id, status)
+      .then((res) => {
+        message.success('Status has been updated');
+        onUpdate();
+      })
+      .catch((err) => {
+        message.error('Update failed');
+      });
+  };
 
   return (
     <Card
       hoverable
       style={{ width: '100%', minWidth: 150, minHeight: 224 }}
       cover={<img alt="model-cover" src={modelImage} />}
-      onClick={handleActiveProject}
+      // onClick={handleActiveProject}
     >
       <div className={styles.content}>
         <Meta
-          title={title}
+          title={name}
           description={description}
           style={{ marginBottom: 10 }}
         />
         <Text type="secondary">{vendor}</Text>
       </div>
-      {status === 'enabled' ? (
-        <Button type="primary">Enable</Button>
-      ) : (
-        <Button type="primary" danger>
-          Disable
+      <div className={styles.buttonContainer}>
+        <Button type="text" onClick={() => {}}>
+          Learn more
         </Button>
-      )}
+        {status === 'off' ? (
+          <Button type="primary" onClick={() => handleChangeStatus('on')}>
+            Enable
+          </Button>
+        ) : (
+          <Button
+            type="primary"
+            danger
+            onClick={() => handleChangeStatus('off')}
+          >
+            Disable
+          </Button>
+        )}
+      </div>
     </Card>
   );
 }
