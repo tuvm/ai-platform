@@ -24,12 +24,15 @@ const Header = (props) => {
         onCancel: () => {},
       });
     }
+    if (item.key === routes.USERS) {
+      props.history.push(routes.USERS);
+    }
   };
 
-  const handleClickAvatar = () => {
-    console.log('user');
-    props.history.push(routes.USERS);
-  };
+  // const handleClickAvatar = () => {
+  //   // console.log('user');
+  //   props.history.push(routes.USERS);
+  // };
 
   const goHomePage = () => {
     props.history.push(routes.HOME);
@@ -37,6 +40,7 @@ const Header = (props) => {
 
   const menu = (
     <Menu onClick={handleClickLogout}>
+      {profile && <Menu.Item key={routes.USERS}>Profile</Menu.Item>}
       <Menu.Item key={routes.LOGIN}>{t('IDS_COMMON_LOGOUT')}</Menu.Item>
     </Menu>
   );
@@ -54,7 +58,7 @@ const Header = (props) => {
 
         <div className="header-right-content">
           <Dropdown overlay={menu}>
-            <div className="user-info" onClick={handleClickAvatar}>
+            <div className="user-info">
               <Avatar size={30} src={profile?.avatar || <UserOutlined />} />
               <span className="user-name">{profile?.username}</span>
             </div>

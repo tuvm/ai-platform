@@ -152,13 +152,13 @@ export const APP_ROUTES = [
   // },
   {
     icon: <CodeOutlined />,
-    name: 'Job management',
+    name: 'Jobs',
     pathname: routes.JOBS,
     isShow: true,
   },
   {
     icon: <RocketOutlined />,
-    name: 'Model management',
+    name: 'Models',
     pathname: routes.MODELS,
     isShow: true,
   },

@@ -10,7 +10,8 @@ import {
 import AddMemberModal from './AddMemberModal';
 import EditMemberModel from './EditMemberModal';
 import { useProjectsParams } from '../../../utils/hooks';
-import get from 'lodash/get';
+import { get, orderBy } from 'lodash';
+// import orderBy from 'lodash/orderBy';
 import { useSelector } from 'react-redux';
 import { Table } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
@@ -66,7 +67,8 @@ export default function UserManagement() {
   const handleGetUserPermissions = async () => {
     const data = await actionListOrgMember();
     const rows = get(data, 'data', []);
-    setUsers(rows);
+    const sortRows = orderBy(rows, ['username'], ['asc']);
+    setUsers(sortRows);
   };
 
   const handleOpenCreateModal = () => {
@@ -178,6 +180,7 @@ export default function UserManagement() {
         className="app-table quotation-table"
         pagination={false}
         columns={columns}
+        rowKey="username"
       >
         {/* <Column title="Member" dataIndex="email" key="email" />
                     <Column title="Role" dataIndex="role" key="role" />
