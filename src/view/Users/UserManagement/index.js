@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Typography, Menu, Dropdown, message } from 'antd';
+import { Button, Typography, Menu, Dropdown, message, Modal } from 'antd';
 import { UserAddOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import {
@@ -84,15 +84,22 @@ export default function UserManagement() {
   };
 
   const handleDeleteItem = async ({ item }) => {
-    const response = await actionDeleteOrgMember({
-      member_id: item.id,
+    Modal.confirm({
+      title: 'Do you certainly delete this user?',
+      content: null,
+      onOk: async () => {
+        const response = await actionDeleteOrgMember({
+          member_id: item.id,
+        });
+        if (apiError(response)) {
+          message.error(apiError(response));
+          return;
+        }
+        message.success(t('IDS_DELETE_PROJECT_MEMBER_SUCCESS'));
+        handleGetUserPermissions();
+      },
+      onCancel: () => {},
     });
-    if (apiError(response)) {
-      message.error(apiError(response));
-      return;
-    }
-    message.success(t('IDS_DELETE_PROJECT_MEMBER_SUCCESS'));
-    handleGetUserPermissions();
   };
 
   const onAction = ({ key, item }) => {
