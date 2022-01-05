@@ -9,7 +9,7 @@ export default function Users() {
   // const callback = () => {};
 
   return (
-    <>
+    <div style={{ maxWidth: 960, margin: '0 auto' }}>
       <Tabs defaultActiveKey="1">
         <TabPane tab="User Profile" key="1">
           <Profile />
@@ -19,6 +19,6 @@ export default function Users() {
           <UserManagement />
         </TabPane>
       </Tabs>
-    </>
+    </div>
   );
 }

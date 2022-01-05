@@ -24,6 +24,8 @@ export const EXPIRED_REFRESH_TOKEN = 60 * 60 * 1000;
 export const AI_PLATFORM_LOCALE = 'ai-platform-locale';
 
 export const TOKEN = 'token';
+export const PROJECT_TOKEN = 'project_token';
+export const CURRENT_PROJECT = 'current_project';
 export const POLLING_TOKEN_TIMER = 4 * 60000;
 export const LOCAL_STORAGE_REALM_ID = 'realm_id';
 

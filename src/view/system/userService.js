@@ -1,6 +1,11 @@
 import Axios from 'axios';
 import Keycloak from 'keycloak-js';
-import { API_ENV, TOKEN } from '../../utils/constants/config';
+import {
+  API_ENV,
+  CURRENT_PROJECT,
+  PROJECT_TOKEN,
+  TOKEN,
+} from '../../utils/constants/config';
 import { CONFIG_SERVER } from '../../utils/constants/config';
 import cookie from 'js-cookie';
 import { actionInspectTicket } from './systemAction';
@@ -90,7 +95,10 @@ const _requestProjectToken = (token, projectId, callback) => {
     if (res && res.data && res.data.access_token) {
       const { data } = res;
       // localStorage.setItem(`${TOKEN}_${projectId}`, data.access_token);
-      cookie.set(`${TOKEN}_${projectId}`, data.access_token, {
+      cookie.set(PROJECT_TOKEN, data.access_token, {
+        expires: new Date((res.data.expires_in || 1800) * 1000 + Date.now()),
+      });
+      cookie.set(CURRENT_PROJECT, projectId, {
         expires: new Date((res.data.expires_in || 1800) * 1000 + Date.now()),
       });
       window.store.dispatch(actionInspectTicket({ scope: projectId }));
@@ -134,7 +142,9 @@ const _requestPermissionToken = (token, callback, failedCallback) => {
     })
     .catch((err) => {
       console.log(err);
-      failedCallback();
+      if (failedCallback) {
+        failedCallback();
+      }
     });
 };
 
@@ -151,7 +161,13 @@ const getPermissionToken = () => {
   return token;
 };
 
-const getProjectToken = (projectId) => cookie.get(`${TOKEN}_${projectId}`);
+const getProjectToken = (projectId) => {
+  if (projectId === cookie.get(CURRENT_PROJECT)) {
+    return cookie.get(PROJECT_TOKEN);
+  } else {
+    return null;
+  }
+};
 // localStorage.getItem(`${TOKEN}_${projectId}`);
 
 const isLoggedIn = () => !!_kc.token;
