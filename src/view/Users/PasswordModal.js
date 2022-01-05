@@ -134,7 +134,7 @@ export default function PasswordModal(props) {
                       return Promise.resolve();
                     }
                     return Promise.reject(
-                      new Error('Both passwotds must match')
+                      new Error('Both passwords must match')
                     );
                   },
                 }),

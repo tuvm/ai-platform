@@ -33,7 +33,10 @@ const hasPerm = (tickets, perm_list) => {
  *
  * @param onAuthenticatedCallback
  */
-const initKeycloak = (onAuthenticatedCallback) => {
+const initKeycloak = (
+  onAuthenticatedCallback,
+  onAuthenticateFailedCallback
+) => {
   _kc
     .init({
       onLoad: 'login-required',
@@ -42,14 +45,22 @@ const initKeycloak = (onAuthenticatedCallback) => {
       if (!authenticated) {
         console.log('user is not authenticated..!');
       }
-      _requestPermissionToken(_kc.token, onAuthenticatedCallback);
-      const path = window.location.pathname;
-      const projectId = path.split('projects/')[1].split('/')[0];
-      if (projectId) {
-        _requestProjectToken(_kc.token, projectId, () => {});
+      _requestPermissionToken(
+        _kc.token,
+        onAuthenticatedCallback,
+        onAuthenticateFailedCallback
+      );
+      try {
+        const path = window.location.pathname;
+        const projectId = path.split('projects/')[1].split('/')[0];
+        if (projectId) {
+          _requestProjectToken(_kc.token, projectId, () => {});
+        }
+      } catch (err) {
+        console.log(err);
       }
     })
-    .catch(console.error);
+    .catch(onAuthenticateFailedCallback);
 };
 
 const _requestProjectToken = (token, projectId, callback) => {
@@ -88,7 +99,7 @@ const _requestProjectToken = (token, projectId, callback) => {
   });
 };
 
-const _requestPermissionToken = (token, callback) => {
+const _requestPermissionToken = (token, callback, failedCallback) => {
   let requestBody = new URLSearchParams();
   requestBody.append(
     'grant_type',
@@ -109,17 +120,22 @@ const _requestPermissionToken = (token, callback) => {
       },
     },
     API_ENV.AUTH
-  ).then((res) => {
-    if (res && res.data && res.data.access_token) {
-      const { data } = res;
-      // localStorage.setItem(TOKEN, data.access_token);
-      cookie.set(TOKEN, data.access_token, {
-        expires: new Date((res.data.expires_in || 1800) * 1000 + Date.now()),
-      });
-      window.store.dispatch(actionInspectTicket({ scope: 'global' }));
-      callback();
-    }
-  });
+  )
+    .then((res) => {
+      if (res && res.data && res.data.access_token) {
+        const { data } = res;
+        // localStorage.setItem(TOKEN, data.access_token);
+        cookie.set(TOKEN, data.access_token, {
+          expires: new Date((res.data.expires_in || 1800) * 1000 + Date.now()),
+        });
+        window.store.dispatch(actionInspectTicket({ scope: 'global' }));
+        callback();
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      failedCallback();
+    });
 };
 
 const doLogin = _kc.login;
