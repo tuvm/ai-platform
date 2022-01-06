@@ -9,9 +9,14 @@ export const RoleOptions = [
         subLabel: "",
         value: "Editor"
     },
+    // {
+    //     label: "Billing",
+    //     subLabel: "",
+    //     value: "Billing"
+    // },
     {
-        label: "Billing",
+        label: "Viewer",
         subLabel: "",
-        value: "Billing"
+        value: "Viewer"
     }
 ];
