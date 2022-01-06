@@ -6,11 +6,13 @@ import { getJoblist } from './actions';
 import { useProjectsParams } from '../../utils/hooks';
 import { toLuceneQueryString } from '../../utils/helpers';
 import moment from 'moment';
-const INIT_QUERY = {
-  model: '*',
-  status: '*',
-  priority: '*',
-};
+import { getModellist } from '../Models/actions';
+
+// const INIT_QUERY = {
+//   model: '*',
+//   status: '*',
+//   priority: '*',
+// };
 
 export const Jobs = () => {
   const dispatch = useDispatch();
@@ -19,6 +21,7 @@ export const Jobs = () => {
     offset: 0,
     limit: 25,
     query_string: '*',
+    sort: '-start_time',
   });
 
   const handleSearch = (values) => {
@@ -47,14 +50,26 @@ export const Jobs = () => {
     setQuery({ ...query, query_string: queryStr });
   };
 
+  const handleSort = (value) => {
+    if (value) {
+      setQuery({ ...query, sort: value });
+    } else {
+      setQuery({ ...query, sort: '-start_time' });
+    }
+  };
+
   useEffect(() => {
     dispatch(getJoblist(params.projectId, query));
   }, [dispatch, query, params]);
 
+  useEffect(() => {
+    dispatch(getModellist(params.projectId));
+  }, []);
+
   return (
     <>
       <FilterData onSearch={handleSearch} />
-      <JobList />
+      <JobList onSortChange={handleSort} />
     </>
   );
 };

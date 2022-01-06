@@ -21,21 +21,20 @@ const STATUS_COLOR = {
 //   FAIL: 'Fail',
 // };
 
-const INITIAL_FILTERS = {
-  startDate: moment().subtract(30, 'days').format('YYYYMMDD'),
-  endDate: moment().format('YYYYMMDD'),
-};
+// const INITIAL_FILTERS = {
+//   startDate: moment().subtract(30, 'days').format('YYYYMMDD'),
+//   endDate: moment().format('YYYYMMDD'),
+// };
 
-let params = {
-  offset: 0,
-  limit: 25,
-  sort: '-StudyDate',
-  query_string: `StudyDate:[${INITIAL_FILTERS.startDate} TO ${INITIAL_FILTERS.endDate}]`,
-};
+// let params = {
+//   offset: 0,
+//   limit: 25,
+//   sort: '-StudyDate',
+//   query_string: `StudyDate:[${INITIAL_FILTERS.startDate} TO ${INITIAL_FILTERS.endDate}]`,
+// };
 
-const JobList = () => {
+const JobList = ({ onSortChange }) => {
   const data = useSelector((state) => state.system.jobList);
-  console.log(data);
   const loading = useSelector((state) => state.system.jobListLoading);
   // const [isViewResult, setIsViewResult] = useState(false);
 
@@ -62,13 +61,14 @@ const JobList = () => {
       dataIndex: ['_source', 'job_id'],
       key: 'JobID',
       ellipsis: true,
+      sorter: true,
     },
     {
       title: 'Priority',
       width: 50,
       dataIndex: 'Priority',
       key: 'Priority',
-      sorter: true,
+      // sorter: true,
     },
     {
       title: 'Status',
@@ -85,7 +85,7 @@ const JobList = () => {
       dataIndex: ['_source', 'ai_model'],
       key: 'Model',
       ellipsis: true,
-      sorter: true,
+      // sorter: true,
     },
     {
       title: 'Metadata',
@@ -117,6 +117,7 @@ const JobList = () => {
       dataIndex: ['_source', 'start_time'],
       key: 'CreatedTime',
       width: 80,
+      sorter: true,
       render: (text) => moment(text).format('MMM DD, YYYY, HH:mm.ss.SSS'),
     },
     {
@@ -124,6 +125,7 @@ const JobList = () => {
       dataIndex: ['_source', 'finish_time'],
       key: 'UpdatedTime',
       width: 80,
+      sorter: true,
       render: (text) => moment(text).format('MMM DD, YYYY, HH:mm.ss.SSS'),
     },
   ];
@@ -131,11 +133,13 @@ const JobList = () => {
   const handleOnChangeTable = useCallback((_, __, sorter) => {
     let sort;
     if (sorter?.order === 'ascend') {
-      sort = `${sorter.field}`;
+      sort = `${sorter.field[1]}`;
     } else if (sorter?.order === 'descend') {
-      sort = `-${sorter.field}`;
+      sort = `-${sorter.field[1]}`;
+    } else {
+      sort = '';
     }
-    params = { ...params, sort };
+    onSortChange(sort);
   }, []);
 
   return (
@@ -144,7 +148,7 @@ const JobList = () => {
         size="small"
         columns={columns}
         dataSource={data?.records || []}
-        rowKey={(record) => record.JobID}
+        rowKey={(record) => record._id}
         pagination={true}
         loading={loading}
         onChange={handleOnChangeTable}

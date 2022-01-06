@@ -5,6 +5,7 @@ import { SearchOutlined, CaretDownOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 import './FilterData.scss';
+import { useSelector } from 'react-redux';
 // import { BASE_TIME } from '../../../utils/constants';
 
 const { Option } = Select;
@@ -36,6 +37,7 @@ function FilterData(props) {
   const [searchFields, setSearchFields] = useState([]);
   const [isFiltered, setIsFiltered] = useState(false);
   const [search, setSearch] = useState('');
+  const models = useSelector((state) => state.system.modelList);
 
   useEffect(() => {
     if (initFilter) {
@@ -188,7 +190,7 @@ function FilterData(props) {
               <Option value="DONE">{t('Done')}</Option>
             </Select>
           </div>
-          <div className="filter-item select-item">
+          <div className="filter-item select-item" style={{ width: 150 }}>
             <Select
               size="small"
               style={{ width: '100%' }}
@@ -202,13 +204,13 @@ function FilterData(props) {
               value={filterData?.ai_model || null}
             >
               <Option value="*">{t('All')}</Option>
-              <Option value="chestxray">{t('Chestxray')}</Option>
-              <Option value="spinexray">{t('Spinexray')}</Option>
-              <Option value="mamography">{t('Mamography')}</Option>
-              <Option value="brainct">{t('Brainct')}</Option>
-              <Option value="brainmri">{t('Brainmri')}</Option>
-              <Option value="lungct">{t('Lungct')}</Option>
-              <Option value="liverct">{t('Liverct')}</Option>
+              {models &&
+                models.modules &&
+                models.modules.map((it) => (
+                  <Option key={it.slug} value={it.slug}>
+                    {it.name}
+                  </Option>
+                ))}
             </Select>
           </div>
         </Row>
