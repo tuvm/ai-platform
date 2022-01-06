@@ -53,7 +53,7 @@ const JsonView = {
       cancelText: 'Close',
       okText: (
         <CopyToClipboard
-          text={data}
+          text={JSON.stringify(data, null, 2)}
           onCopy={(_text, result) => {
             if (result) {
               message.success('Copied to clipboard');
