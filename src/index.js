@@ -8,7 +8,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import './utils/localeProvider/i18n';
 import UserService from './view/system/userService';
-import NoPermission from './view/NoPermission/index';
+import { NoPermissionWithLayout } from './view/Error';
 // import HttpService from './view/system/httpService';
 
 window.BUILD_INFO = process.env.BUILD_TIME + '-' + process.env.BUILD_USERNAME;
@@ -30,7 +30,7 @@ const renderNoPermission = () => {
     <React.Fragment>
       <Provider store={store}>
         <BrowserRouter>
-          <NoPermission />
+          <NoPermissionWithLayout />
         </BrowserRouter>
       </Provider>
     </React.Fragment>,

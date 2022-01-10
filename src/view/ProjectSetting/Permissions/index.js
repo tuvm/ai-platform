@@ -45,7 +45,8 @@ const { Title } = Typography;
 export default function Credentials() {
   const [openCreateModal, setOpenCreateModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
-  const [openConfirmDeleteMemberModal, setOpenConfirmDeleteMemberModal] = useState(false);
+  const [openConfirmDeleteMemberModal, setOpenConfirmDeleteMemberModal] =
+    useState(false);
   const [currentSelectedMember, setCurrentSelectedMember] = useState({});
   const [users, setUsers] = useState([]);
   const { t } = useTranslation();
@@ -112,12 +113,12 @@ export default function Credentials() {
 
   const handleCancelDeleteMember = () => {
     setOpenConfirmDeleteMemberModal(false);
-  }
+  };
 
   const handleDeleteMember = () => {
     handleDeleteItem({ item: currentSelectedMember });
     setOpenConfirmDeleteMemberModal(false);
-  }
+  };
 
   useEffect(() => {
     handleGetUserPermissions();
@@ -184,6 +185,7 @@ export default function Credentials() {
         dataSource={users}
         className="app-table quotation-table"
         pagination={false}
+        rowKey="username"
         columns={columns}
       >
         {/* <Column title="Member" dataIndex="email" key="email" />

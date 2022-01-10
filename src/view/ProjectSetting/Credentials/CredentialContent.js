@@ -42,11 +42,13 @@ export default function CredentialContent() {
     useContext(CredentialContext);
 
   const filterRequestData = (requestData) => {
-    if(!requestData){
+    if (!requestData) {
       return requestData;
     }
-    return requestData.filter(it => getModuleName(vindrModules, it.name).name != undefined);
-  }
+    return requestData.filter(
+      (it) => getModuleName(vindrModules, it.name).name != undefined
+    );
+  };
 
   const canEdit = () => {
     return UserService.hasPerm(ticket, [PERM_CREDENTIAL_EDIT]);
@@ -78,7 +80,10 @@ export default function CredentialContent() {
 
   const handleDelete = async () => {
     const project_id = get(params, 'projectId', '');
-    const res = await actionDeleteCredential({ payload: currentCredential, project_id });
+    const res = await actionDeleteCredential({
+      payload: currentCredential,
+      project_id,
+    });
     if (res.status === 200) {
       message.success(t('IDS_CREDENTIAL_DELETE_SUCCESS'));
       setOpenConfirmDeleteModal(false);
@@ -92,7 +97,10 @@ export default function CredentialContent() {
 
   const handleRevoke = async () => {
     const project_id = get(params, 'projectId', '');
-    const res = await actionRevokeCredential({ payload: currentCredential, project_id });
+    const res = await actionRevokeCredential({
+      payload: currentCredential,
+      project_id,
+    });
     if (res.status === 200) {
       message.success(t('IDS_CREDENTIAL_REVOKE_SUCCESS'));
       setOpenConfirmRevokeModal(false);
@@ -174,6 +182,7 @@ export default function CredentialContent() {
           dataSource={filterRequestData(currentCredential.request_data)}
           className="app-table quotation-table"
           pagination={false}
+          rowKey="name"
         >
           <Column
             title="API Name"

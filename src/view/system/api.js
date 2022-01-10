@@ -17,6 +17,7 @@ import {
 // } from './systemAction';
 // import cookie from 'js-cookie';
 import UserService from './userService';
+import { actionLogout } from './systemAction';
 
 const request = axios.create();
 
@@ -161,9 +162,10 @@ request.interceptors.response.use(
   (error) => {
     console.log({ error });
     const errorCode = get(error, 'response.status');
-    if (errorCode === 401 || errorCode === 403) {
-      // checkAuthorizationFlow();
-      // UserService.upda
+    if (errorCode === 401) {
+      actionLogout();
+    } else if (errorCode === 403) {
+      window.location.href = '/no-permission';
     } else {
       return Promise.reject(error);
     }

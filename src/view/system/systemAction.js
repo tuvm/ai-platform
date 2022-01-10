@@ -12,6 +12,7 @@ import {
   LOCAL_STORAGE_REALM_ID,
   AI_PLATFORM_LOCALE,
   API_ENV,
+  DEFAULT_REALM_ID,
   // OIDC_SETTINGS,
 } from '../../utils/constants/config';
 import cookie from 'js-cookie';
@@ -20,7 +21,8 @@ const { CLIENT_ID, RESPONSE_TYPE, STATE, AUDIENCE, REACT_APP_AUTH_URL } =
   CONFIG_SERVER;
 
 export const getAuthUrl = () => {
-  const realmId = localStorage.getItem(LOCAL_STORAGE_REALM_ID);
+  const realmId =
+    localStorage.getItem(LOCAL_STORAGE_REALM_ID) || DEFAULT_REALM_ID;
   const url =
     REACT_APP_AUTH_URL +
     `/auth/realms/${realmId}/protocol/openid-connect/token`;
@@ -29,7 +31,8 @@ export const getAuthUrl = () => {
 };
 
 export const requestLogin = (isRedirect) => {
-  const realmId = localStorage.getItem(LOCAL_STORAGE_REALM_ID);
+  const realmId =
+    localStorage.getItem(LOCAL_STORAGE_REALM_ID) || DEFAULT_REALM_ID;
   const pathAuth =
     REACT_APP_AUTH_URL + `/auth/realms/${realmId}/protocol/openid-connect/auth`;
 
@@ -56,7 +59,8 @@ export const actionRefreshToken = (refreshToken = '') => {
   requestBody.append('client_id', CLIENT_ID);
   requestBody.append('refresh_token', refreshToken);
   requestBody.append('redirect_uri', window.location.origin);
-  const realmId = localStorage.getItem(LOCAL_STORAGE_REALM_ID);
+  const realmId =
+    localStorage.getItem(LOCAL_STORAGE_REALM_ID) || DEFAULT_REALM_ID;
 
   return api(
     {
@@ -181,7 +185,8 @@ export const getAccountInfo = () => {
 };
 
 export const actionChangePassword = (data) => {
-  const realmId = localStorage.getItem(LOCAL_STORAGE_REALM_ID);
+  const realmId =
+    localStorage.getItem(LOCAL_STORAGE_REALM_ID) || DEFAULT_REALM_ID;
   return api(
     {
       url: `/auth/realms/${realmId}/account/credentials/password`,
@@ -195,7 +200,8 @@ export const actionChangePassword = (data) => {
 
 export const actionLogout = async () => {
   try {
-    const realmId = localStorage.getItem(LOCAL_STORAGE_REALM_ID);
+    const realmId =
+      localStorage.getItem(LOCAL_STORAGE_REALM_ID) || DEFAULT_REALM_ID;
 
     const url =
       REACT_APP_AUTH_URL +
@@ -205,7 +211,9 @@ export const actionLogout = async () => {
     cookie.remove(TOKEN);
     // localStorage.removeItem(LOCAL_STORAGE_REALM_ID);
     window.location.href = url;
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const actionShowLoading = () => ({ type: actionType.SHOW_LOADING });

@@ -8,6 +8,7 @@ import Projects from './view/Projects';
 import ProjectSetting from './view/ProjectSetting';
 import Users from './view/Users';
 import Models from './view/Models';
+import { NoPermission, NotFound, Error } from './view/Error';
 
 const Routes = (props) => {
   return (
@@ -28,6 +29,9 @@ const Routes = (props) => {
       <Route exact path="/projects/:projectId/jobs" component={Jobs} />
       <Route exact path="/projects/:projectId/models" component={Models} />
       <Route exact path="/projects" component={Projects} />
+      <Route exact path="/no-permission" component={NoPermission} />
+      <Route exact path="/error" component={Error} />
+      <Route exact path="*" component={NotFound} />
       {/* <Route exact path={routes.API_KEYS} component={APIKeys} /> */}
     </Switch>
   );
