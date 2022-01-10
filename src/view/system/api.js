@@ -6,6 +6,8 @@ import {
   // REFRESH_TOKEN,
   // LOCAL_STORAGE_REALM_ID,
   API_ENV,
+  PROJECT_TOKEN,
+  TOKEN,
 } from '../../utils/constants/config';
 // import {
 //   actionGetPermissionToken,
@@ -15,7 +17,7 @@ import {
 //   actionRefreshToken,
 //   requestLogin,
 // } from './systemAction';
-// import cookie from 'js-cookie';
+import cookie from 'js-cookie';
 import UserService from './userService';
 import { actionLogout } from './systemAction';
 
@@ -165,6 +167,8 @@ request.interceptors.response.use(
     if (errorCode === 401) {
       actionLogout();
     } else if (errorCode === 403) {
+      cookie.remove(PROJECT_TOKEN);
+      cookie.remove(TOKEN);
       window.location.href = '/no-permission';
     } else {
       return Promise.reject(error);
