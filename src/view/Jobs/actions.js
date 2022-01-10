@@ -29,7 +29,7 @@ export const getJoblist = (project_id, params) => async (dispatch) => {
 
 export const serviceGetJobList = (project_id, key, params) => {
   return api(
-    { url: '/jobs', method: 'GET', headers: { 'X-API-KEY': key }, params },
+    { url: '/jobs-admin', method: 'GET', headers: { 'X-API-KEY': key }, params },
     API_ENV.DIAGNOSE,
     project_id
   );
