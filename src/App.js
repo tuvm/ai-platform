@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { Layout } from 'antd';
-// import isEmpty from 'lodash/isEmpty';
 import Routes from './Routes';
 import { LeftMenu, Header } from './components/layout';
 import Loading from './components/loading/Loading';
 import get from 'lodash/get';
 import {
-  getAccountInfo,
   actionGetTenantSetting,
+  actionInspectTicket,
+  getAccountInfo,
 } from './view/system/systemAction';
 import BreadCrumb from './components/breadcrumb/BreadCrumb';
 import AppHelmet from './components/Helmet';
@@ -15,33 +15,40 @@ import './App.scss';
 import { PAGES_HAS_NO_LAYOUT } from './utils/constants/config';
 import { withRouter } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { actionGetProjectList } from './view/Projects/actions';
 import { useProjectsParams } from './utils/hooks';
 
-const initialRequest = async () => {
-  const res = await actionGetTenantSetting();
-  if (res && res.data) {
-    getAccountInfo();
-  }
-};
-
 const App = (props) => {
-  const dispatch = useDispatch();
+  const pathname = get(props, 'location.pathname');
   const { params: projectParams } = useProjectsParams();
+  const dispatch = useDispatch();
+
   const projectId = get(projectParams, 'projectId', '');
 
   useEffect(() => {
-    initialRequest();
-    console.log(`Change project to ${projectId}`);
-    dispatch(actionGetProjectList());
-    console.log('project change');
-  }, [dispatch, projectId]);
+    actionGetTenantSetting();
+    getAccountInfo();
+  }, []);
 
-  // if (isEmpty(props.profile)) {
-  //   return <Loading />;
-  // }
+  useEffect(() => {
+    if (projectId) {
+      dispatch(actionInspectTicket({ scope: projectId }));
+    }
+  }, [pathname]);
 
-  const pathname = get(props, 'location.pathname');
+  // const initialRequest = async () => {
+  //   dispatch(actionShowLoading());
+  //   UserService.initKeycloak(
+  //     () => {
+  //       actionGetTenantSetting();
+  //       getAccountInfo();
+  //       dispatch(actionHideLoading());
+  //     },
+  //     () => {
+  //       dispatch(actionHideLoading());
+  //       history.push('/no-permission');
+  //     }
+  //   );
+  // };
 
   return (
     <div className="app-container">

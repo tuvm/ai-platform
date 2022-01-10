@@ -1,14 +1,16 @@
 import Axios from 'axios';
 import Keycloak from 'keycloak-js';
+import { get } from 'lodash';
 import {
   API_ENV,
   CURRENT_PROJECT,
+  DEFAULT_REALM_ID,
   PROJECT_TOKEN,
   TOKEN,
 } from '../../utils/constants/config';
 import { CONFIG_SERVER } from '../../utils/constants/config';
 import cookie from 'js-cookie';
-import { actionInspectTicket } from './systemAction';
+import { actionInspectTicket, actionLogout } from './systemAction';
 
 const { AUDIENCE, REACT_APP_AUTH_URL } = CONFIG_SERVER;
 
@@ -83,7 +85,9 @@ const _requestProjectToken = (token, projectId, callback) => {
     {
       url:
         REACT_APP_AUTH_URL +
-        `/auth/realms/${_kc.realm}/protocol/openid-connect/token`,
+        `/auth/realms/${
+          _kc.realm || DEFAULT_REALM_ID
+        }/protocol/openid-connect/token`,
       method: 'post',
       data: requestBody,
       headers: {
@@ -108,44 +112,58 @@ const _requestProjectToken = (token, projectId, callback) => {
 };
 
 const _requestPermissionToken = (token, callback, failedCallback) => {
-  let requestBody = new URLSearchParams();
-  requestBody.append(
-    'grant_type',
-    'urn:ietf:params:oauth:grant-type:uma-ticket'
-  );
-  requestBody.append('audience', AUDIENCE);
-  requestBody.append('permission', 'cad');
+  if (token) {
+    let requestBody = new URLSearchParams();
+    requestBody.append(
+      'grant_type',
+      'urn:ietf:params:oauth:grant-type:uma-ticket'
+    );
+    requestBody.append('audience', AUDIENCE);
+    requestBody.append('permission', 'cad');
 
-  Axios(
-    {
-      url:
-        REACT_APP_AUTH_URL +
-        `/auth/realms/${_kc.realm}/protocol/openid-connect/token`,
-      method: 'post',
-      data: requestBody,
-      headers: {
-        Authorization: `Bearer ${token}`,
+    Axios(
+      {
+        url:
+          REACT_APP_AUTH_URL +
+          `/auth/realms/${
+            _kc.realm || DEFAULT_REALM_ID
+          }/protocol/openid-connect/token`,
+        method: 'post',
+        data: requestBody,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    },
-    API_ENV.AUTH
-  )
-    .then((res) => {
-      if (res && res.data && res.data.access_token) {
-        const { data } = res;
-        // localStorage.setItem(TOKEN, data.access_token);
-        cookie.set(TOKEN, data.access_token, {
-          expires: new Date((res.data.expires_in || 1800) * 1000 + Date.now()),
-        });
-        window.store.dispatch(actionInspectTicket({ scope: 'global' }));
-        callback();
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-      if (failedCallback) {
-        failedCallback();
-      }
-    });
+      API_ENV.AUTH
+    )
+      .then((res) => {
+        if (res && res.data && res.data.access_token) {
+          const { data } = res;
+          // localStorage.setItem(TOKEN, data.access_token);
+          cookie.set(TOKEN, data.access_token, {
+            expires: new Date(
+              (res.data.expires_in || 1800) * 1000 + Date.now()
+            ),
+          });
+          window.store.dispatch(actionInspectTicket({ scope: 'global' }));
+          callback();
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        const errorCode = get(err, 'response.status');
+        if (errorCode === 401) {
+          actionLogout();
+        } else if (failedCallback) {
+          failedCallback();
+        }
+      });
+  } else {
+    console.log('no token');
+    if (failedCallback) {
+      failedCallback();
+    }
+  }
 };
 
 const doLogin = _kc.login;

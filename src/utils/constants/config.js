@@ -28,6 +28,7 @@ export const PROJECT_TOKEN = 'project_token';
 export const CURRENT_PROJECT = 'current_project';
 export const POLLING_TOKEN_TIMER = 4 * 60000;
 export const LOCAL_STORAGE_REALM_ID = 'realm_id';
+export const DEFAULT_REALM_ID = 'cad';
 
 const {
   OIDC_ACCESS_TOKEN_URI,
@@ -397,7 +398,16 @@ export const CHART_TYPE_COLORS = {
   Default: '#eb34b1',
 };
 
-export const PAGES_HAS_NO_LAYOUT = ['/', '/projects', '/user'];
+export const PAGES_HAS_NO_LAYOUT = [
+  '/',
+  '/projects',
+  '/user',
+  '/error',
+  '/not-found',
+  '/no-permission',
+];
+
+export const PUBLIC_PATH = ['/error', '/not-found', '/no-permission'];
 
 export const QUOTA_DEV_TEMPLATE = {
   chestxray: {
