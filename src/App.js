@@ -1,34 +1,39 @@
 import React, { useEffect } from 'react';
 import { Layout } from 'antd';
 import Routes from './Routes';
-import { useHistory } from 'react-router';
 import { LeftMenu, Header } from './components/layout';
 import Loading from './components/loading/Loading';
 import get from 'lodash/get';
 import {
-  getAccountInfo,
   actionGetTenantSetting,
-  actionShowLoading,
-  actionHideLoading,
+  actionInspectTicket,
+  getAccountInfo,
 } from './view/system/systemAction';
 import BreadCrumb from './components/breadcrumb/BreadCrumb';
 import AppHelmet from './components/Helmet';
 import './App.scss';
-import { PAGES_HAS_NO_LAYOUT, PUBLIC_PATH } from './utils/constants/config';
+import { PAGES_HAS_NO_LAYOUT } from './utils/constants/config';
 import { withRouter } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import UserService from './view/system/userService';
+import { useProjectsParams } from './utils/hooks';
 
 const App = (props) => {
   const pathname = get(props, 'location.pathname');
+  const { params: projectParams } = useProjectsParams();
+  const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   // console.log(UserService.isLoggedIn());
-  //   const isRedirect = get(props, 'location.hash');
-  //   if (!PUBLIC_PATH.includes(pathname) && !UserService.isLoggedIn()) {
-  //     initialRequest();
-  //   }
-  // }, []);
+  const projectId = get(projectParams, 'projectId', '');
+
+  useEffect(() => {
+    actionGetTenantSetting();
+    getAccountInfo();
+  }, []);
+
+  useEffect(() => {
+    if (projectId) {
+      dispatch(actionInspectTicket({ scope: projectId }));
+    }
+  }, [pathname]);
 
   // const initialRequest = async () => {
   //   dispatch(actionShowLoading());

@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import React, { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import get from 'lodash/get';
 import { actionQueryAPIUsage } from '../actions';
 import { useProjectsParams } from '../../../utils/hooks';
-import { APIContext } from "../index";
+import { APIContext } from '../index';
 import { useSelector } from 'react-redux';
 
 export default function APITable() {
@@ -11,41 +11,47 @@ export default function APITable() {
   const { filterDate, filterType } = context || {};
   const [tableData, setTableData] = useState([]);
   const { params: projectParams } = useProjectsParams();
-  const resourceOptionsData = useSelector(state => state.system.resourceOptions);
+  const resourceOptionsData = useSelector(
+    (state) => state.system.resourceOptions
+  );
   const resourceOptions = get(resourceOptionsData, 'options');
 
   useEffect(() => {
-    handleFetchData();
+    if (resourceOptions) {
+      handleFetchData();
+    }
   }, [filterDate, filterType, resourceOptions]);
 
   const handleFetchData = async () => {
     try {
-      const queryString = resourceOptions.map((item) => `ai_model=${item.value}`);
+      const queryString = resourceOptions.map(
+        (item) => `ai_model=${item.value}`
+      );
       const endDate = filterDate.endDate || undefined;
       const startDate = filterDate.startDate || undefined;
 
       const projectId = get(projectParams, 'projectId', '');
 
       const params = {
-        query_string: queryString.join(";"),
+        query_string: queryString.join(';'),
         start_date: startDate,
         end_date: endDate,
-        interval: "1d",
+        interval: '1d',
         project_id: projectId,
       };
 
-      const request1 =  actionQueryAPIUsage({
+      const request1 = actionQueryAPIUsage({
         ...params,
-        metric: "requests",
+        metric: 'requests',
       });
       const request2 = await actionQueryAPIUsage({
         ...params,
-        metric: "volume",
+        metric: 'volume',
       });
-      const request3 =  actionQueryAPIUsage({
+      const request3 = actionQueryAPIUsage({
         ...params,
-        metric: "requests",
-        audit: "error",
+        metric: 'requests',
+        audit: 'error',
       });
 
       Promise.all([request1, request2, request3]).then((allResults) => {
@@ -58,7 +64,9 @@ export default function APITable() {
           const volumnSum = volumeData[index].value_sum;
           const reqErrorSum = reqErrorData[index].value_sum;
 
-          const modelName = resourceOptions.filter(it => it.value == item.query_string.split("ai_model=")[1])[0].label;
+          const modelName = resourceOptions.filter(
+            (it) => it.value === item.query_string.split('ai_model=')[1]
+          )[0].label;
           return {
             key: item.query_string,
             name: modelName,
@@ -71,7 +79,6 @@ export default function APITable() {
         setTableData(data);
         console.log({ data });
       });
-
     } catch (error) {
       console.log(error);
     }
@@ -82,17 +89,16 @@ export default function APITable() {
   return (
     <Table
       heads={[
-        "IDS_API_TABLE_NAME",
-        "IDS_API_TABLE_REQUEST",
-        "IDS_API_TABLE_REQUEST_ERROR",
-        "IDS_API_TABLE_VOLUME",
+        'IDS_API_TABLE_NAME',
+        'IDS_API_TABLE_REQUEST',
+        'IDS_API_TABLE_REQUEST_ERROR',
+        'IDS_API_TABLE_VOLUME',
         // "IDS_API_TABLE_TIME",
       ]}
       content={tableData}
     />
   );
 }
-
 
 function Table(props) {
   const { t } = useTranslation();
@@ -107,14 +113,15 @@ function Table(props) {
         </tr>
       </thead>
       <tbody>
-          {content && content.map(item => (
-              <tr key={item.key}>
-                  <td>{item.name}</td>
-                  <td>{item.reqSum}</td>
-                  <td>{item.reqErrorSum}</td>
-                  <td>{item.volumeSum}</td>
-                  {/* <td>{item.time}</td> */}
-              </tr>
+        {content &&
+          content.map((item) => (
+            <tr key={item.key}>
+              <td>{item.name}</td>
+              <td>{item.reqSum}</td>
+              <td>{item.reqErrorSum}</td>
+              <td>{item.volumeSum}</td>
+              {/* <td>{item.time}</td> */}
+            </tr>
           ))}
       </tbody>
     </table>
