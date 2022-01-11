@@ -1,9 +1,10 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Button, Table } from 'antd';
 import moment from 'moment';
 import styles from './Jobs.module.scss';
 import JsonView from './JsonView';
+import { ROWS_PER_PAGE } from '../../utils/constants/config';
 
 const STATUS_COLOR = {
   INITIAL: '#000',
@@ -33,20 +34,30 @@ const STATUS_COLOR = {
 //   query_string: `StudyDate:[${INITIAL_FILTERS.startDate} TO ${INITIAL_FILTERS.endDate}]`,
 // };
 
-const JobList = ({ onSortChange }) => {
+const JobList = ({ onChange }) => {
   const data = useSelector((state) => state.system.jobList);
   const loading = useSelector((state) => state.system.jobListLoading);
   // const [isViewResult, setIsViewResult] = useState(false);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    size: ROWS_PER_PAGE[0],
+    total: data?.count || 0,
+  });
+
+  useEffect(() => {
+    setPagination({ ...pagination, total: data?.count || 0 });
+  }, [data]);
 
   const columns = [
     // {
     //   title: '#',
-    //   width: 40,
+    //   width: 30,
     //   fixed: 'left',
     //   align: 'center',
     //   dataIndex: 'PatientID',
     //   key: 'PatientID',
-    //   render: (text, record, index) => index + 1,
+    //   render: (text, record, index) =>
+    //     (pagination.page - 1) * pagination.size + index + 1,
     // },
     {
       title: 'StudyUID',
@@ -130,16 +141,19 @@ const JobList = ({ onSortChange }) => {
     },
   ];
 
-  const handleOnChangeTable = useCallback((_, __, sorter) => {
+  const handleOnChangeTable = useCallback((p, __, sorter) => {
     let sort;
     if (sorter?.order === 'ascend') {
       sort = `${sorter.field[1]}`;
     } else if (sorter?.order === 'descend') {
       sort = `-${sorter.field[1]}`;
     } else {
-      sort = '';
+      sort = '-start_time';
     }
-    onSortChange(sort);
+    const offset = (p.current - 1) * p.pageSize;
+    const limit = p.pageSize;
+    setPagination({ ...pagination, page: p.current, size: p.pageSize });
+    onChange({ sort: sort, offset: offset, limit: limit });
   }, []);
 
   return (
@@ -149,7 +163,16 @@ const JobList = ({ onSortChange }) => {
         columns={columns}
         dataSource={data?.records || []}
         rowKey={(record) => record._id}
-        pagination={true}
+        pagination={{
+          showQuickJumper: true,
+          showSizeChanger: true,
+          size: 'small',
+          current: pagination.page,
+          pageSize: pagination.size,
+          total: pagination.total,
+          showTotal: (total) => `Total ${total} item${total > 1 ? 's' : ''}`,
+          pageSizeOptions: ROWS_PER_PAGE,
+        }}
         loading={loading}
         onChange={handleOnChangeTable}
       />

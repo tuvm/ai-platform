@@ -4,6 +4,53 @@ import api from '../system/api';
 
 const organization = 'cad';
 
+export const getRule = (projectId, model) => {
+  return new Promise((resolve) =>
+    setTimeout(() => {
+      resolve({
+        data: {
+          model: 'brainct',
+          query: {
+            expressions: [
+              {
+                condition: 'EQUAL',
+                tag: 'Modality',
+                value: ['CT'],
+              },
+            ],
+            nested: {
+              expressions: [
+                {
+                  condition: 'EQUAL',
+                  tag: 'BodyPartExamined',
+                  value: ['BRAIN'],
+                },
+              ],
+              nested: {
+                expressions: [
+                  {
+                    condition: 'EQUAL',
+                    tag: 'BodyPartExamined',
+                    value: ['HEAD'],
+                  },
+                  {
+                    condition: 'CONTAIN',
+                    tag: 'StudyDescription',
+                    value: ['SO'],
+                  },
+                ],
+                operator: 'AND',
+              },
+              operator: 'OR',
+            },
+            operator: 'AND',
+          },
+        },
+      });
+    }, 200)
+  );
+};
+
 export const getModellist = (projectId) => async (dispatch) => {
   try {
     dispatch(fetchModelList());

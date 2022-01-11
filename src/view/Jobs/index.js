@@ -7,6 +7,7 @@ import { useProjectsParams } from '../../utils/hooks';
 import { toLuceneQueryString } from '../../utils/helpers';
 import moment from 'moment';
 import { getModellist } from '../Models/actions';
+import { ROWS_PER_PAGE } from '../../utils/constants/config';
 
 // const INIT_QUERY = {
 //   model: '*',
@@ -19,7 +20,7 @@ export const Jobs = () => {
   const { params } = useProjectsParams();
   const [query, setQuery] = useState({
     offset: 0,
-    limit: 25,
+    limit: ROWS_PER_PAGE[0],
     query_string: '*',
     sort: '-start_time',
   });
@@ -50,12 +51,8 @@ export const Jobs = () => {
     setQuery({ ...query, query_string: queryStr });
   };
 
-  const handleSort = (value) => {
-    if (value) {
-      setQuery({ ...query, sort: value });
-    } else {
-      setQuery({ ...query, sort: '-start_time' });
-    }
+  const handleTableChange = (value) => {
+    setQuery({ ...query, ...value });
   };
 
   useEffect(() => {
@@ -69,7 +66,7 @@ export const Jobs = () => {
   return (
     <>
       <FilterData onSearch={handleSearch} />
-      <JobList onSortChange={handleSort} />
+      <JobList onChange={handleTableChange} />
     </>
   );
 };

@@ -303,6 +303,8 @@ export const USER_ROLES = {
 
 export const FILTER_DAYS = [7, 14, 30];
 
+export const ROWS_PER_PAGE = [10, 15, 20, 25, 50];
+
 export const KEY_LIST = {
   lungct: 'Lung CT',
   mammogram: 'Mammography',

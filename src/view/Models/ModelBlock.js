@@ -3,12 +3,14 @@ import { Button, Card, message, Typography } from 'antd';
 import modelImage from '../../assets/images/modelImage.svg';
 import styles from './Models.module.scss';
 import { serviceUpdateModel } from './actions';
+import { useHistory } from 'react-router';
 
 const { Text } = Typography;
 const { Meta } = Card;
 
 function ModelBlock({ data, projectId, onUpdate }) {
   const { name, description, vendor, status, id } = data;
+  const history = useHistory();
 
   const handleChangeStatus = (status) => {
     serviceUpdateModel(projectId, id, status)
@@ -21,12 +23,16 @@ function ModelBlock({ data, projectId, onUpdate }) {
       });
   };
 
+  const handleActiveModel = () => {
+    history.push(`/projects/${projectId}/models/${id}`);
+  };
+
   return (
     <Card
       hoverable
       style={{ width: '100%', minWidth: 150, minHeight: 224 }}
       cover={<img alt="model-cover" src={modelImage} />}
-      // onClick={handleActiveProject}
+      onClick={handleActiveModel}
     >
       <div className={styles.content}>
         <Meta

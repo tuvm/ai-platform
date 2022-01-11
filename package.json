@@ -26,6 +26,7 @@
     "qs": "^6.9.4",
     "query-string": "^6.13.7",
     "react": "^17.0.1",
+    "react-awesome-query-builder": "^4.8.0",
     "react-beautiful-dnd": "^13.0.0",
     "react-chartjs-2": "^2.11.1",
     "react-circular-progressbar": "^2.0.3",

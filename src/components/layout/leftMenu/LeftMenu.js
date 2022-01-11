@@ -11,7 +11,8 @@ import { SettingOutlined } from '@ant-design/icons';
 import ProjectSelect from './ProjectSelect';
 import { useProjectsParams } from '../../../utils/hooks';
 import UserService from '../../../view/system/userService';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { actionGetProjectList } from '../../../view/Projects/actions';
 
 const { SubMenu } = Menu;
 
@@ -21,6 +22,11 @@ const LeftMenu = (props) => {
   const ticket = useSelector((state) => state.system.ticket);
   const { t } = useTranslation();
   const { params } = useProjectsParams();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(actionGetProjectList());
+  }, []);
 
   useEffect(() => {
     const page = get(params, 'page', '/');

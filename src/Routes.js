@@ -9,6 +9,7 @@ import ProjectSetting from './view/ProjectSetting';
 import Users from './view/Users';
 import Models from './view/Models';
 import { NoPermission, NotFound, Error } from './view/Error';
+import ModelPage from './view/Models/ModelPage';
 
 const Routes = (props) => {
   return (
@@ -28,6 +29,11 @@ const Routes = (props) => {
       <Route exact path="/user" component={Users} />
       <Route exact path="/projects/:projectId/jobs" component={Jobs} />
       <Route exact path="/projects/:projectId/models" component={Models} />
+      <Route
+        exact
+        path="/projects/:projectId/models/:modelId"
+        component={ModelPage}
+      />
       <Route exact path="/projects" component={Projects} />
       <Route exact path="/no-permission" component={NoPermission} />
       <Route exact path="/error" component={Error} />
