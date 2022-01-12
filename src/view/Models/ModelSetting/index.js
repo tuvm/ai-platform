@@ -60,10 +60,12 @@ const ModelSettings = () => {
           Select labels on result display
         </Title>
         {Object.keys(labels).map((it) => (
-          <div className="label-group">
+          <div className="label-group" key={it}>
             <div>{it}</div>
             {labels[it].map((label) => (
-              <Button style={{ margin: 5 }}>{label}</Button>
+              <Button style={{ margin: 5 }} key={label}>
+                {label}
+              </Button>
             ))}
           </div>
         ))}
