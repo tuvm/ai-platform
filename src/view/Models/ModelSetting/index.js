@@ -1,27 +1,101 @@
-import { Switch, Typography, Select, Button } from 'antd';
-import React, { useState } from 'react';
+import { Switch, Typography, Select, Button, message } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { get, clone } from 'lodash';
 import { CaretDownOutlined } from '@ant-design/icons';
 import './ModelSetting.scss';
+import { getModelSetting, updateModelSetting } from '../actions';
+import { useModelsParams } from '../../../utils/hooks';
 
 const { Title } = Typography;
 const { Option } = Select;
 
 const ModelSettings = () => {
-  const [language, setLanguage] = useState('vi');
+  const { params } = useModelsParams();
+  const [config, setConfig] = useState({
+    language: 'en',
+    result_labels: {},
+  });
+
   const handleChangeLanguage = (value) => {
-    console.log(value);
+    const newConfig = clone(config);
+    newConfig.language = value;
+    updateConfig(newConfig);
   };
 
-  const labels = {
-    Finding: [
-      'Aortic enlargement',
-      'Atelectasis',
-      'Calcification',
-      'Cardiomegaly',
-      'Clavicle fracture',
-      'Consolidation',
-    ],
-    Impression: ['Abnormal', 'No finding'],
+  useEffect(() => {
+    getConfig();
+  }, []);
+
+  const getConfig = () => {
+    getModelSetting(params.projectId, params.model).then((res) => {
+      if (res && res.data) {
+        setConfig(res.data);
+      }
+    });
+  };
+
+  const updateConfig = (config) => {
+    const lang = config.language;
+    const finding = get(config, `result_labels.${lang}.finding`) || [];
+    const impression = get(config, `result_labels.${lang}.impression`) || [];
+    const formatConfig = {
+      language: lang,
+      finding_labels: finding.filter((it) => it.enabled).map((it) => it.id),
+      impression_labels: impression
+        .filter((it) => it.enabled)
+        .map((it) => it.id),
+    };
+    updateModelSetting(params.projectId, params.model, formatConfig)
+      .then((res) => {
+        message.success('Updated settings');
+        getConfig();
+      })
+      .catch((err) => {
+        message.error('Updated failed');
+      });
+  };
+
+  const toggleLabel = (lang, group, idx, status) => {
+    const newConfig = clone(config);
+    newConfig.result_labels[lang][group][idx].enabled = status;
+    updateConfig(newConfig);
+  };
+
+  // const labels = {
+  //   Finding: [
+  //     'Aortic enlargement',
+  //     'Atelectasis',
+  //     'Calcification',
+  //     'Cardiomegaly',
+  //     'Clavicle fracture',
+  //     'Consolidation',
+  //   ],
+  //   Impression: ['Abnormal', 'No finding'],
+  // };
+
+  const renderLabels = (config) => {
+    const lang = config.language;
+    const labels = config.result_labels[config.language];
+    if (!!labels) {
+      return Object.keys(labels).map((it) => (
+        <div className="label-group" key={it}>
+          <div>{it}</div>
+          {labels[it] &&
+            labels[it].map((label, idx) => (
+              <Button
+                style={{ margin: 5 }}
+                key={label.id}
+                type={label.enabled ? 'primary' : 'default'}
+                onClick={() => toggleLabel(lang, it, idx, !label.enabled)}
+              >
+                {label.label}
+              </Button>
+            ))}
+        </div>
+      ));
+    } else {
+      return null;
+    }
   };
 
   return (
@@ -48,7 +122,7 @@ const ModelSettings = () => {
           className="select-dropdown-light"
           dropdownClassName="dropdown-options-dark"
           onChange={handleChangeLanguage}
-          value={language}
+          value={config.language}
         >
           <Option value="vi">Vietnamese</Option>
           <Option value="en">English</Option>
@@ -59,16 +133,7 @@ const ModelSettings = () => {
         <Title level={5} className="title">
           Select labels on result display
         </Title>
-        {Object.keys(labels).map((it) => (
-          <div className="label-group" key={it}>
-            <div>{it}</div>
-            {labels[it].map((label) => (
-              <Button style={{ margin: 5 }} key={label}>
-                {label}
-              </Button>
-            ))}
-          </div>
-        ))}
+        {renderLabels(config)}
       </div>
 
       <div className="block">

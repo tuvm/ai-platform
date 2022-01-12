@@ -9,7 +9,7 @@ const { Text } = Typography;
 const { Meta } = Card;
 
 function ModelBlock({ data, projectId, onUpdate }) {
-  const { name, description, vendor, status, id } = data;
+  const { name, description, vendor, status, id, slug } = data;
   const history = useHistory();
 
   const handleChangeStatus = (status) => {
@@ -24,7 +24,7 @@ function ModelBlock({ data, projectId, onUpdate }) {
   };
 
   const handleActiveModel = () => {
-    history.push(`/projects/${projectId}/models/${id}`);
+    history.push(`/projects/${projectId}/models/${slug}`);
   };
 
   return (

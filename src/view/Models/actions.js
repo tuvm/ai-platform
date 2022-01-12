@@ -51,6 +51,29 @@ export const getRule = (projectId, model) => {
   );
 };
 
+export const getModelSetting = (projectId, model) => {
+  return api(
+    {
+      url: `/modules/g/${organization}/${projectId}/config/${model}`,
+      method: 'GET',
+    },
+    API_ENV.DIAGNOSE,
+    projectId
+  );
+};
+
+export const updateModelSetting = (projectId, model, config) => {
+  return api(
+    {
+      url: `/modules/g/${organization}/${projectId}/config/${model}`,
+      method: 'PUT',
+      data: config,
+    },
+    API_ENV.DIAGNOSE,
+    projectId
+  );
+};
+
 export const getModellist = (projectId) => async (dispatch) => {
   try {
     dispatch(fetchModelList());

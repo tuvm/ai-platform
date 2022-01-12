@@ -17,3 +17,19 @@ export const useProjectsParams = () => {
     params,
   };
 };
+
+export const useModelsParams = () => {
+  const location = useLocation();
+  const { pathname } = location;
+
+  const match = matchPath(pathname, {
+    path: '/projects/:projectId/models/:model',
+    strict: false,
+  });
+
+  const params = get(match, 'params', {});
+
+  return {
+    params,
+  };
+};
