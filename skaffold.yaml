@@ -42,4 +42,4 @@ profiles:
       kubectl:
         manifests:
           - manifests/k8s/staging/deployment.yaml
-          - manifests/k8s/staging/worker.yaml
+          # - manifests/k8s/staging/worker.yaml

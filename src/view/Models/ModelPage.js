@@ -11,7 +11,7 @@ export default function ModelPage() {
   // const callback = () => {};
 
   return (
-    <div style={{ maxWidth: 960, margin: '0 auto' }}>
+    <div>
       <Tabs defaultActiveKey="1">
         <TabPane tab="Overview" key="1">
           <Overview />
