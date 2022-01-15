@@ -19,6 +19,7 @@ export default function Graphs() {
 
   useEffect(() => {
     if (filterDate && filterDate.startDate) {
+      console.log('graph', filterType, filterDate);
       handleFetchData();
     }
     // eslint-disable-next-line

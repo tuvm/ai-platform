@@ -2,7 +2,7 @@ import React, { Component, useEffect, useState } from 'react';
 import { Query, Builder, Utils as QbUtils } from 'react-awesome-query-builder';
 import { Button, Typography, Form, Input, Divider, Modal, message } from 'antd';
 import DynamicField from './DynamicField';
-import { clone } from 'lodash';
+import { clone, get } from 'lodash';
 import tags from './tags';
 
 // For AntDesign widgets only:
@@ -12,13 +12,15 @@ import 'antd/dist/antd.css'; // or import "react-awesome-query-builder/css/antd.
 
 import 'react-awesome-query-builder/lib/css/styles.css';
 import 'react-awesome-query-builder/lib/css/compact_styles.css'; //optional, for more compact styles
-import { getRule } from '../actions';
+import { createRule, getRule } from '../actions';
 import { useModelsParams } from '../../../utils/hooks';
 import CopyToClipboard from 'react-copy-to-clipboard';
+import { useSelector } from 'react-redux';
 
 // Choose your skin (ant/material/vanilla):
 const InitialConfig = AntdConfig; // or MaterialConfig or BasicConfig
 const { Title } = Typography;
+const { TextArea } = Input;
 
 // You need to provide your own config. See below 'Config format'
 const config = {
@@ -86,19 +88,43 @@ const Rules = () => {
   });
 
   const [form] = Form.useForm();
+  const [importForm] = Form.useForm();
   const [isCustomField, setIsCustomField] = useState(false);
+  const [isImportJson, setIsImportJson] = useState(false);
   const [jsonLogic, setLogic] = useState({});
   const { params } = useModelsParams();
+  const credentialList = useSelector((state) => state.system.credentialList);
 
   useEffect(() => {
-    // getRule(params.projectId, params.model)
-    //   .then((res) => {
-    //     console.log(res);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    const key = get(credentialList, '[0].token');
+    if (key) {
+      getRule(params.projectId, params.model, key).then((res) => {
+        const rule = get(res, 'data.[0].original_rules');
+        if (rule) {
+          setState({
+            tree: QbUtils.checkTree(
+              QbUtils.loadFromJsonLogic(rule, state.config),
+              state.config
+            ),
+            config: state.config,
+          });
+        }
+      });
+    }
   }, []);
+
+  function handleImport(values) {
+    const json = JSON.parse(values.json);
+    if (json) {
+      setState({
+        tree: QbUtils.checkTree(
+          QbUtils.loadFromJsonLogic(json, state.config),
+          state.config
+        ),
+        config: state.config,
+      });
+    }
+  }
 
   function handleFinish(values) {
     const newConfig = clone(state.config);
@@ -132,40 +158,6 @@ const Rules = () => {
     </div>
   );
 
-  const renderResult = ({ tree: immutableTree, config }) => (
-    <div className="query-builder-result">
-      <div>
-        Tree: <pre>{JSON.stringify(immutableTree)}</pre>
-      </div>
-      <div>
-        Query string:{' '}
-        <pre>{JSON.stringify(QbUtils.queryString(immutableTree, config))}</pre>
-      </div>
-      <div>
-        MongoDb query:{' '}
-        <pre>
-          {JSON.stringify(QbUtils.mongodbFormat(immutableTree, config))}
-        </pre>
-      </div>
-      <div>
-        SQL where:{' '}
-        <pre>{JSON.stringify(QbUtils.sqlFormat(immutableTree, config))}</pre>
-      </div>
-      <div>
-        JsonLogic:{' '}
-        <pre>
-          {JSON.stringify(QbUtils.jsonLogicFormat(immutableTree, config))}
-        </pre>
-      </div>
-      <div>
-        ElasticSearch:{' '}
-        <pre>
-          {JSON.stringify(QbUtils.elasticSearchFormat(immutableTree, config))}
-        </pre>
-      </div>
-    </div>
-  );
-
   const onChange = (immutableTree, config) => {
     // console.log(config);
     // Tip: for better performance you can apply `throttle` - see `examples/demo`
@@ -178,7 +170,12 @@ const Rules = () => {
 
   const onSave = () => {
     const { logic } = QbUtils.jsonLogicFormat(state.tree, state.config);
-    console.log(logic);
+    const key = get(credentialList, '[0].token');
+    if (key) {
+      createRule(params.projectId, params.model, logic, key).then((res) => {
+        console.log(res);
+      });
+    }
   };
 
   return (
@@ -189,7 +186,11 @@ const Rules = () => {
         style={{ display: 'flex', justifyContent: 'space-between' }}
       >
         <div>
-          <Button type="primary" style={{ margin: 5 }}>
+          <Button
+            type="primary"
+            style={{ margin: 5 }}
+            onClick={() => setIsImportJson(true)}
+          >
             Import Json
           </Button>
           <CopyToClipboard
@@ -237,31 +238,34 @@ const Rules = () => {
           form.submit();
           setIsCustomField(false);
         }}
-        // footer={[
-        //   onClick={}>Cancel</Button>,
-        //   <Button
-        //     form={form}
-        //     key="submit"
-        //     htmlType="submit"
-        //     type="primary"
-        //     onClick={() => {
-        //       form.submit();
-        //       setIsCustomField(false);
-        //     }}
-        //   >
-        //     Submit
-        //   </Button>,
-        // ]}
       >
         <div>
-          <Title level={3}>Custom Fields</Title>
+          <Title level={4}>Custom Fields</Title>
           <Form form={form} {...defaultFormItemLayout} onFinish={handleFinish}>
             <DynamicField />
-            {/* <Form.Item>
-              <Button type="primary" htmlType="submit">
-                Submit
-              </Button>
-            </Form.Item> */}
+          </Form>
+        </div>
+      </Modal>
+
+      <Modal
+        visible={isImportJson}
+        width={600}
+        onCancel={() => setIsImportJson(false)}
+        onOk={() => {
+          importForm.submit();
+          setIsImportJson(false);
+        }}
+      >
+        <div>
+          <Title level={4}>Import Json</Title>
+          <Form
+            form={importForm}
+            // {...defaultFormItemLayout}
+            onFinish={handleImport}
+          >
+            <Form.Item name="json" rules={[{ required: true }]}>
+              <TextArea name="json" rows={20} />
+            </Form.Item>
           </Form>
         </div>
       </Modal>

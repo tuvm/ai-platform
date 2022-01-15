@@ -16,32 +16,34 @@ export const getRule = (projectId, model, key) => {
   );
 };
 
-export const createRule = (projectId, model, rule) => {
+export const createRule = (projectId, model, rule, key) => {
   return api(
     {
       url: `/rules`,
       method: 'POST',
+      headers: { 'X-API-KEY': key },
       data: {
         resource_slug: model,
         rules: rule,
       },
     },
-    API_ENV.DIAGNOSE,
+    API_ENV.AUTO_DIAGNOSE,
     projectId
   );
 };
 
-export const updateRule = (projectId, model, ruleId, rule) => {
+export const updateRule = (projectId, model, ruleId, rule, key) => {
   return api(
     {
       url: `/rules/${ruleId}`,
       method: 'PUT',
+      headers: { 'X-API-KEY': key },
       data: {
         resource_slug: model,
         rules: rule,
       },
     },
-    API_ENV.DIAGNOSE,
+    API_ENV.AUTO_DIAGNOSE,
     projectId
   );
 };

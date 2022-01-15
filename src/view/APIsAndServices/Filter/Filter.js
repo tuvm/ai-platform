@@ -4,7 +4,6 @@ import { Select } from 'antd';
 import moment from 'moment';
 
 import { FILTER_DAYS } from '../../../utils/constants/config';
-import { API_SCOPES } from '../../../utils/constants/config';
 import { APIContext } from '../index';
 import './Filter.scss';
 import { useSelector } from 'react-redux';
@@ -14,22 +13,22 @@ const { Option } = Select;
 
 export default function Filter() {
   const { t } = useTranslation();
-  const { setFilterType, setFilterDate } = useContext(APIContext);
-  const [selected, setSelected] = useState('');
+  const { filterType, setFilterType, setFilterDate } = useContext(APIContext);
+  // const [selected, setSelected] = useState();
   const resourceOptionsData = useSelector(
     (state) => state.system.resourceOptions
   );
   const resourceOptions = get(resourceOptionsData, 'options');
 
-  useEffect(() => {
-    setFilterType([API_SCOPES[0].key]);
-    setSelected([API_SCOPES[0].key]);
-    handleChangeDate(7);
-  }, [resourceOptions]);
+  // useEffect(() => {
+  // setFilterType([API_SCOPES[0].key]);
+  // setSelected([API_SCOPES[0].key]);
+  // handleChangeDate(7);
+  // }, [resourceOptions]);
 
   function handleChange(value) {
     setFilterType(value);
-    setSelected(value);
+    // setSelected(value);
   }
 
   const handleChangeDate = (value) => {
@@ -43,7 +42,7 @@ export default function Filter() {
       <div className="left-filter">
         <span className="filter-name">{t('IDS_API_SELECT_NAME')}</span>
         <Select
-          value={selected}
+          value={filterType}
           style={{ minWidth: '300px' }}
           onChange={handleChange}
         >

@@ -18,6 +18,7 @@ export default function APITable() {
 
   useEffect(() => {
     if (resourceOptions) {
+      console.log('table', filterType, filterDate, resourceOptions);
       handleFetchData();
     }
   }, [filterDate, filterType, resourceOptions]);
