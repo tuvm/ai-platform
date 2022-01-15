@@ -55,7 +55,6 @@ export default function APITable() {
       });
 
       Promise.all([request1, request2, request3]).then((allResults) => {
-        console.log({ allResults });
         const reqData = get(allResults, '[0].data.datasets') || [];
         const volumeData = get(allResults, '[1].data.datasets') || [];
         const reqErrorData = get(allResults, '[2].data.datasets') || [];
@@ -77,14 +76,11 @@ export default function APITable() {
         });
 
         setTableData(data);
-        console.log({ data });
       });
     } catch (error) {
       console.log(error);
     }
   };
-
-  console.log({ tableData });
 
   return (
     <Table

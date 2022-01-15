@@ -1,14 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Row, Col } from "antd";
+import React, { useContext, useEffect, useState } from 'react';
+import { Row, Col } from 'antd';
 import isEmpty from 'lodash/isEmpty';
-import RequestGraph from "./RequestGraph";
-import { APIContext } from "../index";
-import { actionQueryAPIUsage } from "../actions";
+import RequestGraph from './RequestGraph';
+import { APIContext } from '../index';
+import { actionQueryAPIUsage } from '../actions';
 import { useProjectsParams } from '../../../utils/hooks';
 import { mergeSeriesData, getDateSeriesDuration1d } from './utils';
 import get from 'lodash/get';
 
-import "./Graphs.scss";
+import './Graphs.scss';
 
 export default function Graphs() {
   const context = useContext(APIContext);
@@ -34,38 +34,48 @@ export default function Graphs() {
     const projectId = get(projectParams, 'projectId', '');
 
     try {
-      const queryString = [filterType, ].map((item) => `ai_model=${item}`);
+      const queryString = [filterType].map((item) => `ai_model=${item}`);
       const params = {
-        query_string: queryString.join(";"),
+        query_string: queryString.join(';'),
         start_date: filterDate.startDate || undefined,
         end_date: filterDate.endDate || undefined,
-        interval: "1d",
+        interval: '1d',
         project_id: projectId,
       };
 
       const { data: rqData } = await actionQueryAPIUsage({
         ...params,
-        metric: "requests",
+        metric: 'requests',
       });
 
       const { data: rqErrorData } = await actionQueryAPIUsage({
         ...params,
-        metric: "requests",
-        audit: "error",
+        metric: 'requests',
+        audit: 'error',
       });
 
-      const mergedLabels = getDateSeriesDuration1d(filterDate.startDate, filterDate.endDate);
-      const rqMergedData = mergeSeriesData([rqData, rqErrorData], ["Total", "Error"], mergedLabels);
-      console.log({rqMergedData})
+      const mergedLabels = getDateSeriesDuration1d(
+        filterDate.startDate,
+        filterDate.endDate
+      );
+      const rqMergedData = mergeSeriesData(
+        [rqData, rqErrorData],
+        ['Total', 'Error'],
+        mergedLabels
+      );
 
       setRequestData(rqMergedData || {});
 
       const { data: volData } = await actionQueryAPIUsage({
         ...params,
-        metric: "volume",
+        metric: 'volume',
       });
 
-      const volMergedData = mergeSeriesData([volData, ], ["Volume", ], mergedLabels);
+      const volMergedData = mergeSeriesData(
+        [volData],
+        ['Volume'],
+        mergedLabels
+      );
 
       setVolumeData(volMergedData || {});
     } catch (error) {
@@ -76,7 +86,12 @@ export default function Graphs() {
   return (
     <div className="graphs-list">
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-        <Col className="gutter-row" xs={{span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
+        <Col
+          className="gutter-row"
+          xs={{ span: 24 }}
+          md={{ span: 24 }}
+          lg={{ span: 12 }}
+        >
           <div className="graph-column">
             <div className="graph-name">Requests</div>
             <div className="graph-sublabel">Requests</div>
@@ -85,12 +100,17 @@ export default function Graphs() {
                 data={requestData}
                 filterType={filterType}
                 label="Requests"
-                graphType='request-call'
+                graphType="request-call"
               />
             </div>
           </div>
         </Col>
-        <Col className="gutter-row" xs={{span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
+        <Col
+          className="gutter-row"
+          xs={{ span: 24 }}
+          md={{ span: 24 }}
+          lg={{ span: 12 }}
+        >
           <div className="graph-column">
             <div className="graph-name">Volume</div>
             <div className="graph-sublabel">Megabytes</div>
@@ -98,7 +118,7 @@ export default function Graphs() {
               <RequestGraph
                 data={volumeData}
                 filterType={filterType}
-                graphType='request-size'
+                graphType="request-size"
                 label="Size"
               />
             </div>

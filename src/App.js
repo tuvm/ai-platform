@@ -6,7 +6,7 @@ import Loading from './components/loading/Loading';
 import get from 'lodash/get';
 import {
   actionGetTenantSetting,
-  actionInspectTicket,
+  actionInspectGeneralTicket,
   getAccountInfo,
 } from './view/system/systemAction';
 import BreadCrumb from './components/breadcrumb/BreadCrumb';
@@ -16,6 +16,7 @@ import { PAGES_HAS_NO_LAYOUT } from './utils/constants/config';
 import { withRouter } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useProjectsParams } from './utils/hooks';
+import { initProject } from './view/system/projectService';
 
 const App = (props) => {
   const pathname = get(props, 'location.pathname');
@@ -27,13 +28,15 @@ const App = (props) => {
   useEffect(() => {
     actionGetTenantSetting();
     getAccountInfo();
+    dispatch(actionInspectGeneralTicket());
   }, []);
 
   useEffect(() => {
     if (projectId) {
-      dispatch(actionInspectTicket({ scope: projectId }));
+      console.log('PROJECT CHANGED TO ', projectId);
+      dispatch(initProject(projectId));
     }
-  }, [pathname]);
+  }, [projectId]);
 
   // const initialRequest = async () => {
   //   dispatch(actionShowLoading());

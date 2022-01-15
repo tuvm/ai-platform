@@ -16,10 +16,10 @@ import { useProjectsParams } from '../../../utils/hooks';
 import { getModuleName } from '../../../utils/constants/config';
 import moment from 'moment';
 import {
-  actionUpdateCredential,
-  actionGrantAPIKey,
-  actionRegenerateAPIKey,
-} from './actions';
+  serviceUpdateCredential,
+  serviceGrantAPIKey,
+  serviceRegenerateAPIKey,
+} from './services';
 import { CredentialContext } from './context';
 import cloneDeep from 'lodash/cloneDeep';
 
@@ -77,8 +77,10 @@ export default function EditCredentialModal(props) {
   }, [currentCredential, vindrModules, form]);
 
   const filterRequestData = (requestData) => {
-    return requestData.filter(it => getModuleName(vindrModules, it.name).name != undefined);
-  }
+    return requestData.filter(
+      (it) => getModuleName(vindrModules, it.name).name != undefined
+    );
+  };
 
   const handleCancel = () => {
     props.onCancel();
@@ -109,10 +111,12 @@ export default function EditCredentialModal(props) {
 
     // merge old quota
     const currentRequestData = get(currentCredential, 'request_data', []);
-    console.log({currentRequestData})
-    for(let d of currentRequestData){
-      const exists = newQuotaSelected.find(it => it.resource_id == d.resource_id);
-      if(!exists){
+    console.log({ currentRequestData });
+    for (let d of currentRequestData) {
+      const exists = newQuotaSelected.find(
+        (it) => it.resource_id == d.resource_id
+      );
+      if (!exists) {
         newQuotaSelected.push(d);
       }
     }
@@ -125,7 +129,7 @@ export default function EditCredentialModal(props) {
     };
 
     const project_id = projectId;
-    const res = await actionGrantAPIKey({ project_id, payload });
+    const res = await serviceGrantAPIKey({ project_id, payload });
     if (res && res.token) {
       const payload_apikey = {
         name: name,
@@ -135,7 +139,7 @@ export default function EditCredentialModal(props) {
         token: res.token,
         id: currentCredential.id,
       };
-      let update_res = await actionUpdateCredential({
+      let update_res = await serviceUpdateCredential({
         payload: payload_apikey,
         project_id,
       });
@@ -154,7 +158,10 @@ export default function EditCredentialModal(props) {
 
   const handleRegenerageAPIKey = async () => {
     const project_id = get(params, 'projectId', '');
-    const token = await actionRegenerateAPIKey({ payload: currentCredential, project_id });
+    const token = await serviceRegenerateAPIKey({
+      payload: currentCredential,
+      project_id,
+    });
     if (token) {
       message.success(t('IDS_REGENERATE_KEY_SUCCESS'));
       handleGetCredentials();

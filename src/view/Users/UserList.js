@@ -40,7 +40,6 @@ export default function UserList() {
     dispatch(fetchUserList());
     actionGetUserList()
       .then((res) => {
-        console.log(res);
         dispatch(fetchUserListSuccess(res.data));
       })
       .catch((err) => {

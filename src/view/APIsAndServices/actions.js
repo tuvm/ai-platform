@@ -27,7 +27,6 @@ export const actionGetResourceOptions =
   async (dispatch) => {
     const url = '/resources/list';
     dispatch({ type: actions.FETCH_RESOURCE_OPS });
-    console.log(params);
     try {
       const res = await api(
         { url, method: 'GET', params },

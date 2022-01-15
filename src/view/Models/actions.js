@@ -4,50 +4,45 @@ import api from '../system/api';
 
 const organization = 'cad';
 
-export const getRule = (projectId, model) => {
-  return new Promise((resolve) =>
-    setTimeout(() => {
-      resolve({
-        data: {
-          model: 'brainct',
-          query: {
-            expressions: [
-              {
-                condition: 'EQUAL',
-                tag: 'Modality',
-                value: ['CT'],
-              },
-            ],
-            nested: {
-              expressions: [
-                {
-                  condition: 'EQUAL',
-                  tag: 'BodyPartExamined',
-                  value: ['BRAIN'],
-                },
-              ],
-              nested: {
-                expressions: [
-                  {
-                    condition: 'EQUAL',
-                    tag: 'BodyPartExamined',
-                    value: ['HEAD'],
-                  },
-                  {
-                    condition: 'CONTAIN',
-                    tag: 'StudyDescription',
-                    value: ['SO'],
-                  },
-                ],
-                operator: 'AND',
-              },
-              operator: 'OR',
-            },
-            operator: 'AND',
-          },
-        },
-      });
-    }, 200)
+export const getRule = (projectId, model, key) => {
+  return api(
+    {
+      url: `/rules?resource_slug=${model}`,
+      method: 'GET',
+      headers: { 'X-API-KEY': key },
+    },
+    API_ENV.AUTO_DIAGNOSE,
+    projectId
+  );
+};
+
+export const createRule = (projectId, model, rule) => {
+  return api(
+    {
+      url: `/rules`,
+      method: 'POST',
+      data: {
+        resource_slug: model,
+        rules: rule,
+      },
+    },
+    API_ENV.DIAGNOSE,
+    projectId
+  );
+};
+
+export const updateRule = (projectId, model, ruleId, rule) => {
+  return api(
+    {
+      url: `/rules/${ruleId}`,
+      method: 'PUT',
+      data: {
+        resource_slug: model,
+        rules: rule,
+      },
+    },
+    API_ENV.DIAGNOSE,
+    projectId
   );
 };
 

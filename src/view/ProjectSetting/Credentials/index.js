@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import CreateCredentialModal from './CreateCredentialModal';
 import CredentialContent from './CredentialContent';
 import { useProjectsParams } from '../../../utils/hooks';
-import { actionGetCredentialList } from './actions';
+import { serviceGetCredentialList } from './services';
 import { CredentialContext } from './context';
 import './Credentials.scss';
 import { PERM_CREDENTIAL_CREATE } from '../../../utils/permission/perms';
@@ -31,9 +31,7 @@ export default function Credentials() {
   };
 
   const handleGetCredentials = async () => {
-    const data = await actionGetCredentialList({
-      params: { project_id: projectId },
-    });
+    const data = await serviceGetCredentialList(projectId);
     if (data) {
       // sort activated credentitals first
       data.sort((it1, it2) =>

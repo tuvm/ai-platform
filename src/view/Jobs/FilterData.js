@@ -91,7 +91,6 @@ function FilterData(props) {
         };
         break;
       case FILTER_TYPE.SEARCH:
-        console.log(values);
         tempFilterData = {
           ...filterData,
           search: values === '*' ? '' : values,
@@ -223,7 +222,6 @@ function FilterData(props) {
               placeholder={t('Keyword')}
               onChange={(event) => setSearch(event?.target?.value)}
               onPressEnter={() => {
-                console.log(search);
                 handleOnChangeFilter(FILTER_TYPE.SEARCH, search || '*');
               }}
               value={search}

@@ -163,25 +163,64 @@ const system = (state = initialState, action) => {
         resourceOptionsLoading: false,
         resourceOptionsLoadError: true,
       };
-    case actions.FETCH_TICKET:
+    case actions.FETCH_GENERAL_TICKET:
       return {
         ...state,
         ticketLoading: true,
         ticketLoadError: false,
       };
-    case actions.FETCH_TICKET_SUCCESS:
+    case actions.FETCH_GENERAL_TICKET_SUCCESS:
       return {
         ...state,
         ticketLoading: false,
         ticketLoadError: false,
-        ticket: { ...state.ticket, ...action.payload },
+        ticket: { ...state.ticket, general: action.payload },
       };
 
-    case actions.FETCH_TICKET_ERROR:
+    case actions.FETCH_GENERAL_TICKET_ERROR:
       return {
         ...state,
         ticketLoading: false,
         ticketLoadError: true,
+      };
+    case actions.FETCH_PROJECT_TICKET:
+      return {
+        ...state,
+        ticketLoading: true,
+        ticketLoadError: false,
+      };
+    case actions.FETCH_PROJECT_TICKET_SUCCESS:
+      return {
+        ...state,
+        ticketLoading: false,
+        ticketLoadError: false,
+        ticket: { ...state.ticket, project: action.payload },
+      };
+    case actions.FETCH_PROJECT_TICKET_ERROR:
+      return {
+        ...state,
+        ticketLoading: false,
+        ticketLoadError: true,
+      };
+
+    case actions.FETCH_CREDENTIAL_LIST:
+      return {
+        ...state,
+        credentialListLoading: true,
+        credentialLoadError: false,
+      };
+    case actions.FETCH_CREDENTIAL_LIST_SUCCESS:
+      return {
+        ...state,
+        credentialListLoading: false,
+        credentialLoadError: false,
+        credentialList: action.payload,
+      };
+    case actions.FETCH_CREDENTIAL_LIST_ERROR:
+      return {
+        ...state,
+        credentialListLoading: false,
+        credentialLoadError: true,
       };
     default:
       return state;

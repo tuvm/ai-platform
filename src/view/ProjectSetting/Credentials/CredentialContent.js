@@ -8,7 +8,6 @@ import {
   ENV_OPTIONS,
   getPeriodSelected,
 } from '../../../utils/constants/config';
-import { actionDeleteCredential, actionRevokeCredential } from './actions';
 import { useSelector } from 'react-redux';
 import { CredentialContext } from './context';
 import get from 'lodash/get';
@@ -24,6 +23,7 @@ import {
 } from '../../../utils/permission/perms';
 import UserService from '../../system/userService';
 import { useProjectsParams } from '../../../utils/hooks';
+import { serviceDeleteCredential, serviceRevokeCredential } from './services';
 
 const { Column } = Table;
 
@@ -80,7 +80,7 @@ export default function CredentialContent() {
 
   const handleDelete = async () => {
     const project_id = get(params, 'projectId', '');
-    const res = await actionDeleteCredential({
+    const res = await serviceDeleteCredential({
       payload: currentCredential,
       project_id,
     });
@@ -97,7 +97,7 @@ export default function CredentialContent() {
 
   const handleRevoke = async () => {
     const project_id = get(params, 'projectId', '');
-    const res = await actionRevokeCredential({
+    const res = await serviceRevokeCredential({
       payload: currentCredential,
       project_id,
     });

@@ -105,7 +105,6 @@ export default function UserManagement() {
   };
 
   const onAction = ({ key, item }) => {
-    console.log(item);
     if (key === 'delete') {
       handleDeleteItem({ item });
     } else if (key === 'edit') {

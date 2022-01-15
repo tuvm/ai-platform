@@ -10,7 +10,7 @@ import {
 } from '../../utils/constants/config';
 import { CONFIG_SERVER } from '../../utils/constants/config';
 import cookie from 'js-cookie';
-import { actionInspectTicket, actionLogout } from './systemAction';
+import { actionLogout } from './systemAction';
 
 const { AUDIENCE, REACT_APP_AUTH_URL } = CONFIG_SERVER;
 
@@ -105,7 +105,6 @@ const _requestProjectToken = (token, projectId, callback) => {
       cookie.set(CURRENT_PROJECT, projectId, {
         expires: new Date((res.data.expires_in || 1800) * 1000 + Date.now()),
       });
-      window.store.dispatch(actionInspectTicket({ scope: projectId }));
       callback();
     }
   });
@@ -145,7 +144,6 @@ const _requestPermissionToken = (token, callback, failedCallback) => {
               (res.data.expires_in || 1800) * 1000 + Date.now()
             ),
           });
-          window.store.dispatch(actionInspectTicket({ scope: 'global' }));
           callback();
         }
       })

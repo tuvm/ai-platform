@@ -228,47 +228,60 @@ export const actionChangeLanguage = (lang) => {
   };
 };
 
-export const actionInspectTicket =
-  ({ scope }) =>
-  async (dispatch) => {
-    const url = '/tickets/inspect';
+export const serviceInspectGeneralTicket = () => {
+  return api(
+    {
+      url: '/tickets/inspect',
+      method: 'GET',
+    },
+    API_ENV.CONSOLE
+  );
+};
+
+export const serviceInspectProjectTicket = (projectId) => {
+  return api(
+    {
+      url: '/tickets/inspect',
+      method: 'GET',
+      params: { project_id: projectId },
+    },
+    API_ENV.CONSOLE,
+    projectId
+  );
+};
+
+export const actionInspectGeneralTicket = () => async (dispatch) => {
+  dispatch({ type: actionType.FETCH_GENERAL_TICKET });
+  try {
+    const data = await serviceInspectGeneralTicket();
+    const payload = get(data, 'data.data.0.perms') || [];
     dispatch({
-      type: actionType.FETCH_TICKET,
+      type: actionType.FETCH_GENERAL_TICKET_SUCCESS,
+      payload: new Ticket(payload, 'cad'),
     });
-    try {
-      let data;
-      if (scope === 'global') {
-        data = await api(
-          {
-            url,
-            method: 'GET',
-          },
-          API_ENV.CONSOLE,
-          scope
-        );
-      } else {
-        data = await api(
-          {
-            url,
-            method: 'GET',
-            params: { project_id: scope },
-          },
-          API_ENV.CONSOLE,
-          scope
-        );
-      }
-      const payload = get(data, 'data.data.0.perms') || [];
-      const resource = get(data, 'data.data.0.resource') || 'cad';
-      dispatch({
-        type: actionType.FETCH_TICKET_SUCCESS,
-        payload: { [resource]: new Ticket(payload, 'cad') },
-      });
-      return payload;
-    } catch (error) {
-      console.log(error);
-      dispatch({
-        type: actionType.FETCH_TICKET_ERROR,
-        payload: error,
-      });
-    }
-  };
+  } catch (error) {
+    dispatch({
+      type: actionType.FETCH_GENERAL_TICKET_ERROR,
+      payload: error,
+    });
+  }
+};
+
+export const actionInspectProjectTicket = (projectId) => async (dispatch) => {
+  dispatch({
+    type: actionType.FETCH_PROJECT_TICKET,
+  });
+  try {
+    const data = await serviceInspectProjectTicket(projectId);
+    const payload = get(data, 'data.data.0.perms') || [];
+    dispatch({
+      type: actionType.FETCH_PROJECT_TICKET_SUCCESS,
+      payload: new Ticket(payload, 'cad'),
+    });
+  } catch (error) {
+    dispatch({
+      type: actionType.FETCH_PROJECT_TICKET_ERROR,
+      payload: error,
+    });
+  }
+};

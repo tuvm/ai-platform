@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { get } from 'lodash';
 import JobList from './JobList';
 import FilterData from './FilterData';
-import { useDispatch } from 'react-redux';
-import { getJoblist } from './actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { actiongetJoblist } from './actions';
 import { useProjectsParams } from '../../utils/hooks';
 import { toLuceneQueryString } from '../../utils/helpers';
 import moment from 'moment';
@@ -18,6 +19,7 @@ import { ROWS_PER_PAGE } from '../../utils/constants/config';
 export const Jobs = () => {
   const dispatch = useDispatch();
   const { params } = useProjectsParams();
+  const credentialList = useSelector((state) => state.system.credentialList);
   const [query, setQuery] = useState({
     offset: 0,
     limit: ROWS_PER_PAGE[0],
@@ -56,8 +58,11 @@ export const Jobs = () => {
   };
 
   useEffect(() => {
-    dispatch(getJoblist(params.projectId, query));
-  }, [dispatch, query, params]);
+    const key = get(credentialList, '[0].token');
+    if (key) {
+      dispatch(actiongetJoblist(params.projectId, query, key));
+    }
+  }, [query, params, credentialList]);
 
   useEffect(() => {
     dispatch(getModellist(params.projectId));

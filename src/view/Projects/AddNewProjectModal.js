@@ -38,7 +38,6 @@ export default function AddNewProjectModal(props) {
       })
       .catch((error) => {
         const errorMessage = get(error, 'response.data.detail', '');
-        console.log(errorMessage);
         if (
           errorMessage &&
           typeof errorMessage == 'string' &&

@@ -13,7 +13,7 @@ import CredentialTableModule from './CredentialTableModule';
 import { useSelector } from 'react-redux';
 import get from 'lodash/get';
 import { useProjectsParams } from '../../../utils/hooks';
-import { actionGenerateAPIKey, actionGrantAPIKey } from './actions';
+import { serviceGenerateAPIKey, serviceGrantAPIKey } from './services';
 import { CredentialContext } from './context';
 
 const { Option } = Select;
@@ -86,7 +86,7 @@ export default function CreateCredentialModal(props) {
       request_data: newQuotaSelected,
     };
     const project_id = projectId;
-    const res = await actionGrantAPIKey({ project_id, payload });
+    const res = await serviceGrantAPIKey({ project_id, payload });
     if (res && res.token) {
       const payload_apikey = {
         name: name,
@@ -95,7 +95,10 @@ export default function CreateCredentialModal(props) {
         project_id: projectId,
         token: res.token,
       };
-      let token_res = await actionGenerateAPIKey({ payload: payload_apikey, project_id });
+      let token_res = await serviceGenerateAPIKey({
+        payload: payload_apikey,
+        project_id,
+      });
       // Endtime must greater than now
       token_res = get(token_res, 'data');
       if (token_res && token_res.token) {

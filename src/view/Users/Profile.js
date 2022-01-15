@@ -20,7 +20,6 @@ const Profile = () => {
   const [imageUrl, setImageUrl] = useState(profile.avatar);
   const [nameModal, setNameModal] = useState(false);
   const [passwordModal, setPasswordModal] = useState(false);
-  console.log(profile);
 
   useEffect(() => {
     setImageUrl(profile.avatar);

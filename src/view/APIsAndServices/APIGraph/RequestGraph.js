@@ -1,12 +1,11 @@
-import React from "react";
-import { Bar, Line } from "react-chartjs-2";
+import React from 'react';
+import { Bar, Line } from 'react-chartjs-2';
 import get from 'lodash/get';
-import { isDiff } from "../../../utils/helpers";
-import { CHART_TYPE_COLORS, KEY_LIST } from "../../../utils/constants/config";
-import { isEmpty } from "lodash";
+import { isDiff } from '../../../utils/helpers';
+import { CHART_TYPE_COLORS, KEY_LIST } from '../../../utils/constants/config';
+import { isEmpty } from 'lodash';
 
 const RequestGraph = (props) => {
-  console.log({ data: props.data });
   const { graphType } = props;
   const datasets = get(props.data, 'datasets');
   let chartDatasets = [];
@@ -15,11 +14,13 @@ const RequestGraph = (props) => {
     chartDatasets = datasets.map((item, idx) => {
       let data = item.data;
       const label = item.label || getModelName(item.query_string);
-      const model = item.query_string ? item.query_string.split('ai_model=')[1] : '';
+      const model = item.query_string
+        ? item.query_string.split('ai_model=')[1]
+        : '';
       if (graphType === 'request-size') {
         data = data.map((item) => (item / 1024 / 1024).toFixed(2));
       }
-      let color = CHART_TYPE_COLORS[label] || CHART_TYPE_COLORS['Default']
+      let color = CHART_TYPE_COLORS[label] || CHART_TYPE_COLORS['Default'];
       return {
         data,
         label: label,
@@ -36,8 +37,6 @@ const RequestGraph = (props) => {
     });
   }
 
-  console.log({ chartDatasets });
-
   const data = {
     labels: props.data?.labels || [],
     datasets: chartDatasets,
@@ -45,7 +44,7 @@ const RequestGraph = (props) => {
 
   return (
     <div style={{ height: 320 }}>
-      <Line 
+      <Line
         data={data}
         options={{
           layout: {
@@ -56,7 +55,7 @@ const RequestGraph = (props) => {
           tooltips: {
             displayColors: true,
             callbacks: {
-              mode: "x",
+              mode: 'x',
             },
           },
           maintainAspectRatio: false,
@@ -64,7 +63,7 @@ const RequestGraph = (props) => {
             duration: 1000,
           },
           legend: {
-            align: "center",
+            align: 'center',
             labels: {
               boxWidth: 11,
               padding: 20,
@@ -90,7 +89,7 @@ const RequestGraph = (props) => {
                 },
               },
             ],
-          }
+          },
         }}
       />
     </div>
@@ -102,7 +101,7 @@ export default React.memo(RequestGraph, (prevProps, nextProps) => {
 });
 
 export const getModelName = (querystring) => {
-  const keyname = querystring.split("ai_model=")[1] || "";
-  const name = KEY_LIST[keyname] || "";
+  const keyname = querystring.split('ai_model=')[1] || '';
+  const name = KEY_LIST[keyname] || '';
   return name;
 };
