@@ -1,6 +1,6 @@
 import { Switch, Typography, Select, Button, message } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { get, clone } from 'lodash';
+import { get, clone, capitalize } from 'lodash';
 import { CaretDownOutlined } from '@ant-design/icons';
 import './ModelSetting.scss';
 import {
@@ -114,22 +114,24 @@ const ModelSettings = () => {
     const lang = config.language;
     const labels = config.result_labels[config.language];
     if (!!labels) {
-      return Object.keys(labels).map((it) => (
-        <div className="label-group" key={it}>
-          <div>{it}</div>
-          {labels[it] &&
-            labels[it].map((label, idx) => (
-              <Button
-                style={{ margin: 5 }}
-                key={label.id}
-                type={label.enabled ? 'primary' : 'default'}
-                onClick={() => toggleLabel(lang, it, idx, !label.enabled)}
-              >
-                {label.label}
-              </Button>
-            ))}
-        </div>
-      ));
+      return Object.keys(labels)
+        .reverse()
+        .map((it) => (
+          <div className="label-group" key={it}>
+            <div>{capitalize(it)}</div>
+            {labels[it] &&
+              labels[it].map((label, idx) => (
+                <Button
+                  style={{ margin: 5 }}
+                  key={label.id}
+                  type={label.enabled ? 'primary' : 'default'}
+                  onClick={() => toggleLabel(lang, it, idx, !label.enabled)}
+                >
+                  {label.label}
+                </Button>
+              ))}
+          </div>
+        ));
     } else {
       return null;
     }
@@ -157,6 +159,20 @@ const ModelSettings = () => {
       </div>
 
       <div className="block">
+        <div style={{ display: 'flex' }}>
+          <Title level={5} className="title">
+            Turn on automated rules
+          </Title>
+          <Switch checked={true} />
+        </div>
+        <div>
+          Automated rules allow the study that has passed the DICOM keyword
+          filtering module to automatically diagnose by the model. You must not
+          manually diagnose on each study
+        </div>
+      </div>
+
+      <div className="block">
         <Title level={5} className="title">
           Select the language on result display
         </Title>
@@ -170,7 +186,7 @@ const ModelSettings = () => {
           onChange={handleChangeLanguage}
           value={config.language}
         >
-          <Option value="vi">Vietnamese</Option>
+          <Option value="vi">Tiếng Việt</Option>
           <Option value="en">English</Option>
         </Select>
       </div>
@@ -180,20 +196,6 @@ const ModelSettings = () => {
           Select labels on result display
         </Title>
         {renderLabels(config)}
-      </div>
-
-      <div className="block">
-        <div style={{ display: 'flex' }}>
-          <Title level={5} className="title">
-            Turn on automated rules
-          </Title>
-          <Switch />
-        </div>
-        <div>
-          Automated rules allow the study that has passed the DICOM keyword
-          filtering module to automatically diagnose by the model. You must not
-          manually diagnose on each study
-        </div>
       </div>
     </div>
   );

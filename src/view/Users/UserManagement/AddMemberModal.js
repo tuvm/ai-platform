@@ -75,7 +75,7 @@ export default function AddMemberModal(props) {
       handleCancel();
       return;
     }
-    message.success(t('IDS_ADD_PROJECT_MEMBER_SUCCESS'));
+    message.success(t('Add organization user successfully'));
     closeAndReload();
   };
 
@@ -86,7 +86,7 @@ export default function AddMemberModal(props) {
   return (
     <div>
       <Modal
-        title={t('IDS_ADD_MEMBER')}
+        title={t('Add User')}
         visible={true}
         onOk={handleOk}
         onCancel={handleCancel}

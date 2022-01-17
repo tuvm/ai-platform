@@ -61,14 +61,14 @@ const JobList = ({ onChange }) => {
     // },
     {
       title: 'StudyUID',
-      width: 100,
+      width: 300,
       dataIndex: 'StudyInstanceUID',
       key: 'StudyInstanceUID',
       ellipsis: true,
     },
     {
       title: 'JobID',
-      width: 100,
+      width: 300,
       dataIndex: ['_source', 'job_id'],
       key: 'JobID',
       ellipsis: true,
@@ -102,7 +102,7 @@ const JobList = ({ onChange }) => {
       title: 'Metadata',
       dataIndex: 'Metadata',
       key: 'Metadata',
-      width: 30,
+      width: 50,
       render: () => (
         <Button
           type="link"
@@ -116,7 +116,7 @@ const JobList = ({ onChange }) => {
       title: 'Result',
       dataIndex: ['_source', 'ai_result'],
       key: 'Result',
-      width: 30,
+      width: 50,
       render: (text) => (
         <Button type="link" onClick={() => JsonView.open('Result', text)}>
           View
@@ -127,7 +127,7 @@ const JobList = ({ onChange }) => {
       title: 'Created time',
       dataIndex: ['_source', 'start_time'],
       key: 'CreatedTime',
-      width: 80,
+      width: 220,
       sorter: true,
       render: (text) => moment(text).format('MMM DD, YYYY, HH:mm.ss.SSS'),
     },
@@ -135,7 +135,7 @@ const JobList = ({ onChange }) => {
       title: 'Updated time',
       dataIndex: ['_source', 'finish_time'],
       key: 'UpdatedTime',
-      width: 80,
+      width: 220,
       sorter: true,
       render: (text) => moment(text).format('MMM DD, YYYY, HH:mm.ss.SSS'),
     },
@@ -163,6 +163,7 @@ const JobList = ({ onChange }) => {
         columns={columns}
         dataSource={data?.records || []}
         rowKey={(record) => record._id}
+        scroll={{ x: 'max-content' }}
         pagination={{
           showQuickJumper: true,
           showSizeChanger: true,

@@ -97,7 +97,7 @@ export default function UserManagement() {
           message.error(apiError(response));
           return;
         }
-        message.success(t('IDS_DELETE_PROJECT_MEMBER_SUCCESS'));
+        message.success(t('Delete organization user successfully'));
         handleGetUserPermissions();
       },
       onCancel: () => {},
@@ -170,7 +170,7 @@ export default function UserManagement() {
             icon={<UserAddOutlined />}
             onClick={handleOpenCreateModal}
           >
-            {t('IDS_ADD_MEMBER')}
+            {t('Add User')}
           </Button>
         )}
       </div>
