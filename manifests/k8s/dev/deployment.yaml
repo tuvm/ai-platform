@@ -41,6 +41,8 @@ spec:
               value: 'http://console.dev.ai:8190/key'
             - name: REACT_APP_DIAGNOSE_API_URL
               value: 'http://console.dev.ai:8190/diagnose'
+            - name: REACT_APP_AUTO_DIAGNOSE_API_URL
+              value: 'http://console.dev.ai:8190/auto-diagnose'
             - name: REACT_APP_AUTH_URL
               value: 'http://console.dev.ai:8190'
             - name: REACT_APP_KEYCLOAK_REALM

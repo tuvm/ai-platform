@@ -114,15 +114,20 @@ const Rules = () => {
   }, []);
 
   function handleImport(values) {
-    const json = JSON.parse(values.json);
-    if (json) {
-      setState({
-        tree: QbUtils.checkTree(
-          QbUtils.loadFromJsonLogic(json, state.config),
-          state.config
-        ),
-        config: state.config,
-      });
+    try {
+      const json = JSON.parse(values.json);
+      if (json) {
+        setState({
+          tree: QbUtils.checkTree(
+            QbUtils.loadFromJsonLogic(json, state.config),
+            state.config
+          ),
+          config: state.config,
+        });
+        message.success('Rule is imported');
+      }
+    } catch (err) {
+      message.error('Invalid format');
     }
   }
 
@@ -172,9 +177,13 @@ const Rules = () => {
     const { logic } = QbUtils.jsonLogicFormat(state.tree, state.config);
     const key = get(credentialList, '[0].token');
     if (key) {
-      createRule(params.projectId, params.model, logic, key).then((res) => {
-        console.log(res);
-      });
+      createRule(params.projectId, params.model, logic, key)
+        .then((res) => {
+          message.success('Saved successfully');
+        })
+        .catch((err) => {
+          message.error('Save failed');
+        });
     }
   };
 

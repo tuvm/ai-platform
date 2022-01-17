@@ -41,6 +41,8 @@ spec:
               value: 'http://console.staging.ai:8191/key'
             - name: REACT_APP_DIAGNOSE_API_URL
               value: 'http://console.staging.ai:8191/diagnose'
+            - name: REACT_APP_AUTO_DIAGNOSE_API_URL
+              value: 'http://console.staging.ai:8191/auto-diagnose'
             - name: REACT_APP_AUTH_URL
               value: 'http://console.staging.ai:8191'
             - name: REACT_APP_KEYCLOAK_REALM
