@@ -100,14 +100,11 @@ const JobList = ({ onChange }) => {
     },
     {
       title: 'Metadata',
-      dataIndex: 'Metadata',
+      dataIndex: ['_source', 'metadata'],
       key: 'Metadata',
       width: 50,
-      render: () => (
-        <Button
-          type="link"
-          onClick={() => JsonView.open('Metadata', data.data)}
-        >
+      render: (text) => (
+        <Button type="link" onClick={() => JsonView.open('Metadata', text)}>
           View
         </Button>
       ),
