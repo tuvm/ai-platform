@@ -4,6 +4,7 @@ import modelImage from '../../assets/images/modelImage.svg';
 import styles from './Models.module.scss';
 import { serviceUpdateModel } from './actions';
 import { useHistory } from 'react-router';
+import { MODEL_STATUS } from '../../utils/constants/config';
 
 const { Text } = Typography;
 const { Meta } = Card;
@@ -43,18 +44,27 @@ function ModelBlock({ data, projectId, onUpdate }) {
         <Text type="secondary">{vendor}</Text>
       </div>
       <div className={styles.buttonContainer}>
-        <Button type="text" onClick={() => {}}>
+        <Button type="text" onClick={handleActiveModel}>
           Learn more
         </Button>
         {status === 'off' ? (
-          <Button type="primary" onClick={() => handleChangeStatus('on')}>
+          <Button
+            type="primary"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleChangeStatus(MODEL_STATUS.ON);
+            }}
+          >
             Enable
           </Button>
         ) : (
           <Button
             type="primary"
             danger
-            onClick={() => handleChangeStatus('off')}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleChangeStatus(MODEL_STATUS.OFF);
+            }}
           >
             Disable
           </Button>

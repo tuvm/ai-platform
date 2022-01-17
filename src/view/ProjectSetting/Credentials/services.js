@@ -1,6 +1,6 @@
 import get from 'lodash/get';
 import api from '../../system/api';
-import { API_ENV } from '../../../utils/constants/config';
+import { API_ENV, MODEL_STATUS } from '../../../utils/constants/config';
 
 const organization = 'cad';
 
@@ -70,7 +70,7 @@ export const serviceGetResourceList = (params) => {
   const projectId = params.project_id;
   const url = `/project-resource/g/${organization}/${projectId}/list`;
   return api(
-    { url, method: 'GET', params: { status: 'on' } },
+    { url, method: 'GET', params: { status: MODEL_STATUS.ON } },
     API_ENV.RESOURCE,
     projectId
   );

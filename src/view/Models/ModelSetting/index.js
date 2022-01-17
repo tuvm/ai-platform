@@ -3,14 +3,24 @@ import React, { useEffect, useState } from 'react';
 import { get, clone } from 'lodash';
 import { CaretDownOutlined } from '@ant-design/icons';
 import './ModelSetting.scss';
-import { getModelSetting, updateModelSetting } from '../actions';
+import {
+  getModellist,
+  getModelSetting,
+  serviceUpdateModel,
+  updateModelSetting,
+} from '../actions';
 import { useModelsParams } from '../../../utils/hooks';
+import { useDispatch, useSelector } from 'react-redux';
+import { MODEL_STATUS } from '../../../utils/constants/config';
 
 const { Title } = Typography;
 const { Option } = Select;
 
 const ModelSettings = () => {
   const { params } = useModelsParams();
+  const modelList = useSelector((state) => state.system.modelList);
+  const [currentModel, setCurrentModel] = useState({});
+  const dispatch = useDispatch();
   const [config, setConfig] = useState({
     language: 'en',
     result_labels: {},
@@ -25,6 +35,33 @@ const ModelSettings = () => {
   useEffect(() => {
     getConfig();
   }, []);
+
+  useEffect(() => {
+    if (!!modelList && modelList.modules) {
+      try {
+        console.log(modelList);
+        const findModel = modelList.modules.find(
+          (it) => it.slug === params.model
+        );
+        setCurrentModel(findModel);
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      dispatch(getModellist(params.projectId));
+    }
+  }, [modelList]);
+
+  const handleChangeStatus = (status) => {
+    serviceUpdateModel(params.projectId, currentModel.id, status)
+      .then((res) => {
+        message.success('Status has been updated');
+        dispatch(getModellist(params.projectId));
+      })
+      .catch((err) => {
+        message.error('Update failed');
+      });
+  };
 
   const getConfig = () => {
     getModelSetting(params.projectId, params.model).then((res) => {
@@ -105,7 +142,16 @@ const ModelSettings = () => {
           <Title level={5} className="title">
             Enable model
           </Title>
-          <Switch />
+          <Switch
+            checked={currentModel && currentModel.status === MODEL_STATUS.ON}
+            onChange={() =>
+              handleChangeStatus(
+                currentModel.status === MODEL_STATUS.ON
+                  ? MODEL_STATUS.OFF
+                  : MODEL_STATUS.ON
+              )
+            }
+          />
         </div>
         <div>You must enable model before diagnosing the study</div>
       </div>

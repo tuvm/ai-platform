@@ -30,6 +30,11 @@ export const POLLING_TOKEN_TIMER = 4 * 60000;
 export const LOCAL_STORAGE_REALM_ID = 'realm_id';
 export const DEFAULT_REALM_ID = 'cad';
 
+export const MODEL_STATUS = {
+  ON: 'on',
+  OFF: 'off',
+};
+
 const {
   OIDC_ACCESS_TOKEN_URI,
   OIDC_AUTHORIZATION_URI,
