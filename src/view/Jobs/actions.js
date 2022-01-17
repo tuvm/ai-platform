@@ -5,25 +5,25 @@ import { API_ENV } from '../../utils/constants/config';
 import api from '../system/api';
 // import { API_ENV } from '../../utils/constants/config';
 
-// const organization = 'cad';
+const organization = 'cad';
 
 export const actiongetJoblist =
-  (project_id, params, key) => async (dispatch) => {
+  (project_id, params) => async (dispatch) => {
     try {
       dispatch(fetchJobList());
-      const data = await serviceGetJobList(project_id, key, params);
+      const data = await serviceGetJobList(project_id, params);
       dispatch(fetchJobListSuccess(data.data));
     } catch (err) {
       dispatch(fetchJobListError(err));
     }
   };
 
-export const serviceGetJobList = (project_id, key, params) => {
+export const serviceGetJobList = (project_id, params) => {
   return api(
     {
-      url: '/jobs-admin',
+      url: `/jobs-admin/g/${organization}/${project_id}/jobs`,
       method: 'GET',
-      headers: { 'X-API-KEY': key },
+      // headers: { 'X-API-KEY': key },
       params,
     },
     API_ENV.DIAGNOSE,

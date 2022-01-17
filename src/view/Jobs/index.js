@@ -58,10 +58,7 @@ export const Jobs = () => {
   };
 
   useEffect(() => {
-    const key = get(credentialList, '[0].token');
-    if (key) {
-      dispatch(actiongetJoblist(params.projectId, query, key));
-    }
+    dispatch(actiongetJoblist(params.projectId, query));
   }, [query, params, credentialList]);
 
   useEffect(() => {
