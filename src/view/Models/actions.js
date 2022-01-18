@@ -4,24 +4,22 @@ import api from '../system/api';
 
 const organization = 'cad';
 
-export const getRule = (projectId, model, key) => {
+export const getRule = (projectId, model) => {
   return api(
     {
-      url: `/rules?resource_slug=${model}`,
+      url: `/rules/g/${organization}/${projectId}/get_rules?resource_slug=${model}`,
       method: 'GET',
-      headers: { 'X-API-KEY': key },
     },
     API_ENV.AUTO_DIAGNOSE,
     projectId
   );
 };
 
-export const createRule = (projectId, model, rule, key) => {
+export const createRule = (projectId, model, rule) => {
   return api(
     {
-      url: `/rules`,
+      url: `/rules/g/${organization}/${projectId}/insert_rules`,
       method: 'POST',
-      headers: { 'X-API-KEY': key },
       data: {
         resource_slug: model,
         rules: rule,
@@ -32,12 +30,11 @@ export const createRule = (projectId, model, rule, key) => {
   );
 };
 
-export const updateRule = (projectId, model, ruleId, rule, key) => {
+export const updateRule = (projectId, model, ruleId, rule) => {
   return api(
     {
-      url: `/rules/${ruleId}`,
+      url: `/rules/g/${organization}/${projectId}/update/${ruleId}`,
       method: 'PUT',
-      headers: { 'X-API-KEY': key },
       data: {
         resource_slug: model,
         rules: rule,
