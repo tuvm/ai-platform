@@ -14,6 +14,9 @@ import { actionLogout } from './systemAction';
 
 const { AUDIENCE, REACT_APP_AUTH_URL } = CONFIG_SERVER;
 
+let updatingGeneralToken = false;
+let updatingProjectToken = false;
+
 const _kc = new Keycloak({
   realm: process.env.REACT_APP_KEYCLOAK_REALM || 'cad',
   url:
@@ -100,11 +103,16 @@ const _requestProjectToken = (token, projectId, callback) => {
       const { data } = res;
       // localStorage.setItem(`${TOKEN}_${projectId}`, data.access_token);
       cookie.set(PROJECT_TOKEN, data.access_token, {
-        expires: new Date((res.data.expires_in || 1800) * 1000 + Date.now()),
+        expires: new Date(
+          ((res.data.expires_in || 300) - 30) * 1000 + Date.now()
+        ),
       });
       cookie.set(CURRENT_PROJECT, projectId, {
-        expires: new Date((res.data.expires_in || 1800) * 1000 + Date.now()),
+        expires: new Date(
+          ((res.data.expires_in || 300) - 30) * 1000 + Date.now()
+        ),
       });
+      updatingProjectToken = false;
       callback();
     }
   });
@@ -141,9 +149,10 @@ const _requestPermissionToken = (token, callback, failedCallback) => {
           // localStorage.setItem(TOKEN, data.access_token);
           cookie.set(TOKEN, data.access_token, {
             expires: new Date(
-              (res.data.expires_in || 1800) * 1000 + Date.now()
+              ((res.data.expires_in || 300) - 30) * 1000 + Date.now()
             ),
           });
+          updatingGeneralToken = false;
           callback();
         }
       })
@@ -153,6 +162,7 @@ const _requestPermissionToken = (token, callback, failedCallback) => {
         if (errorCode === 401) {
           actionLogout();
         } else if (failedCallback) {
+          updatingGeneralToken = false;
           failedCallback();
         }
       });
@@ -188,17 +198,21 @@ const getProjectToken = (projectId) => {
 
 const isLoggedIn = () => !!_kc.token;
 
-const updateToken = (successCallback) =>
+const updateToken = (successCallback) => {
+  updatingGeneralToken = true;
   _kc
     .updateToken(5)
     .then(_requestPermissionToken(_kc.token, successCallback))
     .catch(doLogin);
+};
 
-const updateProjectToken = (projectId, successCallback) =>
+const updateProjectToken = (projectId, successCallback) => {
+  updatingProjectToken = true;
   _kc
     .updateToken(5)
     .then(_requestProjectToken(_kc.token, projectId, successCallback))
     .catch(doLogin);
+};
 
 const getUsername = () => _kc.tokenParsed?.preferred_username;
 
@@ -218,6 +232,8 @@ const UserService = {
   getProjectToken,
   updateProjectToken,
   updateToken,
+  updatingGeneralToken,
+  updatingProjectToken,
   getUsername,
   hasRole,
   loadUserProfile,

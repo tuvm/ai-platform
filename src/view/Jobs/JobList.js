@@ -62,7 +62,7 @@ const JobList = ({ onChange }) => {
     {
       title: 'StudyUID',
       width: 300,
-      dataIndex: 'StudyInstanceUID',
+      dataIndex: ['_source', 'study_instance_uid'],
       key: 'StudyInstanceUID',
       ellipsis: true,
     },

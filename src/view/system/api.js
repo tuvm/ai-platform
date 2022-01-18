@@ -82,6 +82,31 @@ const request = axios.create();
 //   }
 // };
 
+let pendingGeneralRequests = [];
+let pendingProjectRequests = [];
+
+function onGeneralTokenFetched(access_token) {
+  pendingGeneralRequests = pendingGeneralRequests.map((callback) =>
+    callback(access_token)
+  );
+  pendingGeneralRequests = [];
+}
+
+function onProjectTokenFetched(access_token) {
+  pendingProjectRequests = pendingProjectRequests.map((callback) =>
+    callback(access_token)
+  );
+  pendingProjectRequests = [];
+}
+
+function addPendingGeneralRequest(callback) {
+  pendingGeneralRequests.push(callback);
+}
+
+function addPendingProjectRequest(callback) {
+  pendingProjectRequests.push(callback);
+}
+
 const api = (options = {}, apiEnv = API_ENV.BACKEND, scope = 'global') => {
   let config = {
     baseURL: apiEnv,
@@ -92,6 +117,7 @@ const api = (options = {}, apiEnv = API_ENV.BACKEND, scope = 'global') => {
       Accept: '*/*',
       ...options.headers,
     },
+    scope: scope,
   };
 
   // console.log(`api token ${cookie.get(TOKEN)}`);
@@ -105,15 +131,26 @@ const api = (options = {}, apiEnv = API_ENV.BACKEND, scope = 'global') => {
         UserService.getPermissionToken()
       )
     ) {
-      return UserService.updateToken(() =>
-        request({
-          ...config,
-          headers: {
-            ...config.headers,
-            Authorization: `Bearer ${UserService.getPermissionToken()}`,
-          },
-        })
-      );
+      if (!UserService.updatingGeneralToken) {
+        // if token is not fetching, fetch it! Then execute the pending queue.
+        UserService.updateToken(() =>
+          onGeneralTokenFetched(UserService.getPermissionToken())
+        );
+      }
+      // Add the request to pending queue because we don't have token!
+      return new Promise((resolve) => {
+        addPendingGeneralRequest((access_token) => {
+          resolve(
+            request({
+              ...config,
+              headers: {
+                ...config.headers,
+                Authorization: 'Bearer ' + access_token,
+              },
+            })
+          );
+        });
+      });
     }
     return request({
       ...config,
@@ -130,15 +167,26 @@ const api = (options = {}, apiEnv = API_ENV.BACKEND, scope = 'global') => {
         UserService.getProjectToken(scope)
       )
     ) {
-      return UserService.updateProjectToken(scope, () =>
-        request({
-          ...config,
-          headers: {
-            ...config.headers,
-            Authorization: `Bearer ${UserService.getProjectToken(scope)}`,
-          },
-        })
-      );
+      if (!UserService.updatingProjectToken) {
+        // if token is not fetching, fetch it! Then execute the pending queue.
+        UserService.updateProjectToken(scope, () =>
+          onProjectTokenFetched(UserService.getProjectToken(scope))
+        );
+      }
+      // Add the request to pending queue because we don't have token!
+      return new Promise((resolve) => {
+        addPendingProjectRequest((access_token) => {
+          resolve(
+            request({
+              ...config,
+              headers: {
+                ...config.headers,
+                Authorization: 'Bearer ' + access_token,
+              },
+            })
+          );
+        });
+      });
     }
     return request({
       ...config,
@@ -162,19 +210,50 @@ request.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.log({ error });
+    const originalRequest = error.config;
     const errorCode = get(error, 'response.status');
-    if (errorCode === 401) {
-      actionLogout();
-    } else if (errorCode === 403) {
-      cookie.remove(PROJECT_TOKEN);
-      cookie.remove(TOKEN);
-      window.location.href = '/no-permission';
-    } else {
-      return Promise.reject(error);
-    }
+    if ((errorCode === 401 || errorCode === 403) && !originalRequest._retry) {
+      // if call fail the first time, try to get another token, add the request to queue and execute it when token is ready
 
-    // return Promise.reject(error);
+      const scope = originalRequest.scope;
+      originalRequest._retry = true;
+
+      if (scope === 'global') {
+        if (!UserService.updatingGeneralToken) {
+          UserService.updateToken(() =>
+            onGeneralTokenFetched(UserService.getPermissionToken())
+          );
+        }
+        return new Promise((resolve) => {
+          addPendingGeneralRequest((access_token) => {
+            originalRequest.headers.Authorization = 'Bearer ' + access_token;
+            resolve(request(originalRequest));
+          });
+        });
+      } else {
+        if (!UserService.updatingProjectToken) {
+          UserService.updateProjectToken(scope, () =>
+            onProjectTokenFetched(UserService.getProjectToken(scope))
+          );
+        }
+        return new Promise((resolve) => {
+          addPendingProjectRequest((access_token) => {
+            originalRequest.headers.Authorization = 'Bearer ' + access_token;
+            resolve(request(originalRequest));
+          });
+        });
+      }
+    } else {
+      if (errorCode === 401) {
+        actionLogout();
+      } else if (errorCode === 403) {
+        cookie.remove(PROJECT_TOKEN);
+        cookie.remove(TOKEN);
+        window.location.href = '/no-permission';
+      } else {
+        return Promise.reject(error);
+      }
+    }
   }
 );
 
