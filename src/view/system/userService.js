@@ -14,9 +14,6 @@ import { actionLogout } from './systemAction';
 
 const { AUDIENCE, REACT_APP_AUTH_URL } = CONFIG_SERVER;
 
-let updatingGeneralToken = false;
-let updatingProjectToken = false;
-
 const _kc = new Keycloak({
   realm: process.env.REACT_APP_KEYCLOAK_REALM || 'cad',
   url:
@@ -112,7 +109,6 @@ const _requestProjectToken = (token, projectId, callback) => {
           ((res.data.expires_in || 300) - 30) * 1000 + Date.now()
         ),
       });
-      updatingProjectToken = false;
       callback();
     }
   });
@@ -152,7 +148,6 @@ const _requestPermissionToken = (token, callback, failedCallback) => {
               ((res.data.expires_in || 300) - 30) * 1000 + Date.now()
             ),
           });
-          updatingGeneralToken = false;
           callback();
         }
       })
@@ -162,7 +157,6 @@ const _requestPermissionToken = (token, callback, failedCallback) => {
         if (errorCode === 401) {
           actionLogout();
         } else if (failedCallback) {
-          updatingGeneralToken = false;
           failedCallback();
         }
       });
@@ -199,7 +193,6 @@ const getProjectToken = (projectId) => {
 const isLoggedIn = () => !!_kc.token;
 
 const updateToken = (successCallback) => {
-  updatingGeneralToken = true;
   _kc
     .updateToken(5)
     .then(_requestPermissionToken(_kc.token, successCallback))
@@ -207,7 +200,6 @@ const updateToken = (successCallback) => {
 };
 
 const updateProjectToken = (projectId, successCallback) => {
-  updatingProjectToken = true;
   _kc
     .updateToken(5)
     .then(_requestProjectToken(_kc.token, projectId, successCallback))
@@ -232,8 +224,6 @@ const UserService = {
   getProjectToken,
   updateProjectToken,
   updateToken,
-  updatingGeneralToken,
-  updatingProjectToken,
   getUsername,
   hasRole,
   loadUserProfile,

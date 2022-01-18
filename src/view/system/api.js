@@ -23,6 +23,9 @@ import { actionLogout } from './systemAction';
 
 const request = axios.create();
 
+let updatingGeneralToken = false;
+let updatingProjectToken = false;
+
 // const getToken = async (code, sessionState) => {
 //   try {
 //     const res = await actionGetToken(code, sessionState);
@@ -131,11 +134,14 @@ const api = (options = {}, apiEnv = API_ENV.BACKEND, scope = 'global') => {
         UserService.getPermissionToken()
       )
     ) {
-      if (!UserService.updatingGeneralToken) {
+      if (!updatingGeneralToken) {
         // if token is not fetching, fetch it! Then execute the pending queue.
-        UserService.updateToken(() =>
-          onGeneralTokenFetched(UserService.getPermissionToken())
-        );
+        console.log('Update general token');
+        updatingGeneralToken = true;
+        UserService.updateToken(() => {
+          updatingGeneralToken = false;
+          onGeneralTokenFetched(UserService.getPermissionToken());
+        });
       }
       // Add the request to pending queue because we don't have token!
       return new Promise((resolve) => {
@@ -167,11 +173,14 @@ const api = (options = {}, apiEnv = API_ENV.BACKEND, scope = 'global') => {
         UserService.getProjectToken(scope)
       )
     ) {
-      if (!UserService.updatingProjectToken) {
+      if (!updatingProjectToken) {
         // if token is not fetching, fetch it! Then execute the pending queue.
-        UserService.updateProjectToken(scope, () =>
-          onProjectTokenFetched(UserService.getProjectToken(scope))
-        );
+        console.log('Update project token');
+        updatingProjectToken = true;
+        UserService.updateProjectToken(scope, () => {
+          updatingProjectToken = false;
+          onProjectTokenFetched(UserService.getProjectToken(scope));
+        });
       }
       // Add the request to pending queue because we don't have token!
       return new Promise((resolve) => {
@@ -219,10 +228,12 @@ request.interceptors.response.use(
       originalRequest._retry = true;
 
       if (scope === 'global') {
-        if (!UserService.updatingGeneralToken) {
-          UserService.updateToken(() =>
-            onGeneralTokenFetched(UserService.getPermissionToken())
-          );
+        if (!updatingGeneralToken) {
+          updatingGeneralToken = true;
+          UserService.updateToken(() => {
+            updatingGeneralToken = false;
+            onGeneralTokenFetched(UserService.getPermissionToken());
+          });
         }
         return new Promise((resolve) => {
           addPendingGeneralRequest((access_token) => {
@@ -231,10 +242,12 @@ request.interceptors.response.use(
           });
         });
       } else {
-        if (!UserService.updatingProjectToken) {
-          UserService.updateProjectToken(scope, () =>
-            onProjectTokenFetched(UserService.getProjectToken(scope))
-          );
+        if (!updatingProjectToken) {
+          updatingProjectToken = true;
+          UserService.updateProjectToken(scope, () => {
+            updatingProjectToken = false;
+            onProjectTokenFetched(UserService.getProjectToken(scope));
+          });
         }
         return new Promise((resolve) => {
           addPendingProjectRequest((access_token) => {
