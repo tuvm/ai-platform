@@ -22,6 +22,19 @@ const _kc = new Keycloak({
   clientId: process.env.REACT_APP_KEYCLOAK_CLIENT_ID || 'console-ui',
 });
 
+_kc.onTokenExpired = () => {
+  console.log('token expired', _kc.token);
+  _kc
+    .updateToken(5)
+    .then(() => {
+      _requestPermissionToken(_kc.token, () => {});
+      if (cookie.get(CURRENT_PROJECT)) {
+        _requestProjectToken(_kc.token, cookie.get(CURRENT_PROJECT), () => {});
+      }
+    })
+    .catch(doLogin);
+};
+
 const hasPerm = (tickets, perm_list) => {
   // const tickets = window.store.getState().system.ticket;
   if (!tickets) return false;
@@ -104,11 +117,7 @@ const _requestProjectToken = (token, projectId, callback) => {
           ((res.data.expires_in || 300) - 30) * 1000 + Date.now()
         ),
       });
-      cookie.set(CURRENT_PROJECT, projectId, {
-        expires: new Date(
-          ((res.data.expires_in || 300) - 30) * 1000 + Date.now()
-        ),
-      });
+      cookie.set(CURRENT_PROJECT, projectId);
       callback();
     }
   });
