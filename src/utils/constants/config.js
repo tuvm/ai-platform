@@ -30,6 +30,26 @@ export const POLLING_TOKEN_TIMER = 4 * 60000;
 export const LOCAL_STORAGE_REALM_ID = 'realm_id';
 export const DEFAULT_REALM_ID = 'cad';
 
+export const MODEL_TO_SLUG = {
+  ChestXray: 'chestxray',
+  SpineXray: 'spinexray',
+  Mammography: 'mammography',
+  BrainCT: 'brainct',
+  BrainMRI: 'brainmri',
+  LungCT: 'lungct',
+  LiverCT: 'liverct',
+};
+
+export const SLUG_TO_MODEL = {
+  chestxray: 'ChestXray',
+  spinexray: 'SpineXray',
+  mammography: 'Mammography',
+  brainct: 'BrainCT',
+  brainmri: 'BrainMRI',
+  lungct: 'LungCT',
+  liverct: 'LiverCT',
+};
+
 export const MODEL_STATUS = {
   ON: 'on',
   OFF: 'off',

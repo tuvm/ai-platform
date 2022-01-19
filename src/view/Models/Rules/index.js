@@ -15,7 +15,8 @@ import 'react-awesome-query-builder/lib/css/compact_styles.css'; //optional, for
 import { createRule, getRule } from '../actions';
 import { useModelsParams } from '../../../utils/hooks';
 import CopyToClipboard from 'react-copy-to-clipboard';
-import { useSelector } from 'react-redux';
+import { SLUG_TO_MODEL } from '../../../utils/constants/config';
+import defaultRules from './defaultRules';
 
 // Choose your skin (ant/material/vanilla):
 const InitialConfig = AntdConfig; // or MaterialConfig or BasicConfig
@@ -25,6 +26,18 @@ const { TextArea } = Input;
 // You need to provide your own config. See below 'Config format'
 const config = {
   ...InitialConfig,
+  operators: {
+    ...InitialConfig.operators,
+    equal: {
+      ...InitialConfig.operators.equal,
+      label: 'Equal',
+    },
+    like: {
+      ...InitialConfig.operators.like,
+      label: 'Contain',
+      labelForFormat: 'in',
+    },
+  },
   fields: {
     tag: {
       label: 'Dicom Tag',
@@ -38,6 +51,7 @@ const config = {
             type: 'text',
             valueSources: ['value'],
             preferWidgets: ['text'],
+            operators: ['equal', 'like'],
           },
         }),
         {}
@@ -93,7 +107,6 @@ const Rules = () => {
   const [isImportJson, setIsImportJson] = useState(false);
   const [jsonLogic, setLogic] = useState({});
   const { params } = useModelsParams();
-  const credentialList = useSelector((state) => state.system.credentialList);
 
   useEffect(() => {
     getRule(params.projectId, params.model).then((res) => {
@@ -110,6 +123,27 @@ const Rules = () => {
     });
   }, []);
 
+  function handleResetRule() {
+    try {
+      if (params && params.model) {
+        const model = SLUG_TO_MODEL[params.model];
+        if (model) {
+          const defaultRule = defaultRules[model];
+          setState({
+            tree: QbUtils.checkTree(
+              QbUtils.loadFromJsonLogic(defaultRule, state.config),
+              state.config
+            ),
+            config: state.config,
+          });
+          message.success('Rule is reset to default. Please save it.');
+        }
+      }
+    } catch (err) {
+      message.error('Can not reset rule.');
+    }
+  }
+
   function handleImport(values) {
     try {
       const json = JSON.parse(values.json);
@@ -121,7 +155,7 @@ const Rules = () => {
           ),
           config: state.config,
         });
-        message.success('Rule is imported');
+        message.success('Rule is imported. Please save it.');
       }
     } catch (err) {
       message.error('Invalid format');
@@ -211,7 +245,11 @@ const Rules = () => {
             </Button>
           </CopyToClipboard>
 
-          <Button type="primary" style={{ margin: 5 }}>
+          <Button
+            type="primary"
+            style={{ margin: 5 }}
+            onClick={handleResetRule}
+          >
             Reset
           </Button>
         </div>
