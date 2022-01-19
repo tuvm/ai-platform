@@ -96,21 +96,18 @@ const Rules = () => {
   const credentialList = useSelector((state) => state.system.credentialList);
 
   useEffect(() => {
-    const key = get(credentialList, '[0].token');
-    if (key) {
-      getRule(params.projectId, params.model, key).then((res) => {
-        const rule = get(res, 'data.[0].original_rules');
-        if (rule) {
-          setState({
-            tree: QbUtils.checkTree(
-              QbUtils.loadFromJsonLogic(rule, state.config),
-              state.config
-            ),
-            config: state.config,
-          });
-        }
-      });
-    }
+    getRule(params.projectId, params.model).then((res) => {
+      const rule = get(res, 'data.[0].original_rules');
+      if (rule) {
+        setState({
+          tree: QbUtils.checkTree(
+            QbUtils.loadFromJsonLogic(rule, state.config),
+            state.config
+          ),
+          config: state.config,
+        });
+      }
+    });
   }, []);
 
   function handleImport(values) {
@@ -175,16 +172,13 @@ const Rules = () => {
 
   const onSave = () => {
     const { logic } = QbUtils.jsonLogicFormat(state.tree, state.config);
-    const key = get(credentialList, '[0].token');
-    if (key) {
-      createRule(params.projectId, params.model, logic, key)
-        .then((res) => {
-          message.success('Saved successfully');
-        })
-        .catch((err) => {
-          message.error('Save failed');
-        });
-    }
+    createRule(params.projectId, params.model, logic)
+      .then((res) => {
+        message.success('Saved successfully');
+      })
+      .catch((err) => {
+        message.error('Save failed');
+      });
   };
 
   return (
