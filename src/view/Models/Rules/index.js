@@ -30,12 +30,15 @@ const config = {
     ...InitialConfig.operators,
     equal: {
       ...InitialConfig.operators.equal,
-      label: 'Equal',
+      label: 'In',
+      labelForFormat: 'in',
+      jsonLogic: 'in',
     },
     like: {
-      ...InitialConfig.operators.like,
+      ...InitialConfig.operators.equal,
       label: 'Contain',
-      labelForFormat: 'in',
+      labelForFormat: 'contain',
+      jsonLogic: 'contain',
     },
   },
   fields: {
