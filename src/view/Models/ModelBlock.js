@@ -1,10 +1,11 @@
 import React from 'react';
 import { Button, Card, message, Typography } from 'antd';
-import modelImage from '../../assets/images/modelImage.svg';
+// import modelImage from '../../assets/images/modelImage.svg';
+import modelImages from './modelImages';
 import styles from './Models.module.scss';
 import { serviceUpdateModel } from './actions';
 import { useHistory } from 'react-router';
-import { MODEL_STATUS } from '../../utils/constants/config';
+import { MODEL_STATUS, SLUG_TO_MODEL } from '../../utils/constants/config';
 
 const { Text } = Typography;
 const { Meta } = Card;
@@ -32,7 +33,13 @@ function ModelBlock({ data, projectId, onUpdate }) {
     <Card
       hoverable
       style={{ width: '100%', minWidth: 150, minHeight: 224 }}
-      cover={<img alt="model-cover" src={modelImage} />}
+      cover={
+        <img
+          alt="model-cover"
+          style={{ height: 150, objectFit: 'cover' }}
+          src={modelImages[SLUG_TO_MODEL[slug]]}
+        />
+      }
       onClick={handleActiveModel}
     >
       <div className={styles.content}>
