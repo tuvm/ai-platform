@@ -1,7 +1,7 @@
 const ChestXray = {
   and: [
     {
-      '==': [
+      in: [
         {
           var: 'tag.Modality',
         },
@@ -9,7 +9,7 @@ const ChestXray = {
       ],
     },
     {
-      '==': [
+      in: [
         {
           var: 'tag.BodyPart',
         },
@@ -22,7 +22,7 @@ const ChestXray = {
 const SpineXray = {
   and: [
     {
-      '==': [
+      in: [
         {
           var: 'tag.Modality',
         },
@@ -30,7 +30,7 @@ const SpineXray = {
       ],
     },
     {
-      '==': [
+      in: [
         {
           var: 'tag.BodyPart',
         },
@@ -43,7 +43,7 @@ const SpineXray = {
 const Mammography = {
   and: [
     {
-      '==': [
+      in: [
         {
           var: 'tag.Modality',
         },
@@ -56,7 +56,7 @@ const Mammography = {
 const BrainCT = {
   and: [
     {
-      '==': [
+      in: [
         {
           var: 'tag.Modality',
         },
@@ -64,7 +64,7 @@ const BrainCT = {
       ],
     },
     {
-      '==': [
+      in: [
         {
           var: 'tag.BodyPart',
         },
@@ -77,7 +77,7 @@ const BrainCT = {
 const BrainMRI = {
   and: [
     {
-      '==': [
+      in: [
         {
           var: 'tag.Modality',
         },
@@ -85,7 +85,7 @@ const BrainMRI = {
       ],
     },
     {
-      '==': [
+      in: [
         {
           var: 'tag.BodyPart',
         },
@@ -98,7 +98,7 @@ const BrainMRI = {
 const LungCT = {
   and: [
     {
-      '==': [
+      in: [
         {
           var: 'tag.Modality',
         },
@@ -106,7 +106,7 @@ const LungCT = {
       ],
     },
     {
-      '==': [
+      in: [
         {
           var: 'tag.BodyPart',
         },
@@ -119,7 +119,7 @@ const LungCT = {
 const LiverCT = {
   and: [
     {
-      '==': [
+      in: [
         {
           var: 'tag.Modality',
         },
@@ -127,7 +127,7 @@ const LiverCT = {
       ],
     },
     {
-      '==': [
+      in: [
         {
           var: 'tag.BodyPart',
         },
@@ -135,7 +135,7 @@ const LiverCT = {
       ],
     },
     {
-      in: [
+      contain: [
         'tinhmach, tinh, tm, venou',
         {
           var: 'tag.SeriesDescription',

@@ -122,6 +122,31 @@ const Rules = () => {
           ),
           config: state.config,
         });
+      } else {
+        try {
+          if (params && params.model) {
+            const model = SLUG_TO_MODEL[params.model];
+            if (model) {
+              const defaultRule = defaultRules[model];
+              setState({
+                tree: QbUtils.checkTree(
+                  QbUtils.loadFromJsonLogic(defaultRule, state.config),
+                  state.config
+                ),
+                config: state.config,
+              });
+              createRule(params.projectId, params.model, defaultRule)
+                .then((res) => {
+                  message.success('Rule is set to default');
+                })
+                .catch((err) => {
+                  message.error('Can not load default rule');
+                });
+            }
+          }
+        } catch (err) {
+          message.error('Can not load default rule');
+        }
       }
     });
   }, []);
@@ -255,14 +280,17 @@ const Rules = () => {
           >
             Reset
           </Button>
+          <Button type="primary" style={{ margin: 5 }} onClick={onSave}>
+            Save
+          </Button>
+          <Button
+            type="primary"
+            style={{ margin: 5 }}
+            onClick={() => setIsCustomField(true)}
+          >
+            Custom Dicom Tags
+          </Button>
         </div>
-        <Button
-          type="primary"
-          style={{ margin: 5 }}
-          onClick={() => setIsCustomField(true)}
-        >
-          Custom Dicom Tags
-        </Button>
       </div>
       <Query
         {...state.config}
@@ -270,13 +298,10 @@ const Rules = () => {
         onChange={onChange}
         renderBuilder={renderBuilder}
       />
-      <Button type="primary" onClick={onSave}>
-        Save
-      </Button>
       {/* {renderResult(state)} */}
       <Modal
         visible={isCustomField}
-        width="90vw"
+        width="80vw"
         onCancel={() => setIsCustomField(false)}
         onOk={() => {
           form.submit();
