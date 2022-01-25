@@ -100,7 +100,7 @@ const JobList = ({ onChange }) => {
     },
     {
       title: 'Metadata',
-      dataIndex: ['_source', 'metadata'],
+      dataIndex: ['_source', 'meta'],
       key: 'Metadata',
       width: 50,
       render: (text) => (
