@@ -32,8 +32,8 @@ export const DEFAULT_REALM_ID = 'cad';
 
 export const MODEL_TO_SLUG = {
   ChestXray: 'chestxray',
-  SpineXray: 'spinexray',
-  Mammography: 'mammography',
+  SpineXray: 'spinexr',
+  Mammography: 'mammogram',
   BrainCT: 'brainct',
   BrainMRI: 'brainmri',
   LungCT: 'lungct',
@@ -42,8 +42,8 @@ export const MODEL_TO_SLUG = {
 
 export const SLUG_TO_MODEL = {
   chestxray: 'ChestXray',
-  spinexray: 'SpineXray',
-  mammography: 'Mammography',
+  spinexr: 'SpineXray',
+  mammogram: 'Mammography',
   brainct: 'BrainCT',
   brainmri: 'BrainMRI',
   lungct: 'LungCT',

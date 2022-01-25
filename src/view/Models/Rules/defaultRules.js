@@ -136,10 +136,10 @@ const LiverCT = {
     },
     {
       contain: [
-        'tinhmach, tinh, tm, venou',
         {
           var: 'tag.SeriesDescription',
         },
+        'tinhmach, tinh, tm, venou',
       ],
     },
   ],
