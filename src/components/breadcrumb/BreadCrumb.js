@@ -2,34 +2,35 @@ import React, { useEffect, useState } from 'react';
 import { Breadcrumb } from 'antd';
 import last from 'lodash/last';
 import { withRouter } from 'react-router-dom';
-// import get from 'lodash/get';
+import get from 'lodash/get';
 import { APP_ROUTES } from '../../utils/constants/config';
 import { useTranslation } from 'react-i18next';
 import './BreadCrumb.scss';
 
 const BreadCrumb = (props) => {
   const [breadcrumbList, setBreadcrumbList] = useState([]);
-  const { t }  = useTranslation();
+  const { t } = useTranslation();
   const { location } = props;
 
   useEffect(() => {
-    const { pathname } = location;
-    let routeTree = []
-    APP_ROUTES.forEach(item => {
+    const path = get(location, 'pathname') || '';
+    const pathname = '/' + (path.split('/').reverse()[0] || '');
+    let routeTree = [];
+    APP_ROUTES.forEach((item) => {
       if (item.pathname === pathname) {
-        routeTree.push(item.name)
+        routeTree.push(item.name);
         return;
-      } else if(item.submenu) {
+      } else if (item.submenu) {
         const submenu = item.submenu;
-        submenu.forEach(subItem => {
+        submenu.forEach((subItem) => {
           if (subItem.pathname === pathname) {
-            routeTree.push(item.name)
-            routeTree.push(subItem.name)
+            routeTree.push(item.name);
+            routeTree.push(subItem.name);
             return;
           }
-        })
+        });
       }
-    })
+    });
 
     // const name = get(routeTree, 'name');
     const list = ['IDS_APP_NAME', ...routeTree];
