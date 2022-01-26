@@ -121,7 +121,7 @@ export default function CredentialContent() {
       <div>
         <Space direction="vertical">
           <Title level={5}>{currentCredential.name}</Title>
-          <Text>Evironment: {ENV_OPTIONS[currentCredential.environment]}</Text>
+          <Text>Environment: {ENV_OPTIONS[currentCredential.environment]}</Text>
           <Text>
             Creation time:{' '}
             {moment(currentCredential.create_time).format(
