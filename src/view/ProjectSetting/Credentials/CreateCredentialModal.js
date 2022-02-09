@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Modal } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { Form, message, Button, Typography, Radio, Space, Select } from 'antd';
@@ -29,15 +29,28 @@ export default function CreateCredentialModal(props) {
   const { t } = useTranslation();
   const [moduleSelected, setModuleSelected] = useState([]);
   const [quotaSelected, setQuotaSelected] = useState([]);
+  const [projectType, setProjectType] = useState([]);
   const [env, setEnv] = useState(ENV_OPTIONS.DEV);
   const [form] = Form.useForm();
   const resourceList = useSelector((state) => state.system.resourceList);
   const vindrModules = get(resourceList, 'modules');
   const [token, setToken] = useState('');
   const { params } = useProjectsParams();
+  const projectList = useSelector((state) => state.system.projectList);
   const { handleGetCredentials } = useContext(CredentialContext);
 
   const { Text, Link } = Typography;
+
+  useEffect(() => {
+    const projectId = get(params, 'projectId', '');
+    const project = (projectList.all.data || []).find(p => p.project_id == projectId);
+    if(project){
+      setProjectType(project.type || "free");
+    }else{
+      setProjectType("free");
+    }
+    console.log({projectType})
+  }, [params, projectList]);
 
   const handleOk = () => {};
 
@@ -241,13 +254,13 @@ export default function CreateCredentialModal(props) {
                       reset at 0:00 AM.
                     </Text>
                   </Radio>
-                  <Radio value={ENV_OPTIONS.PRO}>
+                  <Radio value={ENV_OPTIONS.PRO} disabled={projectType == 'free'}>
                     Production <br />
                     <Text
                       type="secondary"
                       className="create-credential-radio-subtext"
                     >
-                      Unlimited quota amounts beyond your configuration.
+                      Unlimited quota amounts beyond your configuration <b><i>(premium required)</i></b>.
                     </Text>
                   </Radio>
                 </Space>
