@@ -1,9 +1,11 @@
 import React from 'react';
-import overviewContent from './content';
+import overviewContent from './chestCT/index.js';
 
 const Overview = () => {
   return (
-    <div>
+    <div
+      style={{ marginTop: 1550, marginBottom: 700, transform: 'scale(1.5)' }}
+    >
       <div dangerouslySetInnerHTML={{ __html: overviewContent }}></div>
     </div>
   );
