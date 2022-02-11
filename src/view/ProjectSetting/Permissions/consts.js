@@ -1,12 +1,12 @@
 export const RoleOptions = [
     {
         label: "Owner",
-        subLabel: "Full access to all resources, including user management, permissions and billing.",
+        subLabel: "Has full permissions to manage users, dashboard, models, jobs, credentials.",
         value: "Owner"
     },
     {
         label: "Editor",
-        subLabel: "",
+        subLabel: "Has full permissions to manage dashboard, models, jobs, credentials and exclude user management",
         value: "Editor"
     },
     // {
@@ -16,7 +16,7 @@ export const RoleOptions = [
     // },
     {
         label: "Viewer",
-        subLabel: "",
+        subLabel: "Can view only dashboard, models, jobs, credentials",
         value: "Viewer"
     }
 ];
