@@ -15,6 +15,8 @@ import {
   PERM_CREDENTIAL_GET,
   PERM_USER_PROJECT_GET,
   PERM_PROJECT_DASHBOARD_GET,
+  PERM_PROJECT_JOB_GET,
+  PERM_PROJECT_MODEL_GET,
 } from '../permission/perms';
 
 // common
