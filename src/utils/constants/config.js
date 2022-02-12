@@ -185,12 +185,14 @@ export const APP_ROUTES = [
     name: 'Jobs',
     pathname: routes.JOBS,
     isShow: true,
+    requiredPerms: [PERM_PROJECT_JOB_GET, ],
   },
   {
     icon: <RocketOutlined />,
     name: 'Models',
     pathname: routes.MODELS,
     isShow: true,
+    requiredPerms: [PERM_PROJECT_MODEL_GET, ],
   },
   {
     icon: <ApiOutlined />,
