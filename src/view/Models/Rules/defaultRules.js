@@ -9,11 +9,23 @@ const ChestXray = {
       ],
     },
     {
-      in: [
+      or: [
         {
-          var: 'tag.BodyPart',
+          in: [
+            {
+              var: 'tag.BodyPart',
+            },
+            'CHEST, THORAX',
+          ],
         },
-        'Chest, Thorax',
+        {
+          in: [
+            {
+              var: 'tag.BodyPartExamined',
+            },
+            'CHEST, THORAX',
+          ],
+        },
       ],
     },
   ],
@@ -30,11 +42,23 @@ const SpineXray = {
       ],
     },
     {
-      in: [
+      or: [
         {
-          var: 'tag.BodyPart',
+          in: [
+            {
+              var: 'tag.BodyPartExamined',
+            },
+            'Cspine, Lspine',
+          ],
         },
-        'Cspine, Lspine',
+        {
+          in: [
+            {
+              var: 'tag.BodyPart',
+            },
+            'Cspine, Lspine',
+          ],
+        },
       ],
     },
   ],
@@ -64,11 +88,23 @@ const BrainCT = {
       ],
     },
     {
-      in: [
+      or: [
         {
-          var: 'tag.BodyPart',
+          in: [
+            {
+              var: 'tag.BodyPart',
+            },
+            'BRAIN, HEAD',
+          ],
         },
-        'Brain, Head',
+        {
+          in: [
+            {
+              var: 'tag.BodyPartExamined',
+            },
+            'BRAIN, HEAD',
+          ],
+        },
       ],
     },
   ],
@@ -85,11 +121,23 @@ const BrainMRI = {
       ],
     },
     {
-      in: [
+      or: [
         {
-          var: 'tag.BodyPart',
+          in: [
+            {
+              var: 'tag.BodyPartExamined',
+            },
+            'BRAIN, HEAD',
+          ],
         },
-        'Brain, Head',
+        {
+          in: [
+            {
+              var: 'tag.BodyPart',
+            },
+            'BRAIN, HEAD',
+          ],
+        },
       ],
     },
   ],
@@ -106,11 +154,23 @@ const LungCT = {
       ],
     },
     {
-      in: [
+      or: [
         {
-          var: 'tag.BodyPart',
+          in: [
+            {
+              var: 'tag.BodyPart',
+            },
+            'CHEST, THORAX',
+          ],
         },
-        'Chest, Thorax',
+        {
+          in: [
+            {
+              var: 'tag.BodyPartExamined',
+            },
+            'CHEST, THORAX',
+          ],
+        },
       ],
     },
   ],
@@ -127,19 +187,31 @@ const LiverCT = {
       ],
     },
     {
-      in: [
-        {
-          var: 'tag.BodyPart',
-        },
-        'Abdomen',
-      ],
-    },
-    {
       contain: [
         {
           var: 'tag.SeriesDescription',
         },
-        'tinhmach, tinh, tm, venou',
+        'tinhmach, tinh, tm, venous',
+      ],
+    },
+    {
+      or: [
+        {
+          in: [
+            {
+              var: 'tag.BodyPart',
+            },
+            'ABDOMEN',
+          ],
+        },
+        {
+          in: [
+            {
+              var: 'tag.BodyPartExamined',
+            },
+            'ABDOMEN',
+          ],
+        },
       ],
     },
   ],
