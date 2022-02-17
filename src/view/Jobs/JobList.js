@@ -75,13 +75,13 @@ const JobList = ({ onChange }) => {
       ellipsis: true,
       sorter: true,
     },
-    {
-      title: 'Priority',
-      width: 50,
-      dataIndex: 'Priority',
-      key: 'Priority',
-      // sorter: true,
-    },
+    // {
+    //   title: 'Priority',
+    //   width: 50,
+    //   dataIndex: 'Priority',
+    //   key: 'Priority',
+    //   // sorter: true,
+    // },
     {
       title: 'Status',
       width: 50,

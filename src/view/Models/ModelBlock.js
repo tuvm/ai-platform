@@ -51,12 +51,13 @@ function ModelBlock({ data, projectId, onUpdate }) {
         <Text type="secondary">{vendor}</Text>
       </div>
       <div className={styles.buttonContainer}>
-        <Button type="text" onClick={handleActiveModel}>
+        <Button type="primary" onClick={handleActiveModel}>
           Learn more
         </Button>
         {status === 'off' ? (
           <Button
             type="primary"
+            style={{ marginLeft: 10 }}
             onClick={(e) => {
               e.stopPropagation();
               handleChangeStatus(MODEL_STATUS.ON);
@@ -67,6 +68,8 @@ function ModelBlock({ data, projectId, onUpdate }) {
         ) : (
           <Button
             type="primary"
+            style={{ marginLeft: 10 }}
+            ghost
             danger
             onClick={(e) => {
               e.stopPropagation();

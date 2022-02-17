@@ -198,7 +198,7 @@ const Rules = () => {
         type: values.fields[i].type,
         valueSources: ['value'],
         preferWidgets: [values.fields[i].type],
-        // operators: ['equal'],
+        operators: ['equal', 'like'],
         fieldSettings: {
           listValues:
             values.fields[i].type === 'select' ||
