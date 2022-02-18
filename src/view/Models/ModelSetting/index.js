@@ -158,7 +158,7 @@ const ModelSettings = () => {
         <div>You must enable model before diagnosing the study</div>
       </div>
 
-      <div className="block">
+      {/* <div className="block">
         <div style={{ display: 'flex' }}>
           <Title level={5} className="title">
             Turn on automated rules
@@ -170,7 +170,7 @@ const ModelSettings = () => {
           filtering module to automatically diagnose by the model. You must not
           manually diagnose on each study
         </div>
-      </div>
+      </div> */}
 
       <div className="block">
         <Title level={5} className="title">
