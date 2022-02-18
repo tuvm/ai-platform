@@ -91,10 +91,10 @@ const queryValue = { id: QbUtils.uuid(), type: 'group' };
 
 const defaultFormItemLayout = {
   labelCol: {
-    xs: { span: 6 },
+    xs: { span: 8 },
   },
   wrapperCol: {
-    xs: { span: 12 },
+    xs: { span: 16 },
   },
 };
 
@@ -301,7 +301,7 @@ const Rules = () => {
       {/* {renderResult(state)} */}
       <Modal
         visible={isCustomField}
-        width="80vw"
+        width={window.innerWidth < 1000 ? '90vw' : 900}
         onCancel={() => setIsCustomField(false)}
         onOk={() => {
           form.submit();
