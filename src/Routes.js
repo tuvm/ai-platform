@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { routes } from './utils/constants/config';
 import APIsAndServices from './view/APIsAndServices';
-import { Jobs } from './view/Jobs';
+import Jobs from './view/Jobs';
 import Projects from './view/Projects';
 // import APIKeys from './view/APIKeys';
 import ProjectSetting from './view/ProjectSetting';

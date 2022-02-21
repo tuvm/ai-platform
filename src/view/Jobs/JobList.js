@@ -184,4 +184,4 @@ const JobList = ({ onChange }) => {
   );
 };
 
-export default JobList;
+export default React.memo(JobList);

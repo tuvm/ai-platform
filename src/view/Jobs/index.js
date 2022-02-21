@@ -16,18 +16,37 @@ import { ROWS_PER_PAGE } from '../../utils/constants/config';
 //   priority: '*',
 // };
 
-export const Jobs = () => {
+const Jobs = () => {
   const dispatch = useDispatch();
   const { params } = useProjectsParams();
   const credentialList = useSelector((state) => state.system.credentialList);
+  const [queryStr, setQueryStr] = useState('*');
   const [query, setQuery] = useState({
     offset: 0,
     limit: ROWS_PER_PAGE[0],
-    query_string: '*',
     sort: '-start_time',
   });
 
+  useEffect(() => {
+    dispatch(
+      actiongetJoblist(params.projectId, { ...query, query_string: queryStr })
+    );
+  }, [query, params, credentialList]);
+
+  useEffect(() => {
+    dispatch(getModellist(params.projectId));
+  }, []);
+
   const handleSearch = (values) => {
+    const str = toQueryString(values);
+    setQueryStr(str);
+    setQuery({
+      ...query,
+      offset: 0,
+    });
+  };
+
+  const toQueryString = (values) => {
     let transformQuery = { ...values };
     delete transformQuery.startDate;
     delete transformQuery.endDate;
@@ -49,21 +68,12 @@ export const Jobs = () => {
         ? queryStr + ` AND ${values?.search}`
         : values?.search;
     }
-    console.log(queryStr);
-    setQuery({ ...query, query_string: queryStr });
+    return queryStr;
   };
 
   const handleTableChange = (value) => {
     setQuery({ ...query, ...value });
   };
-
-  useEffect(() => {
-    dispatch(actiongetJoblist(params.projectId, query));
-  }, [query, params, credentialList]);
-
-  useEffect(() => {
-    dispatch(getModellist(params.projectId));
-  }, []);
 
   return (
     <>
@@ -72,3 +82,5 @@ export const Jobs = () => {
     </>
   );
 };
+
+export default React.memo(Jobs, () => true);
