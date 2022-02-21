@@ -26,8 +26,8 @@ function ModelBlock({ data, projectId, onUpdate }) {
   };
 
   const handleActiveModel = () => {
-    // history.push(`/projects/${projectId}/models/${slug}`);
-    console.log(`Go to model ${slug}`);
+    history.push(`/projects/${projectId}/models/${slug}`);
+    // console.log(`Go to model ${slug}`);
   };
 
   return (
