@@ -17,6 +17,7 @@ function DynamicField(props) {
                   name={[index, 'name']}
                   label="Name"
                   rules={[{ required: true }]}
+                  style={{ minWidth: 200 }}
                 >
                   <Input placeholder="field name" />
                 </Form.Item>
@@ -24,7 +25,7 @@ function DynamicField(props) {
                   label="Type"
                   name={[index, 'type']}
                   rules={[{ required: true }]}
-                  style={{ minWidth: 300 }}
+                  style={{ minWidth: 200 }}
                 >
                   <Select>
                     <Select.Option value="text">String</Select.Option>
@@ -35,7 +36,11 @@ function DynamicField(props) {
                     <Select.Option value="number">Number</Select.Option>
                   </Select>
                 </Form.Item>
-                <Form.Item name={[index, 'options']} label="Options">
+                <Form.Item
+                  name={[index, 'options']}
+                  label="Options"
+                  style={{ minWidth: 200 }}
+                >
                   <Input placeholder="option 1, option 2, option 3" />
                 </Form.Item>
                 {fields.length > 1 ? (
@@ -44,6 +49,7 @@ function DynamicField(props) {
                     className="dynamic-delete-button"
                     onClick={() => remove(field.name)}
                     icon={<MinusCircleOutlined />}
+                    style={{ marginLeft: 20 }}
                   >
                     Remove
                   </Button>

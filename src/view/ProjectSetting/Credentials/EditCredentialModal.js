@@ -312,7 +312,7 @@ export default function EditCredentialModal(props) {
                       type="secondary"
                       className="create-credential-radio-subtext"
                     >
-                      Unlimited quota amounts beyond your configuration.
+                      Unlimited quota amounts beyond your configuration <b><i>(premium required)</i></b>.
                     </Text>
                   </Radio>
                 </Space>

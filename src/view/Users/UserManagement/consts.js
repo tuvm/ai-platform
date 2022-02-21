@@ -2,19 +2,18 @@ export const RoleOptions = [
   {
     label: 'Administrator',
     subLabel:
-      'Full access to all resources, including usermanagement, permissions and billing',
+      'Has full permissions to manage entire project in organization, can add/remove user to the organization',
     value: 'Administrator',
   },
   {
     label: 'Moderator',
     subLabel:
-      'Full access to all resources, including usermanagement, permissions and billing',
+      'Has permissions to manage project that User must have a role in the project, can create project',
     value: 'Moderator',
   },
   {
     label: 'Reviewer',
-    subLabel:
-      'Full access to all resources, including usermanagement, permissions and billing',
+    subLabel: 'Can view only project that User must have a role in the project',
     value: 'Reviewer',
   },
 ];

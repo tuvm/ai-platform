@@ -5,6 +5,7 @@ import moment from 'moment';
 import styles from './Jobs.module.scss';
 import JsonView from './JsonView';
 import { ROWS_PER_PAGE } from '../../utils/constants/config';
+import { get } from 'lodash';
 
 const STATUS_COLOR = {
   INITIAL: '#000',
@@ -74,13 +75,13 @@ const JobList = ({ onChange }) => {
       ellipsis: true,
       sorter: true,
     },
-    {
-      title: 'Priority',
-      width: 50,
-      dataIndex: 'Priority',
-      key: 'Priority',
-      // sorter: true,
-    },
+    // {
+    //   title: 'Priority',
+    //   width: 50,
+    //   dataIndex: 'Priority',
+    //   key: 'Priority',
+    //   // sorter: true,
+    // },
     {
       title: 'Status',
       width: 50,
@@ -100,11 +101,16 @@ const JobList = ({ onChange }) => {
     },
     {
       title: 'Metadata',
-      dataIndex: ['_source', 'meta'],
+      dataIndex: ['_source', 'metadata'],
       key: 'Metadata',
       width: 50,
-      render: (text) => (
-        <Button type="link" onClick={() => JsonView.open('Metadata', text)}>
+      render: (text, record) => (
+        <Button
+          type="link"
+          onClick={() =>
+            JsonView.open('Metadata', text || get(record, '_source.meta'))
+          }
+        >
           View
         </Button>
       ),
@@ -178,4 +184,4 @@ const JobList = ({ onChange }) => {
   );
 };
 
-export default JobList;
+export default React.memo(JobList);

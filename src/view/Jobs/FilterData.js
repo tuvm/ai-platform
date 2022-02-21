@@ -149,7 +149,7 @@ function FilterData(props) {
     <>
       <div className="filter-items">
         <Row>
-          <div className="filter-item select-item">
+          {/* <div className="filter-item select-item">
             <Select
               size="small"
               style={{ width: '100%' }}
@@ -167,7 +167,7 @@ function FilterData(props) {
               <Option value="Medium">{t('Medium')}</Option>
               <Option value="Low">{t('Low')}</Option>
             </Select>
-          </div>
+          </div> */}
           <div className="filter-item select-item">
             <Select
               size="small"

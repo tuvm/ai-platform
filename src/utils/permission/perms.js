@@ -27,3 +27,9 @@ export const PERM_CREDENTIAL_GET = 'credential.project.get';
 
 // project dashboard
 export const PERM_PROJECT_DASHBOARD_GET = 'dashboard.project.get';
+
+// model
+export const PERM_PROJECT_MODEL_GET = 'model.project.get';
+
+// jobs
+export const PERM_PROJECT_JOB_GET = 'job.project.get';

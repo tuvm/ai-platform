@@ -22,9 +22,9 @@ export default function ModelPage() {
         <TabPane tab="Settings" key="3">
           <ModelSettings />
         </TabPane>
-        <TabPane tab="Docs" key="4">
+        {/* <TabPane tab="Docs" key="4">
           <Docs />
-        </TabPane>
+        </TabPane> */}
       </Tabs>
     </div>
   );

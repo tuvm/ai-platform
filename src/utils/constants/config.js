@@ -15,6 +15,8 @@ import {
   PERM_CREDENTIAL_GET,
   PERM_USER_PROJECT_GET,
   PERM_PROJECT_DASHBOARD_GET,
+  PERM_PROJECT_JOB_GET,
+  PERM_PROJECT_MODEL_GET,
 } from '../permission/perms';
 
 // common
@@ -185,12 +187,24 @@ export const APP_ROUTES = [
     name: 'Jobs',
     pathname: routes.JOBS,
     isShow: true,
+    requiredPerms: [PERM_PROJECT_JOB_GET],
   },
   {
     icon: <RocketOutlined />,
     name: 'Models',
     pathname: routes.MODELS,
     isShow: true,
+    requiredPerms: [PERM_PROJECT_MODEL_GET],
+    hasSubmenu: false,
+    submenu: [
+      { name: 'VinDr-BrainMR', pathname: '/brainmri', isShow: false },
+      { name: 'VinDr-BrainCT', pathname: '/brainct', isShow: false },
+      { name: 'VinDr-LiverCT', pathname: '/liverct', isShow: false },
+      { name: 'VinDr-Mammo', pathname: '/mammogram', isShow: false },
+      { name: 'VinDr-SpineXR', pathname: '/spinexr', isShow: false },
+      { name: 'VinDr-ChestCT', pathname: '/lungct', isShow: false },
+      { name: 'Vindr-ChestXray', pathname: '/chestxray', isShow: false },
+    ],
   },
   {
     icon: <ApiOutlined />,
