@@ -43,13 +43,15 @@ export default function CreateCredentialModal(props) {
 
   useEffect(() => {
     const projectId = get(params, 'projectId', '');
-    const project = (projectList.all.data || []).find(p => p.project_id == projectId);
-    if(project){
-      setProjectType(project.type || "free");
-    }else{
-      setProjectType("free");
+    const project = (projectList.all.data || []).find(
+      (p) => p.project_id == projectId
+    );
+    if (project) {
+      setProjectType(project.type || 'free');
+    } else {
+      setProjectType('free');
     }
-    console.log({projectType})
+    console.log({ projectType });
   }, [params, projectList]);
 
   const handleOk = () => {};
@@ -254,13 +256,29 @@ export default function CreateCredentialModal(props) {
                       reset at 0:00 AM.
                     </Text>
                   </Radio>
-                  <Radio value={ENV_OPTIONS.PRO} disabled={projectType == 'free'}>
+                  <Radio
+                    value={ENV_OPTIONS.PRO}
+                    disabled={projectType == 'free'}
+                  >
                     Production <br />
                     <Text
                       type="secondary"
                       className="create-credential-radio-subtext"
                     >
-                      Unlimited quota amounts beyond your configuration <b><i>(premium required)</i></b>.
+                      Unlimited quota amounts beyond your configuration{' '}
+                      <b>
+                        <i>
+                          <a
+                            className="credential-premium-link"
+                            href="https://docs.google.com/forms/d/e/1FAIpQLSfRkYB_ve-yHJHxr1UC27r1FYmtK923NhdWT2wq7Pqz7DkhBw/viewform"
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            (premium required)
+                          </a>
+                        </i>
+                      </b>
+                      .
                     </Text>
                   </Radio>
                 </Space>
