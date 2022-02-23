@@ -75,7 +75,7 @@ export default function General() {
       }
     },
     {
-      title: 'Subcription status',
+      title: 'Subscription Status',
       dataIndex: 'type',
       key: 'type',
       render: (val) => {
