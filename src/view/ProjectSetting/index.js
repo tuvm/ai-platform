@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Tabs } from 'antd';
 import Credentials from './Credentials';
 import Permissions from './Permissions';
+import General from './General';
 import { actionGetResourceList } from './Credentials/actions';
 import { useDispatch, useSelector } from 'react-redux';
 // import { actionInspectTicket } from '../system/systemAction';
@@ -38,9 +39,9 @@ export default function Analysis() {
   return (
     <>
       <Tabs defaultActiveKey="1" onChange={callback}>
-        {/* <TabPane tab="General" key="1">
-          General
-        </TabPane> */}
+        <TabPane tab="General" key="1">
+          <General />
+        </TabPane>
 
         {canViewCredentials() && (
           <TabPane tab="Credentials" key="2">
