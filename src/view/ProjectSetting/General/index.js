@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
-import { Button, Typography, Menu, Dropdown, message, Modal, Col, Row, Radio } from 'antd';
+import { Button, Typography, Menu, Dropdown, message, Modal, Col, Row, Radio, Select } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useProjectsParams } from '../../../utils/hooks';
 import get from 'lodash/get';
@@ -48,9 +48,9 @@ export default function General() {
   }
 
   const onChangeSubcription = async (e) => {
-    console.log({e})
+    // console.log({e})
     setOpenConfirmChangeSubcriptionModal(true);
-    setSelectedSubcription(e.target.value);
+    setSelectedSubcription(e);
   }
 
   const rows = [
@@ -80,11 +80,10 @@ export default function General() {
       key: 'type',
       render: (val) => {
         return (
-          <Radio.Group value={val} disabled={!canChangeChangeSubcription()}
-            onChange={onChangeSubcription} buttonStyle="solid">
-            <Radio.Button value="free">Free</Radio.Button>
-            <Radio.Button value="premium">Premium</Radio.Button>
-          </Radio.Group>
+          <Select value={val} style={{ width: 120 }} onChange={onChangeSubcription} disabled={!canChangeChangeSubcription()}>
+            <Select.Option value="free">Free</Select.Option>
+            <Select.Option value="premium">Premium</Select.Option>
+          </Select>
         )
       }
     }
