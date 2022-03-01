@@ -56,10 +56,9 @@ const Jobs = () => {
       transformQuery.diagnosis_date = `[${moment(
         values?.startDate,
         'YYYYMMDD'
-      ).valueOf()} TO ${moment(
-        Number(values?.endDate) + 1,
-        'YYYYMMDD'
-      ).valueOf()}]`;
+      ).valueOf()} TO ${moment(Number(values?.endDate), 'YYYYMMDD')
+        .endOf('day')
+        .valueOf()}]`;
     }
 
     let queryStr = toLuceneQueryString(transformQuery, ' AND ', ':');
