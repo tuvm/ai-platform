@@ -203,7 +203,7 @@ export const APP_ROUTES = [
       { name: 'VinDr-Mammo', pathname: '/mammogram', isShow: false },
       { name: 'VinDr-SpineXR', pathname: '/spinexr', isShow: false },
       { name: 'VinDr-ChestCT', pathname: '/lungct', isShow: false },
-      { name: 'Vindr-ChestXray', pathname: '/chestxray', isShow: false },
+      { name: 'VinDr-ChestXray', pathname: '/chestxray', isShow: false },
     ],
   },
   {
@@ -398,31 +398,31 @@ export const API_SCOPES = [
 
 export const VINDR_MODULES = [
   {
-    name: 'Vindr ChestXray',
+    name: 'VinDr ChestXray',
     key: 'vindr-chestxray',
   },
   {
-    name: 'Vindr Mammo',
+    name: 'VinDr Mammo',
     key: 'vindr-mammo',
   },
   {
-    name: 'Vindr SpineXR',
+    name: 'VinDr SpineXR',
     key: 'vindr-spinexr',
   },
   {
-    name: 'Vindr LungCT',
+    name: 'VinDr LungCT',
     key: 'vindr-lungct',
   },
   {
-    name: 'Vindr LiverCT',
+    name: 'VinDr LiverCT',
     key: 'vindr-liverct',
   },
   {
-    name: 'Vindr BrainCT',
+    name: 'VinDr BrainCT',
     key: 'vindr-brainct',
   },
   {
-    name: 'Vindr BrainMRI',
+    name: 'VinDr BrainMRI',
     key: 'vindr-brainmri',
   },
 ];
