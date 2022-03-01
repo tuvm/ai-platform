@@ -223,7 +223,7 @@ export const APP_ROUTES = [
     name: 'IDS_PROJECT_SETTING',
     pathname: routes.PROJECT_SETTING,
     isShow: true,
-    requiredPerms: [PERM_USER_PROJECT_GET, PERM_CREDENTIAL_GET],
+    // requiredPerms: [PERM_USER_PROJECT_GET, PERM_CREDENTIAL_GET],
   },
   {
     icon: <FileTextOutlined />,

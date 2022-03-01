@@ -312,7 +312,20 @@ export default function EditCredentialModal(props) {
                       type="secondary"
                       className="create-credential-radio-subtext"
                     >
-                      Unlimited quota amounts beyond your configuration <b><i>(premium required)</i></b>.
+                      Unlimited quota amounts beyond your configuration{' '}
+                      <b>
+                        <i>
+                          <a
+                            className="credential-premium-link"
+                            href="https://docs.google.com/forms/d/e/1FAIpQLSfRkYB_ve-yHJHxr1UC27r1FYmtK923NhdWT2wq7Pqz7DkhBw/viewform"
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            (premium required)
+                          </a>
+                        </i>
+                      </b>
+                      .
                     </Text>
                   </Radio>
                 </Space>

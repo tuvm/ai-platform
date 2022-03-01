@@ -33,3 +33,6 @@ export const PERM_PROJECT_MODEL_GET = 'model.project.get';
 
 // jobs
 export const PERM_PROJECT_JOB_GET = 'job.project.get';
+
+// subcription
+export const PERM_PROJECT_SUBCRIPTION_EDIT = 'subcription.project.edit';
