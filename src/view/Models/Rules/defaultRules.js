@@ -186,14 +186,14 @@ const LiverCT = {
         'CT',
       ],
     },
-    {
-      contain: [
-        {
-          var: 'tag.SeriesDescription',
-        },
-        'tinhmach, tinh, tm, venous',
-      ],
-    },
+    // {
+    //   contain: [
+    //     {
+    //       var: 'tag.SeriesDescription',
+    //     },
+    //     'tinhmach, tinh, tm, venous',
+    //   ],
+    // },
     {
       or: [
         {
